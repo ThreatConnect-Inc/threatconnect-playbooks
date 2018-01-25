@@ -27,6 +27,10 @@ This Repository is public. However, contributions will be accepted only from ide
   + Playbooks must include the PBX file of the Playbook.
   + Playbook Apps must include the ZIP file of the App.
 
+## Contributing
+
+For more information on contributing to this repo, so our [Contributions Guide](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/CONTRIBUTION_GUIDE.md).
+
 ## Documentation
 
 Documentation for the ThreatConnectⓇApp Framework is available here: https://docs.threatconnect.com/en/latest/tcex/tcex.html. The framework provides commonly used Classes and Methods for writing ThreatConnect Apps. The Framework is intended to speed up the development process and ensure Apps contains the core functionality required.
