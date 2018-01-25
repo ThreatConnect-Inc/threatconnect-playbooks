@@ -47,4 +47,4 @@ Access to this Repository is governed by the Apache 2.0 License: https://www.apa
 
 
 ## Terms of Service
-Access to this Repository is governed by the following Terms of Service: [TOS](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/TOS.md)
+Access to this Repository is governed by the following [Terms of Service](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/TOS.md).
