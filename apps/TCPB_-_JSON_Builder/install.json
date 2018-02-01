@@ -1,0 +1,31 @@
+{
+  "allowOnDemand": true,
+  "displayName": "JSON Builder",
+  "languageVersion": "3.6",
+  "listDelimiter": "|",
+  "note": "Take data of multiple types and output a JSON String.",
+  "params": [{
+    "label": "JSON Data",
+    "name": "json_data",
+    "note": "The JSON data including variables types.  String variables must be manually wrapped in double quotes.  All other Types should not have double quotes.  Binary/BinaryArray values are not supported.",
+    "playbookDataType": [
+      "Any"
+    ],
+    "required": true,
+    "sequence": 1,
+    "type": "String",
+    "validValues": ["${TEXT}"],
+    "viewRows": 20
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "json.data",
+      "type": "String"
+    }],
+    "type": "Utility"
+  },
+  "programLanguage": "PYTHON",
+  "programMain": "json_builder",
+  "programVersion": "1.0.0",
+  "runtimeLevel": "Playbook"
+}
