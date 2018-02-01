@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCPB_-_JSON_Create",
+    "app_name": "TCPB_-_JSON_Builder",
     "bundle": false,
     "excludes": [
       "requirements.txt",
