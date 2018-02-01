@@ -1,0 +1,29 @@
+[{
+    "data": "\"one\"",
+    "variable": "#App:0001:name!String"
+  },
+  {
+    "data": ["#App:0001:name!String", "two", "three"],
+    "variable": "#App:0001:counts!StringArray"
+  },
+  {
+    "data": {
+      "key": "numbers",
+      "value": "#App:0001:counts!StringArray"
+    },
+    "variable": "#App:0002:numbers!KeyValue"
+  },
+  {
+    "data": [{
+      "key": "alias",
+      "value": "ace"
+    }, {
+      "key": "alias",
+      "value": "#App:0001:name!String"
+    }, {
+      "key": "counts",
+      "value": "#App:0001:counts!StringArray"
+    }],
+    "variable": "#App:0002:aliases!KeyValueArray"
+  }
+]

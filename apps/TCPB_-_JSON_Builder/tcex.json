@@ -1,0 +1,15 @@
+{
+  "package": {
+    "app_name": "TCPB_-_JSON_Create",
+    "bundle": false,
+    "excludes": [
+      "requirements.txt",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  },
+  "profiles": [],
+  "profile_include_dirs": [
+    "tcex.d/profiles"
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_tc": false,
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "686be118-ff9a-4d05-bb14-4c1c6a0c9b87",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:3681:json.data!String",
+      "json_data": "{\"name\": \"#App:0001:name!String\", \"counts\": #App:0001:counts!StringArray, \"numbers\": #App:0002:numbers!KeyValue, \"aliases\": #App:0002:aliases!KeyValueArray}"
+    },
+    "data_files": [
+      "tcex.d/data/json_builder.json"
+    ],
+    "description": "Pass test of JSON Builder playbook App.",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "local"
+    ],
+    "install_json": "install.json",
+    "profile_name": "json-builder",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:3681:json.data!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3681:json.data!String"
+      }
+    ]
+  }
+]
