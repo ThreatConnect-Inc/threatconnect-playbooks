@@ -9,14 +9,22 @@ This playbook App will take a JSON formatted String with embedded variables and 
 
 > Note: String value must be wrapped in double quotes.  All other values should **not** have double quotes.
 
+
+![Inputs](images/screen_shot-info.png)
+
+
 # Dependencies
 * tcex>=0.7,<0.8
 
 # Input Definitions
 * JSON Data - The JSON string to resolve embedded variables.
 
+![Inputs](images/screen_shot-inputs.png)
+
 # Output Definitions
-* json.data - The JSON String with all embedded variables resolved.
+* json.data - The JSON String with optional embedded variables resolved.
+
+![Inputs](images/screen_shot-outputs.png)
 
 # Building
 
