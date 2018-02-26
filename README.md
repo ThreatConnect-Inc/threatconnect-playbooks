@@ -31,7 +31,7 @@ This Repository is public. However, contributions will be accepted only from ide
 
 ## Contributing
 
-For more information on contributing to this repository, see our [Contributions Guide](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/CONTRIBUTION_GUIDE.md).
+For more information on contributing to this repository, see our [Contributions Guide](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/CONTRIBUTING.md).
 
 ## Documentation
 
