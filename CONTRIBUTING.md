@@ -7,7 +7,7 @@ Contributing to the ThreatConnect Playbooks Github repository is a powerful and 
 + All Playbooks and Playbook Apps must have their own README.md files.
   + Playbooks README.md should include the following headers:
     + Summary
-    + App Dependencies
+    + Dependencies
     + Use Cases (Optional)
   + Playbooks Apps README.md should include the following headers:
     + Summary
