@@ -12,22 +12,9 @@ This Repository is public. However, contributions will be accepted only from ide
 
 > **Please Note**: the Support Team will not validate code for functionality or security.
 
-## Guidelines
+## Using These Playbooks
 
-+ All Playbooks and Playbook Apps must have their own README.md files.
-  + Playbooks README.md should include the following headers:
-    + Summary
-    + App Dependencies
-    + Use Cases (Optional)
-  + Playbooks Apps README.md should include the following headers:
-    + Summary
-    + Dependencies
-    + Input Definitions
-    + Output Definitions
-    + Use Cases (Optional)
-+ Playbooks and Playbook Apps should be included in unique, separate folders.
-  + Playbooks must include the PBX file of the Playbook.
-  + Playbook Apps must include the zip/tcx file of the App.
+To use the Playbooks in this repo, [clone or download](https://help.github.com/articles/cloning-a-repository/) this repo, navigate to the [Playbooks](http://kb.threatconnect.com/customer/portal/articles/2744775) page in ThreatConnect, and upload the appropriate `.pbx` file into ThreatConnect by clicking the “Import Playbook” button.
 
 ## Contributing
 
@@ -42,11 +29,13 @@ Documentation specific to Playbooks can be found here: https://docs.threatconnec
 Best practices for creating effective and maintainable Playbooks can be found here: https://github.com/fhightower/playbook-paradigms-and-constructs.
 
 ## Contact
+
 If you have any questions, bugs, or requests please contact support@threatconnect.com.
 
 ## License
+
 Access to this Repository is governed by the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
 
-
 ## Terms of Service
+
 Access to this Repository is governed by the following [Terms of Service](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/blob/master/TOS.md).
