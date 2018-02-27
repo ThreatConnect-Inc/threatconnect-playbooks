@@ -4,13 +4,13 @@ Copyright (c) 2018 ThreatConnect, Inc.
 
 This repository gives ThreatConnect customers the ability to create and share Playbooks and Playbook Apps for use with their instance of ThreatConnect. Our hope for this repo is that it will:
 
-+ Help promote usage of ThreatConnect via a community of developers,
-+ Help customers identify new use cases, and
-+ Give new customers the opportunity to learn from existing customers.
++ Help promote usage of ThreatConnect via a community of developers
++ Help customers identify new use cases
++ Give new customers the opportunity to learn from existing customers
 
 This Repository is public. However, contributions will be accepted only from identified ThreatConnect customers. The ThreatConnect Support Team will validate each contribution request before they are published within the Repository, as well as enforce certain formatting requirements.
 
-> **Please Note**: the Support Team will not validate code for functionality or security.
+> **Please Note**: the Support Team will **not** validate code for functionality or security.
 
 ## Using These Playbooks
 
