@@ -1,0 +1,27 @@
+{
+  "allowOnDemand": true,
+  "displayName": "Deduplicator",
+  "languageVersion": "3.6.x",
+  "listDelimiter": "|",
+  "note": "Deduplicate a list.",
+  "params": [{
+    "label": "Incoming list",
+    "name": "incoming_list",
+    "playbookDataType": [
+      "StringArray"
+    ],
+    "required": true
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "deduplicatedList",
+      "type": "StringArray"
+    }],
+    "type": "Utility"
+  },
+  "programLanguage": "python",
+  "programMain": "deduplicator",
+  "programVersion": "0.1.0",
+  "repeatingMinutes": [],
+  "runtimeLevel": "Playbook"
+}
