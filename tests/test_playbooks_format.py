@@ -44,6 +44,8 @@ def test_playbook_readme():
             except AssertionError:
                 app_errors += 1
                 print("No README.md file in {}".format(path))
+        # stop after going through the top level of each playbook's directory
+        break
 
     for path, dirs, files in os.walk(os.path.abspath(os.path.join(os.path.dirname(__file__), "../playbooks"))):
         if len(files) > 0:
@@ -53,6 +55,8 @@ def test_playbook_readme():
             except AssertionError:
                 playbook_errors += 1
                 print("No README.md file in {}".format(path))
+        # stop after going through the top level of each playbook's directory
+        break
 
     assert app_errors == 0
     assert playbook_errors == 0
