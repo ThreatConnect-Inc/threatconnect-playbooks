@@ -2,7 +2,7 @@ Copyright (c) 2018 ThreatConnect, Inc.
 
 # ThreatConnect Playbooks
 
-This repository gives ThreatConnect customers the ability to create and share Playbooks and Playbook Apps for use with their instance of ThreatConnect. Our hope for this repo is that it will:
+This repository gives ThreatConnect customers the ability to create and share Playbooks, Playbook Components, and Playbook Apps for use with their instance of ThreatConnect. Our hope for this repo is that it will:
 
 + Help promote usage of ThreatConnect via a community of developers,
 + Help customers identify new use cases, and
@@ -14,19 +14,19 @@ This Repository is public. However, contributions will be accepted only from ide
 
 ## Guidelines
 
-+ All Playbooks and Playbook Apps must have their own README.md files.
++ All Playbooks, Components, and Playbook Apps must have their own README.md files.
   + Playbooks README.md should include the following headers:
     + Summary
     + App Dependencies
     + Use Cases (Optional)
-  + Playbooks Apps README.md should include the following headers:
+  + Playbook Apps and Components README.md should include the following headers:
     + Summary
     + Dependencies
     + Input Definitions
     + Output Definitions
     + Use Cases (Optional)
-+ Playbooks and Playbook Apps should be included in unique, separate folders.
-  + Playbooks must include the PBX file of the Playbook.
++ Playbooks, Components, and Playbook Apps should be included in unique, separate folders.
+  + Playbooks and Components must include the PBX file of the Playbook or Component.
   + Playbook Apps must include the zip/tcx file of the App.
 
 ## Contributing
