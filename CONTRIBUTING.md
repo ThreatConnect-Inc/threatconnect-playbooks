@@ -2,6 +2,23 @@
 
 Contributing to the ThreatConnect Playbooks Github repository is a powerful and scalable way to make a positive impact to the infosec community. At ThreatConnect, we believe that Threat Intelligence can have a visible impact on your company’s success, and that orchestration and automation is a force multiplier for Threat Intelligence.
 
+## Guidelines
+
++ All Playbooks and Playbook Apps must have their own README.md files.
+  + Playbooks README.md should include the following headers:
+    + Summary
+    + Dependencies
+    + Use Cases (Optional)
+  + Playbooks Apps README.md should include the following headers:
+    + Summary
+    + Dependencies
+    + Input Definitions
+    + Output Definitions
+    + Use Cases (Optional)
++ Playbooks and Playbook Apps should be included in unique, separate folders.
+  + Playbooks must include the PBX file of the Playbook.
+  + Playbook Apps must include the zip/tcx file of the App.
+
 ## Contributing Playbooks
 
 Playbooks are stored in JSON as PBX files, which allows them to be easily shared between instances of ThreatConnect.
