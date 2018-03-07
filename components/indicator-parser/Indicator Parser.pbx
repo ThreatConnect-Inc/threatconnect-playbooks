@@ -1,0 +1,1135 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Indicator Parser",
+  "type" : "Pipe",
+  "panX" : 1435.0,
+  "panY" : 121.0,
+  "logLevel" : "WARN",
+  "description" : "This playbook component parses IOCs from text using the system regexes available via the API (https://docs.threatconnect.com/en/latest/rest_api/indicators/indicators.html#retrieve-available-indicator-types).",
+  "jobList" : [ {
+    "id" : 15520,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Set Variable 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"addressRegexUrl\",\"value\":\"/v2/types/indicatorTypes/Address\"},{\"key\":\"emailAddressRegexUrl\",\"value\":\"/v2/types/indicatorTypes/EmailAddress\"},{\"key\":\"fileRegexUrl\",\"value\":\"/v2/types/indicatorTypes/File\"},{\"key\":\"hostRegexUrl\",\"value\":\"/v2/types/indicatorTypes/Host\"},{\"key\":\"urlRegexUrl\",\"value\":\"/v2/types/indicatorTypes/Url\"},{\"key\":\"errorMessagePrefix\",\"value\":\"[Indicator Parser PB]:\"}]"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : -120.0,
+    "outputVariables" : "[{\"name\":\"addressRegexUrl\",\"type\":\"String\"},{\"name\":\"fileRegexUrl\",\"type\":\"String\"},{\"name\":\"emailAddressRegexUrl\",\"type\":\"String\"},{\"name\":\"urlRegexUrl\",\"type\":\"String\"},{\"name\":\"hostRegexUrl\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15521,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.4"
+    },
+    "name" : "Get Address Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "#App:15520:addressRegexUrl!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAdditional\",\"value\":\"true\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : 60.0,
+    "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15522,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract IPv4 Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15523:ipvFourRegex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 60.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15523,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Address JSON Path",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:15521:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"ipvFourRegex\",\"value\":\"data.indicatorType.regexes[0]\"},{\"key\":\"ipvSixRegex\",\"value\":\"data.indicatorType.regexes[1]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : -320.0,
+    "locationTop" : 60.0,
+    "outputVariables" : "[{\"name\":\"ipvSixRegex\",\"type\":\"String\"},{\"name\":\"ipvFourRegex\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15524,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.4"
+    },
+    "name" : "Get Email Address Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAdditional\",\"value\":\"true\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "#App:15520:emailAddressRegexUrl!String"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : 440.0,
+    "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15525,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Email Address JSON Path",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"regex\",\"value\":\"data.indicatorType.regexes[0]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:15524:tc.api.result!String"
+    } ],
+    "locationLeft" : -320.0,
+    "locationTop" : 440.0,
+    "outputVariables" : "[{\"name\":\"regex\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15526,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract Email Address Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15525:regex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 440.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15527,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.4"
+    },
+    "name" : "Get File Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "#App:15520:fileRegexUrl!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAdditional\",\"value\":\"true\"}]"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : 630.0,
+    "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15528,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "File JSON Path",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:15527:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"mdFiveRegex\",\"value\":\"data.indicatorType.regexes[0]\"},{\"key\":\"shaTwoFiveSix\",\"value\":\"data.indicatorType.regexes[2]\"},{\"key\":\"shaOneRegex\",\"value\":\"data.indicatorType.regexes[1]\"}]"
+    } ],
+    "locationLeft" : -320.0,
+    "locationTop" : 630.0,
+    "outputVariables" : "[{\"name\":\"shaOneRegex\",\"type\":\"String\"},{\"name\":\"mdFiveRegex\",\"type\":\"String\"},{\"name\":\"shaTwoFiveSix\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15529,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract MD5 Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15528:mdFiveRegex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 630.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15530,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.4"
+    },
+    "name" : "Get Host Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "#App:15520:hostRegexUrl!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAdditional\",\"value\":\"true\"}]"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : 1200.0,
+    "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15531,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Host JSON Path",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:15530:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"regex\",\"value\":\"data.indicatorType.regexes\"}]"
+    } ],
+    "locationLeft" : -320.0,
+    "locationTop" : 1200.0,
+    "outputVariables" : "[{\"name\":\"regex\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15532,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract Host Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15531:regex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 1200.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15533,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.4"
+    },
+    "name" : "Get URL Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAdditional\",\"value\":\"true\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "#App:15520:urlRegexUrl!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : -540.0,
+    "locationTop" : 1390.0,
+    "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15534,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "URL JSON Path",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"regex\",\"value\":\"data.indicatorType.regexes\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:15533:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : -320.0,
+    "locationTop" : 1390.0,
+    "outputVariables" : "[{\"name\":\"regex\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15535,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract URL Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15534:regex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 1390.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15536,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract IPv6 Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15523:ipvSixRegex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 250.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15537,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract SHA1 Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15528:shaOneRegex!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 820.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15538,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Extract SHA256 Regex",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:1443:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"indicators\",\"value\":\"#App:15528:shaTwoFiveSix!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : 1010.0,
+    "outputVariables" : "[{\"name\":\"indicators\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15539,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join URLs",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdUrls\",\"value\":\"#App:15554:deduplicatedList!StringArray\"}]"
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 1390.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15540,
+    "appCatalogItem" : {
+      "programName" : "Logger",
+      "displayName" : "Logger",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Logger 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "logging"
+      },
+      "value" : "INFO"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "log_message"
+      },
+      "value" : "test"
+    } ],
+    "locationLeft" : 680.0,
+    "locationTop" : 60.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15541,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join Hosts",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdHosts\",\"value\":\"#App:15553:deduplicatedList!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 1200.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15542,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join SHA256s",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdShaTwoFiveSix\",\"value\":\"#App:15552:deduplicatedList!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 1010.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15543,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join SHA1s",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdShaOne\",\"value\":\"#App:15551:deduplicatedList!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 820.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15544,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join MD5s",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdMDFive\",\"value\":\"#App:15550:deduplicatedList!StringArray\"}]"
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 630.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15545,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join Email Addresses",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"createdEmailAddress\",\"value\":\"#App:15549:deduplicatedList!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 340.0,
+    "locationTop" : 440.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15547,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15522:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 60.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15548,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 2",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15536:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 250.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15549,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 3",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15526:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 440.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15550,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 4",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15529:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 630.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15551,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 5",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15537:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 820.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15552,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 6",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15538:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 1010.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15553,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 7",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15532:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 1200.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15554,
+    "appCatalogItem" : {
+      "programName" : "deduplicator v0.1",
+      "displayName" : "Deduplicator",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "Deduplicator 8",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "incoming_list"
+      },
+      "value" : "#App:15535:indicators!StringArray"
+    } ],
+    "locationLeft" : 120.0,
+    "locationTop" : 1390.0,
+    "outputVariables" : "[{\"name\":\"deduplicatedList\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15523,
+    "targetJobId" : 15522
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15521,
+    "targetJobId" : 15523
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15525,
+    "targetJobId" : 15526
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15524,
+    "targetJobId" : 15525
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15527,
+    "targetJobId" : 15528
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15528,
+    "targetJobId" : 15529
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15530,
+    "targetJobId" : 15531
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15531,
+    "targetJobId" : 15532
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15533,
+    "targetJobId" : 15534
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15534,
+    "targetJobId" : 15535
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 15520,
+    "sourceTriggerId" : 1443
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15520,
+    "targetJobId" : 15521
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15539,
+    "targetJobId" : 15540
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 15540,
+    "targetTriggerId" : 1443
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15541,
+    "targetJobId" : 15533
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15542,
+    "targetJobId" : 15530
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15543,
+    "targetJobId" : 15538
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15544,
+    "targetJobId" : 15537
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15545,
+    "targetJobId" : 15527
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15522,
+    "targetJobId" : 15547
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15536,
+    "targetJobId" : 15548
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15526,
+    "targetJobId" : 15549
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15549,
+    "targetJobId" : 15545
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15529,
+    "targetJobId" : 15550
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15550,
+    "targetJobId" : 15544
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15537,
+    "targetJobId" : 15551
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15551,
+    "targetJobId" : 15543
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15538,
+    "targetJobId" : 15552
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15552,
+    "targetJobId" : 15542
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15532,
+    "targetJobId" : 15553
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15553,
+    "targetJobId" : 15541
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15535,
+    "targetJobId" : 15554
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15554,
+    "targetJobId" : 15539
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15547,
+    "targetJobId" : 15536
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15548,
+    "targetJobId" : 15524
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1443,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : -840.0,
+    "locationTop" : -120.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"text\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Text\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"text\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"ipv4s\",\"value\":\"#App:15547:deduplicatedList!StringArray \",\"displayValue\":\"#App:15547:deduplicatedList!StringArray \"},{\"key\":\"ipv6s\",\"value\":\"#App:15548:deduplicatedList!StringArray \",\"displayValue\":\"#App:15548:deduplicatedList!StringArray \"},{\"key\":\"emailAddresses\",\"value\":\"#App:15549:deduplicatedList!StringArray \",\"displayValue\":\"#App:15549:deduplicatedList!StringArray \"},{\"key\":\"md5s\",\"value\":\"#App:15550:deduplicatedList!StringArray \",\"displayValue\":\"#App:15550:deduplicatedList!StringArray \"},{\"key\":\"sha1s\",\"value\":\"#App:15551:deduplicatedList!StringArray \",\"displayValue\":\"#App:15551:deduplicatedList!StringArray \"},{\"key\":\"sha256s\",\"value\":\"#App:15552:deduplicatedList!StringArray \",\"displayValue\":\"#App:15552:deduplicatedList!StringArray \"},{\"key\":\"hosts\",\"value\":\"#App:15553:deduplicatedList!StringArray \",\"displayValue\":\"#App:15553:deduplicatedList!StringArray \"},{\"key\":\"urls\",\"value\":\"#App:15554:deduplicatedList!StringArray \",\"displayValue\":\"#App:15554:deduplicatedList!StringArray \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "2/28/18 10:52 PM"
+}
