@@ -1,0 +1,120 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Indicator Defanger",
+  "type" : "Pipe",
+  "panX" : 274.0,
+  "panY" : 7.0,
+  "logLevel" : "WARN",
+  "description" : "Defang indicators of compromise so they don't become links in documents, emails, slack messages, etc. Refer to https://ioc-fang.github.io/ for more details on fanging and defanging indicators of compromise.",
+  "jobList" : [ {
+    "id" : 15680,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Replace 'http' with 'hXXp'",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "hXXp"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "http"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#Trigger:1460:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 270.0,
+    "locationTop" : 290.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 15681,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Replace '.' with '[.]'",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "(\\S)\\.(\\S)"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "$1[.]$2"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:15680:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 490.0,
+    "locationTop" : 290.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 15680,
+    "sourceTriggerId" : 1460
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15680,
+    "targetJobId" : 15681
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 15681,
+    "targetTriggerId" : 1460
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1460,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 40.0,
+    "locationTop" : 170.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"text\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Text\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"text\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"defangedText\",\"value\":\"#App:15681:find_replace.output!String \",\"displayValue\":\"#App:15681:find_replace.output!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "3/1/18 6:31 PM"
+}
