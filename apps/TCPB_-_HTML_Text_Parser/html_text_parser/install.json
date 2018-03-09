@@ -1,0 +1,29 @@
+{
+  "allowOnDemand": true,
+  "displayName": "HTML Text Parser",
+  "languageVersion": "3.6.x",
+  "listDelimiter": "|",
+  "note": "Parse text from html.",
+  "params": [{
+    "label": "HTML Input",
+    "name": "html_input",
+    "playbookDataType": [
+      "String"
+    ],
+    "required": true,
+    "type": "String"
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "html_parser.text",
+      "type": "String"
+    }],
+    "retry": {},
+    "type": "Parser"
+  },
+  "programLanguage": "python",
+  "programMain": "html_text_parser",
+  "programVersion": "0.1.0",
+  "repeatingMinutes": [],
+  "runtimeLevel": "Playbook"
+}
