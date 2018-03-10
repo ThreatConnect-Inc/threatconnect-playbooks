@@ -10,7 +10,7 @@ This playbook App will take a JSON formatted String with embedded variables and 
 > Note: String value must be wrapped in double quotes.  All other values should **not** have double quotes.
 
 
-![Inputs](images/screen_shot-info.png)
+![Inputs](images/info.png)
 
 
 # Dependencies
@@ -19,12 +19,12 @@ This playbook App will take a JSON formatted String with embedded variables and 
 # Input Definitions
 * JSON Data - The JSON string to resolve embedded variables.
 
-![Inputs](images/screen_shot-inputs.png)
+![Inputs](images/inputs.png)
 
 # Output Definitions
 * json.data - The JSON String with optional embedded variables resolved.
 
-![Inputs](images/screen_shot-outputs.png)
+![Inputs](images/outputs.png)
 
 # Building
 

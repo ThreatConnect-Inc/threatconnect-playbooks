@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-""" JSON Pretty Playbook App """
-import codecs
+""" JSON Builder Playbook App """
 import json
 import traceback
 import sys
