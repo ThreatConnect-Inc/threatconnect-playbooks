@@ -1,0 +1,78 @@
+{
+  "allowOnDemand": true,
+  "displayName": "Array Splice",
+  "languageVersion": "3.6",
+  "listDelimiter": "|",
+  "note": "Take a Array and perform splice operations to return an Array with a subset of values. The output variable type depends on the input variable type (e.g., StringArray input has StringArray output; BinaryArray input has BinaryArray output.",
+  "params": [{
+    "label": "Array",
+    "name": "array",
+    "note": "The Array to be splice.",
+    "playbookDataType": [
+      "BinaryArray",
+      "KeyValueArray",
+      "StringArray",
+      "TCEntityArray"
+    ],
+    "required": true,
+    "sequence": 1,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Splice Start",
+    "name": "splice_start",
+    "note": "The start location as an integer for the splice.",
+    "playbookDataType": [
+      "String"
+    ],
+    "required": false,
+    "sequence": 2,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Splice End",
+    "name": "splice_end",
+    "note": "The end location as an integer for the splice.",
+    "playbookDataType": [
+      "String"
+    ],
+    "required": false,
+    "sequence": 3,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Splice Step",
+    "name": "splice_step",
+    "note": "The step value as an integer for the splice.",
+    "playbookDataType": [
+      "String"
+    ],
+    "required": false,
+    "sequence": 5,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "array.splice.count",
+      "type": "String"
+    }, {
+      "name": "array.splice.results",
+      "type": "BinaryArray"
+    }, {
+      "name": "array.splice.results",
+      "type": "KeyValueArray"
+    }, {
+      "name": "array.splice.results",
+      "type": "StringArray"
+    }, {
+      "name": "array.splice.results",
+      "type": "TCEntityArray"
+    }],
+    "type": "Utility"
+  },
+  "programLanguage": "PYTHON",
+  "programMain": "array_splice",
+  "programVersion": "1.0.0",
+  "runtimeLevel": "Playbook"
+}
