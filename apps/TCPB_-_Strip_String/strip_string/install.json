@@ -1,0 +1,29 @@
+{
+    "allowOnDemand": true,
+    "displayName": "strip_string",
+    "languageVersion": "3.6.x",
+    "listDelimiter": "|",
+    "note": "",
+    "params": [
+    {
+        "playbookDataType": ["String"],
+        "type": "String",
+        "label": "String",
+        "name": "string"
+    }],
+    "playbook":
+    {
+        "outputVariables": [
+        {
+            "type": "String",
+            "name": "strippedString"
+        }],
+        "retry": {},
+        "type": "Client"
+    },
+    "programLanguage": "python",
+    "programMain": "strip_string",
+    "programVersion": "0.1.0",
+    "repeatingMinutes": [],
+    "runtimeLevel": "Playbook"
+}
