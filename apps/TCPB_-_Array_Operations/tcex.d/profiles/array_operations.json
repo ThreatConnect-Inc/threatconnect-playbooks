@@ -1,0 +1,490 @@
+[
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "8197aa1b-ca21-4807-9448-10cb2b381bb5",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:0087:array.count!String,#App:0087:array.results!StringArray",
+      "array": "#App:0003:array1!StringArray",
+      "operation": "Sort"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Sort).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-sort",
+    "quiet": false,
+    "validations": [
+      {
+        "data": 4,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:0087:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:0087:array.count!String"
+      },
+      {
+        "data": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:0087:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:0087:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "c8bc70b8-a34b-4749-8714-5ec68b33a86d",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:7090:array.count!String,#App:7090:array.results!StringArray",
+      "array": "#App:0003:array1!StringArray",
+      "operation": "Reverse Sort"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Reverse Sort).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-reverse sort",
+    "quiet": false,
+    "validations": [
+      {
+        "data": 4,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7090:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7090:array.count!String"
+      },
+      {
+        "data": [
+          4,
+          3,
+          2,
+          1
+        ],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7090:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7090:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "bd77a553-5457-42d0-b362-f397f383ebc4",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:7653:array.count!String,#App:7653:array.results!StringArray",
+      "array": "#App:0003:array2!StringArray",
+      "operation": "Sort Lowercase"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Sort Lowercase).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-sort-lowercase",
+    "quiet": false,
+    "validations": [
+      {
+        "data": 3,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7653:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7653:array.count!String"
+      },
+      {
+        "data": [
+          "ONE",
+          "ThReE",
+          "two"
+        ],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7653:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7653:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "0c167620-80cf-4655-9172-b6fc67ed6acc",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:3576:array.count!String,#App:3576:array.results!StringArray",
+      "array": "#App:0003:array2!StringArray",
+      "operation": "Lowercase"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Lowercase).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-lowercase",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:3576:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3576:array.count!String"
+      },
+      {
+        "data": [
+          null,
+          []
+        ],
+        "data_type": "redis",
+        "operator": "ni",
+        "variable": "#App:3576:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3576:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "99f1f491-a7a2-4286-b167-18e53827474c",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:3735:array.count!String,#App:3735:array.results!StringArray",
+      "array": "#App:0003:array2!StringArray",
+      "operation": "Titlecase"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Titlecase).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-titlecase",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:3735:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3735:array.count!String"
+      },
+      {
+        "data": [
+          null,
+          []
+        ],
+        "data_type": "redis",
+        "operator": "ni",
+        "variable": "#App:3735:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3735:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "d6660c45-5b25-45e4-b00c-59b543ab181b",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:5059:array.count!String,#App:5059:array.results!StringArray",
+      "array": "#App:0003:array3!StringArray",
+      "operation": "Duplicates"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Duplicates).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-duplicates",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:5059:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:5059:array.count!String"
+      },
+      {
+        "data": [
+          null,
+          []
+        ],
+        "data_type": "redis",
+        "operator": "ni",
+        "variable": "#App:5059:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:5059:array.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "39be23f4-13b4-4379-8f24-e02b4661a9ed",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:3645:array.count!String,#App:3645:array.results!StringArray",
+      "array": "#App:0003:array3!StringArray",
+      "operation": "Unique"
+    },
+    "data_files": [
+      "tcex.d/data/array_operations.json"
+    ],
+    "description": "Pass test of Array Operations playbook (Unique).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-operations",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Operations.install.json",
+    "profile_name": "array-operations-unique",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:3645:array.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3645:array.count!String"
+      },
+      {
+        "data": [
+          null,
+          []
+        ],
+        "data_type": "redis",
+        "operator": "ni",
+        "variable": "#App:3645:array.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:3645:array.results!StringArray"
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "allowOnDemand": true,
+  "displayName": "Array Operations",
+  "languageVersion": "3.6",
+  "listDelimiter": "|",
+  "note": "Takes a StringArrays and perform operations to return a new StringArray.",
+  "params": [{
+    "label": "Array",
+    "name": "array",
+    "note": "The Array to perform operation.",
+    "playbookDataType": [
+      "StringArray"
+    ],
+    "required": true,
+    "sequence": 1,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Operation",
+    "name": "operation",
+    "note": "The operation to perform on the array.",
+    "required": true,
+    "sequence": 2,
+    "type": "Choice",
+    "validValues": [
+      "Sort",
+      "Sort Lowercase",
+      "Reverse Sort",
+      "Lowercase",
+      "Titlecase",
+      "Uppercase",
+      "Duplicates",
+      "Unique"
+    ]
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "array.count",
+      "type": "String"
+    }, {
+      "name": "array.results",
+      "type": "StringArray"
+    }],
+    "type": "Utility"
+  },
+  "programLanguage": "PYTHON",
+  "programMain": "array_operations",
+  "programVersion": "1.0.0",
+  "runtimeLevel": "Playbook"
+}
