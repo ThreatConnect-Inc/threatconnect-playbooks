@@ -1,0 +1,9 @@
+[{
+    "data": [1, 2, 3, 4, 5, 6, 7],
+    "variable": "#App:0003:array1!StringArray"
+  },
+  {
+    "data": ["one", "two", "three", "four", "five", "six"],
+    "variable": "#App:0003:array2!StringArray"
+  }
+]

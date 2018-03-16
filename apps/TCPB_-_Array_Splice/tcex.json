@@ -1,0 +1,17 @@
+{
+  "package": {
+    "bundle_name": "TCPB_-_Array_Tools",
+    "bundle": true,
+    "excludes": [
+      "images",
+      "requirements.txt",
+      "sample_playbook",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  },
+  "profiles": [],
+  "profile_include_dirs": [
+    "tcex.d/profiles"
+  ]
+}
