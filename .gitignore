@@ -1,0 +1,10 @@
+#-------------------------------------------------
+# IDE Exclusions
+#-------------------------------------------------
+.c9
+.idea
+.project
+.python-version
+.settings
+.vscode
+nbproject
