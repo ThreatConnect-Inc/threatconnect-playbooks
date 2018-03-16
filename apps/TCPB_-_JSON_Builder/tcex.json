@@ -3,6 +3,7 @@
     "app_name": "TCPB_-_JSON_Builder",
     "bundle": false,
     "excludes": [
+      "images",
       "requirements.txt",
       "tcex.d"
     ],
