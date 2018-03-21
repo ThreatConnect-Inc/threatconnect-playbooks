@@ -1,0 +1,322 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Get Shodan Enrichment",
+  "type" : "Pipe",
+  "panX" : 157.0,
+  "panY" : 330.0,
+  "logLevel" : "WARN",
+  "jobList" : [ {
+    "id" : 16214,
+    "appCatalogItem" : {
+      "programName" : "Http Client",
+      "displayName" : "HTTP Client",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Get Shodan Enrichment",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ignore_ssl_trust"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://api.shodan.io/shodan/host/#Trigger:1542:Indicator!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "action"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "parameters"
+      },
+      "value" : "[{\"key\":\"minify\",\"value\":\"#Trigger:1542:minify!String\"},{\"key\":\"key\",\"value\":\"#Trigger:1542:shodan_api_key!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "httpclient_proxy"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 590.0,
+    "locationTop" : -130.0,
+    "outputVariables" : "[{\"name\":\"http_client.response.output_content\",\"type\":\"String\"},{\"name\":\"http_client.response.content_type\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16215,
+    "appCatalogItem" : {
+      "programName" : "Json Path",
+      "displayName" : "Filter JSON Path",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "JSON Path $.hostnames",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_json"
+      },
+      "value" : "#App:16214:http_client.response.output_content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_path"
+      },
+      "value" : "$.hostnames"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "stripQuotes"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 310.0,
+    "locationTop" : 30.0,
+    "outputVariables" : "[{\"name\":\"json_path.output\",\"type\":\"String\"},{\"name\":\"json_path.output_array\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16217,
+    "appCatalogItem" : {
+      "programName" : "Json Path",
+      "displayName" : "Filter JSON Path",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "JSON Path $.os",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_path"
+      },
+      "value" : "$.os"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "stripQuotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_json"
+      },
+      "value" : "#App:16214:http_client.response.content_type!String"
+    } ],
+    "locationLeft" : 930.0,
+    "locationTop" : 30.0,
+    "outputVariables" : "[{\"name\":\"json_path.output\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16218,
+    "appCatalogItem" : {
+      "programName" : "Json Path",
+      "displayName" : "Filter JSON Path",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "JSON Path $.ports",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "stripQuotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_json"
+      },
+      "value" : "#App:16214:http_client.response.output_content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_path"
+      },
+      "value" : "$.ports"
+    } ],
+    "locationLeft" : 630.0,
+    "locationTop" : 30.0,
+    "outputVariables" : "[{\"name\":\"json_path.output\",\"type\":\"String\"},{\"name\":\"json_path.output_array\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16219,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge OS Information",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.os\",\"value\":\"#App:16220:os.failure!String #App:16221:os.success!String\"}]"
+    } ],
+    "locationLeft" : 1440.0,
+    "locationTop" : 70.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16220,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Set No OS Information Found",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"os.failure\",\"value\":\"OS Not Found\"}]"
+    } ],
+    "locationLeft" : 1160.0,
+    "locationTop" : 200.0,
+    "outputVariables" : "[{\"name\":\"os.failure\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16221,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Set OS Information Found",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"os.success\",\"value\":\"#App:16217:json_path.output!String\"}]"
+    } ],
+    "locationLeft" : 1160.0,
+    "locationTop" : -20.0,
+    "outputVariables" : "[{\"name\":\"os.success\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16222,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join Hostnames Array",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"hostnames\",\"value\":\"#App:16215:json_path.output_array!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : "#App:16215:json_path.output!String"
+    } ],
+    "locationLeft" : 310.0,
+    "locationTop" : 210.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 16223,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Join Open Ports Array",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : "#App:16218:json_path.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"openports\",\"value\":\"#App:16218:json_path.output_array!StringArray\"}]"
+    } ],
+    "locationLeft" : 630.0,
+    "locationTop" : 210.0,
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 16214,
+    "sourceTriggerId" : 1542
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16214,
+    "targetJobId" : 16215
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16214,
+    "targetJobId" : 16218
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16214,
+    "targetJobId" : 16217
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16217,
+    "targetJobId" : 16221
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16221,
+    "targetJobId" : 16219
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16220,
+    "targetJobId" : 16219
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16217,
+    "targetJobId" : 16220
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16215,
+    "targetJobId" : 16222
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 16218,
+    "targetJobId" : 16223
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 16219,
+    "targetTriggerId" : 1542
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 16222,
+    "targetTriggerId" : 1542
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 16223,
+    "targetTriggerId" : 1542
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1542,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 310.0,
+    "locationTop" : -130.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"Indicator\",\"type\":\"String\"},{\"name\":\"minify\",\"type\":\"String\"},{\"name\":\"shodan_api_key\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Indicator\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"Indicator\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"minify\",\"dataType\":\"Choice\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"minify\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"true\",\"false\"]},{\"label\":\"Shodan API Key\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"shodan_api_key\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"shodan.open_ports\",\"value\":\"#App:16218:json_path.output!String \",\"displayValue\":\"#App:16218:json_path.output!String \"},{\"key\":\"shodan.os_info\",\"value\":\"#App:16217:json_path.output!String \",\"displayValue\":\"#App:16217:json_path.output!String \"},{\"key\":\"shodan.hostnames\",\"value\":\"#App:16215:json_path.output!String \",\"displayValue\":\"#App:16215:json_path.output!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "3/12/18 10:41 PM"
+}
