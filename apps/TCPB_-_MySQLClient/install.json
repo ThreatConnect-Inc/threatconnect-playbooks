@@ -1,0 +1,64 @@
+{
+	"programVersion": "1.0.0",
+	"programLanguage": "JAVA",
+	"displayName": "MySQL Client",
+	"note": "Connects to and executes a sql command on a MySQL database",
+	"programMain": "com.threatconnect.app.mysql.MySQLClientMain",
+	"languageVersion": "8",
+	"listDelimiter": "|",
+	"runtimeLevel": "Playbook",
+	"allowRunAsUser": true,
+	"playbook": {
+		"type": "Utility",
+		"outputVariables": [
+			{
+				"name": "output",
+				"type": "String"
+			}
+		]
+	},
+	"params": [
+		{
+			"name": "host",
+			"label": "Host",
+			"sequence": 1,
+			"required": true,
+			"type": "String"
+		},
+		{
+			"name": "port",
+			"label": "Port",
+			"sequence": 2,
+			"required": true,
+			"type": "String"
+		},
+		{
+			"name": "database",
+			"label": "Database",
+			"sequence": 3,
+			"type": "String"
+		},
+		{
+			"name": "username",
+			"label": "Username",
+			"sequence": 4,
+			"required": true,
+			"type": "String"
+		},
+		{
+			"name": "password",
+			"label": "Password",
+			"sequence": 5,
+			"encrypt": true,
+			"required": true,
+			"type": "String"
+		},
+		{
+			"name": "command",
+			"label": "Command",
+			"sequence": 6,
+			"required": true,
+			"type": "String"
+		}
+	]
+}
