@@ -12,6 +12,14 @@ This playbook expects an array to be sent (as a string) in the body of an http P
 
 ![Setup](images/array_serializer_setup.png)
 
+To send data into this playbook, you must wrap the incoming data in square brackets ("[" and "]"). For example, let's say you have a string array. In order to send the data from this array into the array serializer, you would have to first pass the string array through the "Join Array" app to convert the array to a string. Next, in the "HTTP Client" app that calls the array serializer, the body should look something like:
+
+```
+[#joinedArray]
+```
+
+The joined array (which is a string), must be surrounded by square brackets.
+
 # Use Cases
 
 * Perform an action on each item in an array
