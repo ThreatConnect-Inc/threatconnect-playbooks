@@ -82,7 +82,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "variable_mapping"
       },
-      "value" : "[{\"key\":\"messagePrefix\",\"value\":\"[repeat until complete]:\"},{\"key\":\"thisPlaybookTrigger\",\"value\":\"https://sandbox.threatconnect.com/api/playbook/4a3de77c-6e20-48fb-a738-f487283b69b4\"}]"
+      "value" : "[{\"key\":\"messagePrefix\",\"value\":\"[repeat until complete]:\"},{\"key\":\"thisPlaybookTrigger\",\"value\":\"REPLACE ME!\"}]"
     } ],
     "locationLeft" : 380.0,
     "locationTop" : 110.0,
