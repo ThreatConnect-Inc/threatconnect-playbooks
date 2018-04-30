@@ -179,7 +179,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "params"
       },
-      "value" : "[{\"key\":\"link\",\"value\":\"#App:17371:link!String\"},{\"key\":\"max\",\"value\":\"#App:17371:maxCount!String\"},{\"key\":\"count\",\"value\":\"#App:17376:newCount!String\"},{\"key\":\"finishedTrigger\",\"value\":\"#App:17371:finishedTrigger!String\"}]"
+      "value" : "[{\"key\":\"link\",\"value\":\"#App:17371:link!String\"},{\"key\":\"max\",\"value\":\"#App:17371:maxCount!String\"},{\"key\":\"count\",\"value\":\"#App:17376:newCount!String\"}]"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "advanced"
