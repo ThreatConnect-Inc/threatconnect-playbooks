@@ -2,12 +2,12 @@
   "definitionVersion" : "1.0.0",
   "name" : "Repeat Until Success",
   "type" : "Standard",
-  "panX" : -68.0,
-  "panY" : 57.0,
+  "panX" : -243.0,
+  "panY" : 177.0,
   "logLevel" : "WARN",
   "description" : "",
   "jobList" : [ {
-    "id" : 17350,
+    "id" : 17369,
     "appCatalogItem" : {
       "programName" : "TCPB - HTTP Client v2.0",
       "displayName" : "HTTP Client",
@@ -16,34 +16,9 @@
     "name" : "http - attempt action",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "proxies_enabled"
+        "paramName" : "url"
       },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "headers"
-      },
-      "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "verify_ssl"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "body"
-      },
-      "value" : "#Trigger:1715:trg.http.body!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "advanced"
-      },
-      "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "multipart"
-      },
-      "value" : "[]"
+      "value" : "#App:17371:link!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "fail_on_error"
@@ -61,9 +36,34 @@
       "value" : "POST"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "url"
+        "paramName" : "headers"
       },
-      "value" : "#App:17352:link!String"
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : "#Trigger:1717:trg.http.body!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
     } ],
     "locationLeft" : 380.0,
     "locationTop" : 250.0,
@@ -71,7 +71,7 @@
     "playbookRetryDelayMinutes" : 1,
     "playbookRetryMaxRetries" : 5
   }, {
-    "id" : 17351,
+    "id" : 17370,
     "appCatalogItem" : {
       "programName" : "TCPB - SetVariable v1.0",
       "displayName" : "Set Variable",
@@ -89,7 +89,7 @@
     "outputVariables" : "[{\"name\":\"messagePrefix\",\"type\":\"String\"},{\"name\":\"thisPlaybookTrigger\",\"type\":\"String\"}]",
     "playbookRetryEnabled" : false
   }, {
-    "id" : 17352,
+    "id" : 17371,
     "appCatalogItem" : {
       "programName" : "TCPB - ValueLookup v1.0",
       "displayName" : "Value Lookup",
@@ -105,13 +105,13 @@
       "appCatalogItemParameter" : {
         "paramName" : "input_array"
       },
-      "value" : "#Trigger:1715:trg.http.queryparam!KeyValueArray"
+      "value" : "#Trigger:1717:trg.http.queryparam!KeyValueArray"
     } ],
     "locationLeft" : 610.0,
     "locationTop" : 110.0,
     "playbookRetryEnabled" : false
   }, {
-    "id" : 17353,
+    "id" : 17372,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -120,9 +120,9 @@
     "name" : "if maxed out",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "operator"
+        "paramName" : "as_numeric"
       },
-      "value" : "less than"
+      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "match_case"
@@ -130,25 +130,25 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "less than"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "operand_2"
       },
-      "value" : "#App:17352:maxCount!String"
+      "value" : "#App:17371:maxCount!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "operand_1"
       },
-      "value" : "#App:17357:newCount!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "true"
+      "value" : "#App:17376:newCount!String"
     } ],
     "locationLeft" : 1280.0,
     "locationTop" : 330.0,
     "playbookRetryEnabled" : false
   }, {
-    "id" : 17354,
+    "id" : 17373,
     "appCatalogItem" : {
       "programName" : "TCPB - HTTP Client v2.0",
       "displayName" : "HTTP Client",
@@ -157,29 +157,29 @@
     "name" : "http - call this playbook again",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "http_method"
       },
       "value" : "POST"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "headers"
+        "paramName" : "fail_on_error"
       },
-      "value" : "[]"
+      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "url"
+        "paramName" : "body"
       },
-      "value" : "#App:17351:thisPlaybookTrigger!String"
+      "value" : "#Trigger:1717:trg.http.body!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "params"
       },
-      "value" : "[{\"key\":\"link\",\"value\":\"#App:17352:link!String\"},{\"key\":\"max\",\"value\":\"#App:17352:maxCount!String\"},{\"key\":\"count\",\"value\":\"#App:17357:newCount!String\"},{\"key\":\"finishedTrigger\",\"value\":\"#App:17352:finishedTrigger!String\"}]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "verify_ssl"
-      },
-      "value" : "true"
+      "value" : "[{\"key\":\"link\",\"value\":\"#App:17371:link!String\"},{\"key\":\"max\",\"value\":\"#App:17371:maxCount!String\"},{\"key\":\"count\",\"value\":\"#App:17376:newCount!String\"},{\"key\":\"finishedTrigger\",\"value\":\"#App:17371:finishedTrigger!String\"}]"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "advanced"
@@ -187,9 +187,14 @@
       "value" : "[]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "proxies_enabled"
+        "paramName" : "verify_ssl"
       },
-      "value" : "false"
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:17370:thisPlaybookTrigger!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "multipart"
@@ -197,22 +202,17 @@
       "value" : "[]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "body"
+        "paramName" : "headers"
       },
-      "value" : "#Trigger:1715:trg.http.body!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "true"
+      "value" : "[]"
     } ],
-    "locationLeft" : 1440.0,
-    "locationTop" : 310.0,
+    "locationLeft" : 1660.0,
+    "locationTop" : 300.0,
     "playbookRetryEnabled" : false,
     "playbookRetryDelayMinutes" : 1,
     "playbookRetryMaxRetries" : 5
   }, {
-    "id" : 17355,
+    "id" : 17374,
     "appCatalogItem" : {
       "programName" : "TCPB - Slack Messaging v1.0",
       "displayName" : "Send Slack Message",
@@ -233,13 +233,13 @@
       "appCatalogItemParameter" : {
         "paramName" : "message"
       },
-      "value" : "#App:17351:messagePrefix!String Exceeded maximum iterations (#App:17352:maxCount!String) running the playbook at #App:17352:link!String ."
+      "value" : "#App:17370:messagePrefix!String Exceeded maximum iterations (#App:17371:maxCount!String) running the playbook at #App:17371:link!String ."
     } ],
     "locationLeft" : 1440.0,
     "locationTop" : 400.0,
     "playbookRetryEnabled" : false
   }, {
-    "id" : 17356,
+    "id" : 17375,
     "appCatalogItem" : {
       "programName" : "TCPB - HTTP Client v2.0",
       "displayName" : "HTTP Client",
@@ -248,29 +248,14 @@
     "name" : "http - increment count",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "multipart"
       },
       "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "verify_ssl"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "http_method"
-      },
-      "value" : "GET"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "body"
-      },
-      "value" : ""
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "advanced"
@@ -278,14 +263,14 @@
       "value" : "[]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "url"
+        "paramName" : "fail_on_error"
       },
-      "value" : "http://api.mathjs.org/v4/?expr=#App:17358:encode_url.output!String"
+      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "proxies_enabled"
+        "paramName" : "params"
       },
-      "value" : "false"
+      "value" : "[]"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "headers"
@@ -293,9 +278,24 @@
       "value" : "[]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "params"
+        "paramName" : "url"
       },
-      "value" : "[]"
+      "value" : "http://api.mathjs.org/v4/?expr=#App:17377:encode_url.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
     } ],
     "locationLeft" : 820.0,
     "locationTop" : 350.0,
@@ -303,7 +303,7 @@
     "playbookRetryDelayMinutes" : 1,
     "playbookRetryMaxRetries" : 5
   }, {
-    "id" : 17357,
+    "id" : 17376,
     "appCatalogItem" : {
       "programName" : "TCPB - SetVariable v1.0",
       "displayName" : "Set Variable",
@@ -314,14 +314,14 @@
       "appCatalogItemParameter" : {
         "paramName" : "variable_mapping"
       },
-      "value" : "[{\"key\":\"newCount\",\"value\":\"#App:17356:http.content!String\"}]"
+      "value" : "[{\"key\":\"newCount\",\"value\":\"#App:17375:http.content!String\"}]"
     } ],
     "locationLeft" : 1040.0,
     "locationTop" : 350.0,
     "outputVariables" : "[{\"name\":\"newCount\",\"type\":\"String\"}]",
     "playbookRetryEnabled" : false
   }, {
-    "id" : 17358,
+    "id" : 17377,
     "appCatalogItem" : {
       "programName" : "Encode URL",
       "displayName" : "Encode URL",
@@ -332,61 +332,83 @@
       "appCatalogItemParameter" : {
         "paramName" : "input"
       },
-      "value" : "#App:17352:count!String+1"
+      "value" : "#App:17371:count!String+1"
     } ],
     "locationLeft" : 610.0,
     "locationTop" : 350.0,
     "outputVariables" : "[{\"name\":\"encode_url.output\",\"type\":\"String\"}]",
     "playbookRetryEnabled" : false
+  }, {
+    "id" : 17378,
+    "appCatalogItem" : {
+      "programName" : "Delay",
+      "displayName" : "Delay",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Delay 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "seconds"
+      },
+      "value" : "20"
+    } ],
+    "locationLeft" : 1440.0,
+    "locationTop" : 300.0,
+    "playbookRetryEnabled" : false
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 17351,
-    "sourceTriggerId" : 1715
+    "targetJobId" : 17370,
+    "sourceTriggerId" : 1717
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17351,
-    "targetJobId" : 17352
+    "sourceJobId" : 17370,
+    "targetJobId" : 17371
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17352,
-    "targetJobId" : 17350
+    "sourceJobId" : 17371,
+    "targetJobId" : 17369
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17353,
-    "targetJobId" : 17355
+    "sourceJobId" : 17372,
+    "targetJobId" : 17374
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17353,
-    "targetJobId" : 17354
+    "sourceJobId" : 17375,
+    "targetJobId" : 17376
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17356,
-    "targetJobId" : 17357
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 17357,
-    "targetJobId" : 17353
+    "sourceJobId" : 17376,
+    "targetJobId" : 17372
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17350,
-    "targetJobId" : 17358
+    "sourceJobId" : 17369,
+    "targetJobId" : 17377
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 17358,
-    "targetJobId" : 17356
+    "sourceJobId" : 17377,
+    "targetJobId" : 17375
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 17372,
+    "targetJobId" : 17378
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 17378,
+    "targetJobId" : 17373
   } ],
   "playbookTriggerList" : [ {
-    "id" : 1715,
+    "id" : 1717,
     "name" : "HttpLink Trigger 1",
     "type" : "HttpLink",
     "eventType" : "External",
@@ -400,5 +422,5 @@
     "outputVariables" : "[{\"name\":\"trg.http.queryparam\",\"type\":\"KeyValueArray\"},{\"name\":\"trg.http.body\",\"type\":\"String\"}]"
   } ],
   "exportablePipes" : [ ],
-  "dateExported" : "4/30/18 12:26 PM"
+  "dateExported" : "4/30/18 12:40 PM"
 }
