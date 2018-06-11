@@ -1,0 +1,238 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "allowOnDemand": {
+      "type": "boolean"
+    },
+    "allowRunAsUser": {
+      "type": "boolean"
+    },
+    "apiUserTokenParam": {
+      "type": "boolean"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array"
+    },
+    "feeds": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "attributesFile": {
+            "type": "string"
+          },
+          "enableBulkJson": {
+            "type": "boolean"
+          },
+          "documentStorageLimitMb": {
+            "type": "integer"
+          },
+          "indicatorLimit": {
+            "type": "integer"
+          },
+          "jobFile": {
+            "type": "string"
+          },
+          "sourceCategory": {
+            "type": "string"
+          },
+          "sourceDescription": {
+            "type": "string"
+          },
+          "sourceName": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "languageVersion": {
+      "type": "string"
+    },
+    "listDelimiter": {
+      "type": "string"
+    },
+    "minServerVersion": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "params": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "allowMultiple": {
+            "type": "boolean"
+          },
+          "default": {
+            "type": [
+              "boolean",
+              "integer",
+              "string"
+            ]
+          },
+          "encrypt": {
+            "type": "boolean"
+          },
+          "exposePlaybookKeyAs": {
+            "items": {
+              "enum": [
+                "String",
+                "StringArray"
+              ]
+            },
+            "type": "string"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "playbookDataType": {
+            "items": {
+              "enum": [
+                "Any",
+                "Binary",
+                "BinaryArray",
+                "KeyValue",
+                "KeyValueArray",
+                "String",
+                "StringArray",
+                "TCEntity",
+                "TCEntityArray"
+              ]
+            },
+            "type": "array"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "sequence": {
+            "type": "integer"
+          },
+          "type": {
+            "enum": [
+              "Boolean",
+              "Choice",
+              "KeyValueList",
+              "MultiChoice",
+              "String",
+              "StringMixed"
+            ],
+            "type": "string"
+          },
+          "validValues": {
+            "type": "array"
+          },
+          "viewRows": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "label",
+          "name",
+          "type"
+        ],
+        "type": "object"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "playbook": {
+      "properties": {
+        "outputVariables": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "Binary",
+                  "BinaryArray",
+                  "KeyValue",
+                  "KeyValueArray",
+                  "String",
+                  "StringArray",
+                  "TCEntity",
+                  "TCEntityArray"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ],
+            "type": "object"
+          },
+          "type": "array",
+          "uniqueItems": false
+        },
+        "retry": {
+          "additionalProperties": false,
+          "properties": {
+            "allowed": {
+              "type": "boolean"
+            },
+            "defaultDelayMinutes": {
+              "type": "integer"
+            },
+            "defaultMaxRetries": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "programIcon": {
+      "type": "string"
+    },
+    "programLanguage": {
+      "type": "string"
+    },
+    "programMain": {
+      "type": "string"
+    },
+    "programVersion": {
+      "type": "string"
+    },
+    "publishOutFiles": {
+      "type": "array"
+    },
+    "repeatingMinutes": {
+      "type": "array"
+    },
+    "runtimeContext": {
+      "type": "array"
+    },
+    "runtimeLevel": {
+      "type": [
+        "array",
+        "string"
+      ]
+    }
+  },
+  "required": [
+    "allowOnDemand",
+    "displayName",
+    "params",
+    "programLanguage",
+    "programMain",
+    "programVersion",
+    "runtimeLevel"
+  ],
+  "type": "object"
+}
