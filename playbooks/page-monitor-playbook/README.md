@@ -6,4 +6,5 @@ Periodically capture the content of a website and send an alert if the content c
 
 # Dependencies
 
-n/a
+- The "Page Monitor.pbx" playbook will work in any ThreatConnect instance where the version is >= 5.6
+- The "Page Monitor < 5.6.pbx" playbook will work in any ThreatConnect instance where the version is < 5.6
