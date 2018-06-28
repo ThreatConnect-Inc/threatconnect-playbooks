@@ -1,0 +1,46 @@
+{
+    "allowOnDemand": true,
+    "displayName": "Yara Validator",
+    "languageVersion": "3.6.x",
+    "listDelimiter": "|",
+    "note": "Validate a yara rule.",
+    "params": [
+    {
+        "playbookDataType": ["String"],
+        "required": true,
+        "type": "String",
+        "label": "Yara rule",
+        "name": "yara_rule"
+    }],
+    "playbook":
+    {
+        "outputVariables": [
+        {
+            "type": "String",
+            "name": "validationResult"
+        },
+        {
+            "type": "String",
+            "name": "validationStatus"
+        },
+        {
+            "type": "String",
+            "name": "errorData"
+        },
+        {
+            "type": "String",
+            "name": "repairedSource"
+        },
+        {
+            "type": "String",
+            "name": "source"
+        }],
+        "retry": {},
+        "type": "Client"
+    },
+    "programLanguage": "python",
+    "programMain": "yara_validator",
+    "programVersion": "0.1.0",
+    "repeatingMinutes": [],
+    "runtimeLevel": "Playbook"
+}

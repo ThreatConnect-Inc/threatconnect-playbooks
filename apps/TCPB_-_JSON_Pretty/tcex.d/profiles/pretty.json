@@ -1,0 +1,53 @@
+[
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "a6f94a1c-2427-446c-b334-1f633145b533",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:2883:json.pretty!String",
+      "json_data": "{\"Confidence\": 5, \"Description\": \"Test Description\", \"ExternalId\": 4113474, \"IndicatorExpirationDateTime\": \"2018-12-21T10:53:18.2671462Z\", \"Severity\": 3.0, \"TLPLevel\": 2, \"Indicator-Threat-Type\": 0}",
+      "indent": "2",
+      "sort_keys": false
+    },
+    "description": "Pass test of JSON Pretty Playbook App.",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "install.json",
+    "profile_name": "json-pretty",
+    "quiet": false,
+    "validations": [
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "ne",
+        "variable": "#App:2883:json.pretty!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:2883:json.pretty!String"
+      }
+    ]
+  }
+]

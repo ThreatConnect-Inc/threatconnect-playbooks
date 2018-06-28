@@ -1,0 +1,17 @@
+{
+  "package": {
+    "app_name": "TCPB_-_JSON_Pretty",
+    "app_version": "v1.0",
+    "bundle": false,
+    "excludes": [
+      "images",
+      "requirements.txt",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  },
+  "profiles": [],
+  "profile_include_dirs": [
+    "tcex.d/profiles"
+  ]
+}

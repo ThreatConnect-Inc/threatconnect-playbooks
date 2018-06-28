@@ -1,0 +1,419 @@
+[{
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "f16a60b3-3693-4cc3-a714-b5d80065d101",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:2000:array.set.boolean!String,#App:2000:array.set.count!String,#App:2000:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Is Subset"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Is Subset).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-is-subset",
+    "quiet": false,
+    "validations": [{
+        "data": "false",
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:2000:array.set.boolean!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:2000:array.set.boolean!String"
+      },
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:2000:array.set.count!String"
+      },
+      {
+        "data": [
+          null, []
+        ],
+        "data_type": "redis",
+        "operator": "in",
+        "variable": "#App:2000:array.set.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "d0f57402-9f37-4c4d-90dd-941228ae5ef6",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:2148:array.set.boolean!String,#App:2148:array.set.count!String,#App:2148:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Is Superset"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Is Superset).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-is-superset",
+    "quiet": false,
+    "validations": [{
+        "data": "false",
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:2148:array.set.boolean!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:2148:array.set.boolean!String"
+      },
+      {
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:2148:array.set.count!String"
+      },
+      {
+        "data": [
+          null, []
+        ],
+        "data_type": "redis",
+        "operator": "in",
+        "variable": "#App:2148:array.set.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "25cef512-ddd7-4ed8-aea0-571efdc909e3",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:7943:array.set.boolean!String,#App:7943:array.set.count!String,#App:7943:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Union"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Union).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-union",
+    "quiet": false,
+    "validations": [{
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7943:array.set.boolean!String"
+      },
+      {
+        "data": 5,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7943:array.set.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7943:array.set.count!String"
+      },
+      {
+        "data": [1, 2, 3, 4, 5],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:7943:array.set.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:7943:array.set.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "1fa359d9-0a44-4bf1-bf7f-eaef956408f1",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:5597:array.set.boolean!String,#App:5597:array.set.count!String,#App:5597:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Intersection"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Intersection).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-intersection",
+    "quiet": false,
+    "validations": [{
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:5597:array.set.boolean!String"
+      },
+      {
+        "data": 1,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:5597:array.set.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:5597:array.set.count!String"
+      },
+      {
+        "data": [3],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:5597:array.set.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:5597:array.set.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "aa559ad3-e5ad-4bd8-8a7e-03b2bbb916bb",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:9944:array.set.boolean!String,#App:9944:array.set.count!String,#App:9944:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Difference"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Difference).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-difference",
+    "quiet": false,
+    "validations": [{
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:9944:array.set.boolean!String"
+      },
+      {
+        "data": 2,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:9944:array.set.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:9944:array.set.count!String"
+      },
+      {
+        "data": [1, 2],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:9944:array.set.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:9944:array.set.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "d0da8d3b-2e23-4c5b-b1d0-2e0b637ccdfd",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:1424:array.set.boolean!String,#App:1424:array.set.count!String,#App:1424:array.set.results!StringArray",
+      "set_a": "#App:0002:set_a!StringArray",
+      "set_b": "#App:0002:set_b!StringArray",
+      "set_operation": "Symmetric Difference"
+    },
+    "data_files": [
+      "tcex.d/data/array_set_operations.json"
+    ],
+    "description": "Pass test of Array Set Operations playbook (Symmetric Difference).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Set_Operations.install.json",
+    "profile_name": "array_set_operations-symmetric-difference",
+    "quiet": false,
+    "validations": [{
+        "data": null,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:1424:array.set.boolean!String"
+      },
+      {
+        "data": 4,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:1424:array.set.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:1424:array.set.count!String"
+      },
+      {
+        "data": [1, 2, 4, 5],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:1424:array.set.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:1424:array.set.results!StringArray"
+      }
+    ]
+  }
+]
