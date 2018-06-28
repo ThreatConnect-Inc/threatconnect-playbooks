@@ -1,0 +1,51 @@
+{
+  "programVersion": "1.0.0",
+  "programLanguage": "JAVA",
+  "displayName": "Generate UUID",
+  "note": "This app generates a UUID.",
+  "programMain": "com.threatconnect.app.uuid.UUIDGeneratorAppMain",
+  "languageVersion": "8",
+  "listDelimiter": "|",
+  "runtimeLevel": "Playbook",
+  "allowRunAsUser" : true,
+  "minServerVersion"  : "5.1.0",
+  "playbook": {
+    "type": "Utility",
+    "outputVariables": [
+      {
+        "name": "uuid",
+        "type": "String"
+      }
+    ]
+  },
+  "params": [
+    {
+      "name": "uuid_version",
+      "label": "UUID version to generate.",
+      "note": "See https://en.wikipedia.org/wiki/Universally_unique_identifier#Versions for version details.",
+      "encrypt": false,
+      "type": "Choice",
+      "required": true,
+      "validValues": ["1", "3", "4", "5"],
+      "defaultValue:": "4"
+    },
+    {
+      "name": "uuid_namespace",
+      "label": "UUID namespace (only for versions 3 & 5).",
+      "required": false,
+      "validValues": ["${TEXT}"],
+      "playbookDataType": [
+        "String"
+      ]
+    },
+    {
+      "name": "uuid_name",
+      "label": "UUID name (only for versions 3 & 5).",
+      "required": false,
+      "validValues": ["${TEXT}"],
+      "playbookDataType": [
+        "String"
+      ]
+    }
+  ]
+}

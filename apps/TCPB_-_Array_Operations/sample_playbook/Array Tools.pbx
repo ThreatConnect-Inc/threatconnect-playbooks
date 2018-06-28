@@ -1,0 +1,928 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Array Tools",
+  "panX" : -243.28535669586995,
+  "panY" : -42.031914893617,
+  "logLevel" : "WARN",
+  "description" : "Sample HTTP Body:\r\n{\r\n  \"set_a\": [0,1,2,3,4,5],\r\n  \"set_b\": [5,6,7,8,9],\r\n  \"sort_array\": [\"bannana\", \"aPPle\", \"pear\", \"Tomato\"],\r\n  \"duplicates_array\": [1, 2, 3, 1, 1, 4, 5, 2]\r\n}",
+  "jobList" : [ {
+    "id" : 671,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.1"
+    },
+    "name" : "JMESPath 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#Trigger:118:trg.http.body!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"set_a\",\"value\":\"@.set_a\"},{\"key\":\"set_b\",\"value\":\"@.set_b\"},{\"key\":\"sort_array\",\"value\":\"@.sort_array\"},{\"key\":\"duplicates_array\",\"value\":\"@.duplicates_array\"}]"
+    } ],
+    "locationLeft" : 770.0,
+    "locationTop" : 90.0,
+    "outputVariables" : "[{\"name\":\"set_a\",\"type\":\"StringArray\"},{\"name\":\"duplicates_array\",\"type\":\"StringArray\"},{\"name\":\"sort_array\",\"type\":\"StringArray\"},{\"name\":\"set_b\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 675,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Set Operations v1.0",
+      "displayName" : "Array Set Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Set Operations (union)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:671:set_a!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:671:set_b!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_operation"
+      },
+      "value" : "Union"
+    } ],
+    "locationLeft" : 2060.0,
+    "locationTop" : -60.0,
+    "outputVariables" : "[{\"name\":\"array.set.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 676,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (sort)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Sort"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : -170.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 677,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Splice v1.0",
+      "displayName" : "Array Splice",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Splice (1:5:2)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_step"
+      },
+      "value" : "2"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:set_a!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_start"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_end"
+      },
+      "value" : "5"
+    } ],
+    "locationLeft" : 1660.0,
+    "locationTop" : -60.0,
+    "outputVariables" : "[{\"name\":\"array.splice.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 678,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SendSlackMessageAttachment v1.0",
+      "displayName" : "Send Slack Message Attachment",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Send Slack Message Attachment 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "author_link"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "send"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "title_link"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slack_api_token"
+      },
+      "value" : "${USER:KEYCHAIN:MySlackToken}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "author_icon"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "pretext_markdown"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "footer"
+      },
+      "value" : "ThreatConnect Playbooks"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "channel"
+      },
+      "value" : "${USER:TEXT:MySlackUser}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "text_markdown"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "pretext"
+      },
+      "value" : "[bcs] Array Tools"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "title"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "thumb_url"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "image_url"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "text"
+      },
+      "value" : "```#App:690:json.pretty!String```"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "author_name"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fields"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "color"
+      },
+      "value" : "#F26724"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fields_markdown"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "footer_icon"
+      },
+      "value" : "https://threatconnect.com/wp-content/uploads/tc-favicon.png"
+    } ],
+    "locationLeft" : 2560.0,
+    "locationTop" : 550.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 679,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JSON Builder v1.0",
+      "displayName" : "JSON Builder",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "JSON Builder 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "{\n  \"Array Operations\": {\n    \"sort\": #App:676:array.results!StringArray,\n    \"sort lowercase\": #App:680:array.results!StringArray,\n    \"reverse sort\": #App:681:array.results!StringArray,\n    \"lowercase\": #App:682:array.results!StringArray,\n    \"titlecase\": #App:683:array.results!StringArray,\n    \"uppercase\": #App:684:array.results!StringArray,\n    \"duplicates\": #App:685:array.results!StringArray,\n    \"unique\": #App:686:array.results!StringArray\n  },\n\"Array Splice\": {\n\"1:5:2\": #App:677:array.splice.results!StringArray,\n\"::\": #App:687:array.splice.results!StringArray,\n\":4:1\": #App:688:array.splice.results!StringArray,\n\"3::\": #App:689:array.splice.results!StringArray\n},\n\"Array Set Operator\": {\n\"union\": #App:675:array.set.results!StringArray,\n\"intersection\": #App:691:array.set.results!StringArray,\n\"difference\": #App:692:array.set.results!StringArray,\n\"symmetric differecne\": #App:693:array.set.results!StringArray\n}\n}"
+    } ],
+    "locationLeft" : 2320.0,
+    "locationTop" : 90.0,
+    "outputVariables" : "[{\"name\":\"json.data\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 680,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (sort lowercase)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Sort Lowercase"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : -60.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 681,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (reverse sort)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Reverse Sort"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 40.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 682,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (lowercase)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Lowercase"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 140.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 683,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (titlecase)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Titlecase"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 250.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 684,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (uppercase)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Uppercase"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 350.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 685,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (duplicates)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Duplicates"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:duplicates_array!StringArray"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 550.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 686,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations (unique)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:duplicates_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operation"
+      },
+      "value" : "Unique"
+    } ],
+    "locationLeft" : 1240.0,
+    "locationTop" : 450.0,
+    "outputVariables" : "[{\"name\":\"array.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 687,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Splice v1.0",
+      "displayName" : "Array Splice",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Splice (::)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_end"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:set_b!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_step"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_start"
+      }
+    } ],
+    "locationLeft" : 1660.0,
+    "locationTop" : 140.0,
+    "outputVariables" : "[{\"name\":\"array.splice.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 688,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Splice v1.0",
+      "displayName" : "Array Splice",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Splice (:4:1)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_end"
+      },
+      "value" : "4"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_start"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:duplicates_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_step"
+      },
+      "value" : "1"
+    } ],
+    "locationLeft" : 1660.0,
+    "locationTop" : 40.0,
+    "outputVariables" : "[{\"name\":\"array.splice.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 689,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Splice v1.0",
+      "displayName" : "Array Splice",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Splice (3::)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array"
+      },
+      "value" : "#App:671:sort_array!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_start"
+      },
+      "value" : "3"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_step"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "splice_end"
+      }
+    } ],
+    "locationLeft" : 1660.0,
+    "locationTop" : 240.0,
+    "outputVariables" : "[{\"name\":\"array.splice.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 690,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JSON Pretty v1.0",
+      "displayName" : "JSON Pretty",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "JSON Pretty 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:679:json.data!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sort_keys"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indent"
+      },
+      "value" : "2"
+    } ],
+    "locationLeft" : 2320.0,
+    "locationTop" : 220.0,
+    "outputVariables" : "[{\"name\":\"json.pretty\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 691,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Set Operations v1.0",
+      "displayName" : "Array Set Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Set Operations (intersection)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_operation"
+      },
+      "value" : "Intersection"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:671:set_a!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:671:set_b!StringArray"
+    } ],
+    "locationLeft" : 2060.0,
+    "locationTop" : 40.0,
+    "outputVariables" : "[{\"name\":\"array.set.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 692,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Set Operations v1.0",
+      "displayName" : "Array Set Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Set Operations (difference)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_operation"
+      },
+      "value" : "Difference"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:671:set_b!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:671:set_a!StringArray"
+    } ],
+    "locationLeft" : 2060.0,
+    "locationTop" : 140.0,
+    "outputVariables" : "[{\"name\":\"array.set.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 693,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Set Operations v1.0",
+      "displayName" : "Array Set Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Set Operations (symmetric difference)",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:671:set_a!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:671:set_b!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_operation"
+      },
+      "value" : "Symmetric Difference"
+    } ],
+    "locationLeft" : 2060.0,
+    "locationTop" : 240.0,
+    "outputVariables" : "[{\"name\":\"array.set.results\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 695,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Operations",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "1"
+    } ],
+    "locationLeft" : 1060.0,
+    "locationTop" : 80.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 696,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Splice",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "1"
+    } ],
+    "locationLeft" : 1500.0,
+    "locationTop" : 80.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 697,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Array Set Operator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "1"
+    } ],
+    "locationLeft" : 1920.0,
+    "locationTop" : 80.0,
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 671,
+    "sourceTriggerId" : 118
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 679,
+    "targetJobId" : 690
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 690,
+    "targetJobId" : 678
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 675,
+    "targetJobId" : 679
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 691,
+    "targetJobId" : 679
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 692,
+    "targetJobId" : 679
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 693,
+    "targetJobId" : 679
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 671,
+    "targetJobId" : 695
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 676
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 680
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 681
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 682
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 683
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 684
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 685
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 695,
+    "targetJobId" : 686
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 696,
+    "targetJobId" : 677
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 696,
+    "targetJobId" : 687
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 696,
+    "targetJobId" : 688
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 696,
+    "targetJobId" : 689
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 697,
+    "targetJobId" : 675
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 697,
+    "targetJobId" : 691
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 697,
+    "targetJobId" : 692
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 697,
+    "targetJobId" : 693
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 676,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 680,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 681,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 682,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 683,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 684,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 686,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 685,
+    "targetJobId" : 696
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 677,
+    "targetJobId" : 697
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 688,
+    "targetJobId" : 697
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 687,
+    "targetJobId" : 697
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 689,
+    "targetJobId" : 697
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 678,
+    "targetTriggerId" : 118
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 118,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 430.0,
+    "locationTop" : 440.0,
+    "httpBasicAuthEnable" : false,
+    "httpBasicAuthUsername" : "QKXDQKIYMQTSRWWNRNU8",
+    "httpBasicAuthPassword" : "CJFKDMBTYUVDZDRZHTCL",
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:690:json.pretty!String",
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"trg.http.body\",\"type\":\"String\"}]"
+  } ],
+  "dateExported" : "3/1/18 10:34 PM"
+}

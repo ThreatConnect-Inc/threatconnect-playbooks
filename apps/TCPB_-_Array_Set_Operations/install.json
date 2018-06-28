@@ -1,0 +1,62 @@
+{
+  "allowOnDemand": true,
+  "displayName": "Array Set Operations",
+  "languageVersion": "3.6",
+  "listDelimiter": "|",
+  "note": "Takes two StringArrays and perform Set operations to return a single Boolean or StringArray.",
+  "params": [{
+    "label": "Set A",
+    "name": "set_a",
+    "note": "The StringArray to be used as Set A.",
+    "playbookDataType": [
+      "StringArray"
+    ],
+    "required": true,
+    "sequence": 1,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Set B",
+    "name": "set_b",
+    "note": "The StringArray to be used as Set B.",
+    "playbookDataType": [
+      "StringArray"
+    ],
+    "required": true,
+    "sequence": 2,
+    "type": "String",
+    "validValues": ["${TEXT}"]
+  }, {
+    "label": "Set Operation",
+    "name": "set_operation",
+    "note": "The operation to perform on the two sets. The \"Is Subset\" and \"Is SuperSet\" operations will return a boolean value in the **set.boolean** output variable.  All other operations will return a StringArray in the **set.results** output variable.",
+    "required": true,
+    "sequence": 3,
+    "type": "Choice",
+    "validValues": [
+      "Is Subset",
+      "Is Superset",
+      "Union",
+      "Intersection",
+      "Difference",
+      "Symmetric Difference"
+    ]
+  }],
+  "playbook": {
+    "outputVariables": [{
+      "name": "array.set.boolean",
+      "type": "String"
+    }, {
+      "name": "array.set.count",
+      "type": "String"
+    }, {
+      "name": "array.set.results",
+      "type": "StringArray"
+    }],
+    "type": "Utility"
+  },
+  "programLanguage": "PYTHON",
+  "programMain": "array_set_operations",
+  "programVersion": "1.0.0",
+  "runtimeLevel": "Playbook"
+}

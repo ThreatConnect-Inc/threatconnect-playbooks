@@ -1,0 +1,138 @@
+[{
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "fd464152-c6c6-4717-b430-72aa221c2de2",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:4650:array.splice.count!String,#App:4650:array.splice.results!BinaryArray,#App:4650:array.splice.results!KeyValueArray,#App:4650:array.splice.results!StringArray,#App:4650:array.splice.results!TCEntityArray",
+      "array": "#App:0003:array1!StringArray",
+      "splice_start": "0",
+      "splice_end": "6",
+      "splice_step": "2"
+    },
+    "data_files": [
+      "tcex.d/data/array_splice.json"
+    ],
+    "description": "Pass test of Array Splice Playbook (0:6:2).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-splice",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Splice.install.json",
+    "profile_name": "array-splice-0-6-2",
+    "quiet": false,
+    "validations": [{
+        "data": 3,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:4650:array.splice.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:4650:array.splice.count!String"
+      },
+      {
+        "data": [
+          1,
+          3,
+          5
+        ],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:4650:array.splice.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:4650:array.splice.results!StringArray"
+      }
+    ]
+  },
+  {
+    "args": {
+      "api_default_org": "$env.API_DEFAULT_ORG",
+      "api_access_id": "$env.API_ACCESS_ID",
+      "api_secret_key": "$envs.API_SECRET_KEY",
+      "tc_api_path": "$env.TC_API_PATH",
+      "tc_log_level": "debug",
+      "tc_log_path": "log",
+      "tc_log_to_api": false,
+      "tc_out_path": "log",
+      "tc_proxy_external": false,
+      "tc_proxy_host": "$env.TC_PROXY_HOST",
+      "tc_proxy_port": "$env.TC_PROXY_PORT",
+      "tc_proxy_password": "$envs.TC_PROXY_PASSWORD",
+      "tc_proxy_tc": false,
+      "tc_proxy_username": "$env.TC_PROXY_USERNAME",
+      "tc_temp_path": "log",
+      "tc_playbook_db_type": "Redis",
+      "tc_playbook_db_context": "02198956-3d9f-4a2a-92db-17f0d9e066bd",
+      "tc_playbook_db_path": "$env.DB_PATH",
+      "tc_playbook_db_port": "$env.DB_PORT",
+      "tc_playbook_out_variables": "#App:9428:array.splice.count!String,#App:9428:array.splice.results!BinaryArray,#App:9428:array.splice.results!KeyValueArray,#App:9428:array.splice.results!StringArray,#App:9428:array.splice.results!TCEntityArray",
+      "array": "#App:0003:array2!StringArray",
+      "splice_start": "1",
+      "splice_end": "3"
+    },
+    "data_files": [
+      "tcex.d/data/array_splice.json"
+    ],
+    "description": "Pass test of Array Splice Playbook (1:3:).",
+    "exit_codes": [
+      0
+    ],
+    "groups": [
+      "array-splice",
+      "qa-build"
+    ],
+    "install_json": "TCPB_-_Array_Splice.install.json",
+    "profile_name": "array-splice 1:3:",
+    "quiet": false,
+    "validations": [{
+        "data": 2,
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:9428:array.splice.count!String"
+      },
+      {
+        "data": "string",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:9428:array.splice.count!String"
+      },
+      {
+        "data": ["two", "three"],
+        "data_type": "redis",
+        "operator": "eq",
+        "variable": "#App:9428:array.splice.results!StringArray"
+      },
+      {
+        "data": "array",
+        "data_type": "redis",
+        "operator": "it",
+        "variable": "#App:9428:array.splice.results!StringArray"
+      }
+    ]
+  }
+]
