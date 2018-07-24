@@ -9,3 +9,4 @@
 .vscode
 nbproject
 *.iml
+.DS_Store
