@@ -1,0 +1,477 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Submit to urlscan.io",
+  "type" : "Pipe",
+  "panX" : 213.0,
+  "panY" : 20.0,
+  "logLevel" : "TRACE",
+  "description" : "",
+  "jobList" : [ {
+    "id" : 6525,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Submit to URLScan",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : "{\"url\": \"#Trigger:850:trg.url!String\"}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://urlscan.io/api/v1/scan/"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"API-Key\",\"value\":\"${ORGANIZATION:KEYCHAIN:urlscan.io API Key}\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "POST"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 390.0,
+    "locationTop" : 20.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false,
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 6526,
+    "appCatalogItem" : {
+      "programName" : "Delay",
+      "displayName" : "Delay",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Delay 60 Seconds",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "seconds"
+      },
+      "value" : "60"
+    } ],
+    "locationLeft" : 810.0,
+    "locationTop" : 190.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 6527,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Retrieve Data from URLScan",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:6528:results_hyperlink!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"API-Key\",\"value\":\"${ORGANIZATION:KEYCHAIN:urlscan.io API Key}\"}]"
+    } ],
+    "locationLeft" : 1030.0,
+    "locationTop" : 190.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false,
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 6528,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Extract UUID",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:6652:m.http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"results_hyperlink\",\"value\":\"$.api\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 810.0,
+    "locationTop" : 80.0,
+    "outputVariables" : "[{\"name\":\"results_hyperlink\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 6651,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Extract Data From JSON Response",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"screenshot_URL\",\"value\":\"$.task.screenshotURL\"},{\"key\":\"dom_URL\",\"value\":\"$.task.domURL\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:6527:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[{\"key\":\"lists_domains\",\"value\":\"$.lists.domains\"},{\"key\":\"lists_urls\",\"value\":\"$.lists.urls\"},{\"key\":\"lists_hashes\",\"value\":\"$.lists.hashes\"},{\"key\":\"lists_ip\",\"value\":\"$.lists.ips\"}]"
+    } ],
+    "locationLeft" : 1270.0,
+    "locationTop" : 410.0,
+    "outputVariables" : "[{\"name\":\"lists_hashes\",\"type\":\"StringArray\"},{\"name\":\"lists_ip\",\"type\":\"StringArray\"},{\"name\":\"lists_domains\",\"type\":\"StringArray\"},{\"name\":\"screenshot_URL\",\"type\":\"String\"},{\"name\":\"dom_URL\",\"type\":\"String\"},{\"name\":\"lists_urls\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 6652,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge HTTP Response Content",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.http.content\",\"value\":\"#App:6525:http.content!String#App:6653:http.content!String\"}]"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 80.0,
+    "outputVariables" : "[{\"name\":\"m.http.content\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 6653,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Submit to URLScan w/ custom User Agent",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"customagent\",\"value\":\"#Trigger:850:useragent!String\"},{\"key\":\"API-Key\",\"value\":\"${ORGANIZATION:KEYCHAIN:urlscan.io API Key}\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://urlscan.io/api/v1/scan/"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "POST"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : "{\"url\": \"#Trigger:850:trg.url!String\"}"
+    } ],
+    "locationLeft" : 390.0,
+    "locationTop" : 140.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false,
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 6654,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "User Agent Defined?",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#Trigger:850:useragent!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "null"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 200.0,
+    "locationTop" : 50.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 7120,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Clean up quotes",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:6528:results_hyperlink!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\""
+    } ],
+    "locationLeft" : 1030.0,
+    "locationTop" : 80.0,
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6526,
+    "targetJobId" : 6527
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6527,
+    "targetJobId" : 6651
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 6654,
+    "sourceTriggerId" : 850
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6654,
+    "targetJobId" : 6525
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6654,
+    "targetJobId" : 6653
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6653,
+    "targetJobId" : 6652
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6525,
+    "targetJobId" : 6652
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6652,
+    "targetJobId" : 6528
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 6651,
+    "targetTriggerId" : 850
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 6528,
+    "targetJobId" : 7120
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 7120,
+    "targetJobId" : 6526
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 850,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : -30.0,
+    "locationTop" : 230.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"trg.url\",\"type\":\"String\"},{\"name\":\"useragent\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"URL\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"trg.url\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"User Agent String\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"useragent\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]}]",
+    "pipeOutputParams" : "[{\"key\":\"lists_domains\",\"value\":\"#App:6651:lists_domains!StringArray \",\"displayValue\":\"#App:6651:lists_domains!StringArray \"},{\"key\":\"lists_ip\",\"value\":\"#App:6651:lists_ip!StringArray \",\"displayValue\":\"#App:6651:lists_ip!StringArray \"},{\"key\":\"lists_hashes\",\"value\":\"#App:6651:lists_hashes!StringArray \",\"displayValue\":\"#App:6651:lists_hashes!StringArray \"},{\"key\":\"lists_urls\",\"value\":\"#App:6651:lists_urls!StringArray \",\"displayValue\":\"#App:6651:lists_urls!StringArray \"},{\"key\":\"screenshot_URL\",\"value\":\"#App:6651:screenshot_URL!String \",\"displayValue\":\"#App:6651:screenshot_URL!String \"},{\"key\":\"dom_URL\",\"value\":\"#App:6651:dom_URL!String \",\"displayValue\":\"#App:6651:dom_URL!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "7/23/18 11:20 PM"
+}
