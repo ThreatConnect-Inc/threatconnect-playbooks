@@ -2,6 +2,8 @@ Copyright (c) 2018 ThreatConnect, Inc.
 
 # ThreatConnect Playbooks
 
+[![Build Status](https://travis-ci.org/ThreatConnect-Inc/threatconnect-playbooks.svg?branch=master)](https://travis-ci.org/ThreatConnect-Inc/threatconnect-playbooks)
+
 This repository gives ThreatConnect customers the ability to create and share Playbooks, Playbook Components, and Playbook Apps for use with their instance of ThreatConnect. Our hope for this repo is that it will:
 
 + Help promote usage of ThreatConnect via a community of developers,
@@ -11,23 +13,6 @@ This repository gives ThreatConnect customers the ability to create and share Pl
 This Repository is public. However, contributions will be accepted only from identified ThreatConnect customers. The ThreatConnect Support Team will validate each contribution request before they are published within the Repository, as well as enforce certain formatting requirements.
 
 > **Please Note**: the Support Team will not validate code for functionality or security.
-
-## Guidelines
-
-+ All Playbooks, Components, and Playbook Apps must have their own README.md files.
-  + Playbooks README.md should include the following headers:
-    + Summary
-    + App Dependencies
-    + Use Cases (Optional)
-  + Playbook Apps and Components README.md should include the following headers:
-    + Summary
-    + Dependencies
-    + Input Definitions
-    + Output Definitions
-    + Use Cases (Optional)
-+ Playbooks, Components, and Playbook Apps should be included in unique, separate folders.
-  + Playbooks and Components must include the PBX file of the Playbook or Component.
-  + Playbook Apps must include the zip/tcx file of the App.
 
 ## Contributing
 
@@ -39,7 +24,7 @@ Documentation for the ThreatConnectⓇ App Framework is available here: https://
 
 Documentation specific to Playbooks can be found here: https://docs.threatconnect.com/en/latest/tcex/playbook.html.
 
-Best practices for creating effective and maintainable Playbooks can be found here: https://github.com/fhightower/playbook-paradigms-and-constructs.
+Best practices for creating effective and maintainable Playbooks can be found here: [https://pb-constructs.hightower.space/playbooks/](https://pb-constructs.hightower.space/playbooks/).
 
 ## Other Repositories
 

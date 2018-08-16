@@ -1,0 +1,92 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "[utility] Get String Length",
+  "type" : "Pipe",
+  "panX" : 192.0,
+  "panY" : 368.0,
+  "logLevel" : "DEBUG",
+  "description" : "Get the length of the given string.",
+  "jobList" : [ {
+    "id" : 21785,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SplitString v1.0",
+      "displayName" : "Split String",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Split String 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"array\",\"value\":\"#Trigger:2125:string!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter_is_regex"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ".*?"
+    } ],
+    "locationLeft" : 410.0,
+    "locationTop" : 220.0,
+    "outputVariables" : "[{\"name\":\"array\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21786,
+    "appCatalogItem" : {
+      "programName" : "TCPB - GetArrayLength v1.0",
+      "displayName" : "Get Array Length",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Get Array Length 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input"
+      },
+      "value" : "#App:21785:array!StringArray"
+    } ],
+    "locationLeft" : 610.0,
+    "locationTop" : 220.0,
+    "outputVariables" : "[{\"name\":\"array.length\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 21785,
+    "sourceTriggerId" : 2125
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21785,
+    "targetJobId" : 21786
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 21786,
+    "targetTriggerId" : 2125
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2125,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 200.0,
+    "locationTop" : 110.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"string\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"String\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"string\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"stringLength\",\"value\":\"#App:21786:array.length!String \",\"displayValue\":\"#App:21786:array.length!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "8/16/18 4:23 AM"
+}
