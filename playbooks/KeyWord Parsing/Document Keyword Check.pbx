@@ -2,9 +2,9 @@
   "definitionVersion" : "1.0.0",
   "name" : "Document Keyword Check",
   "type" : "Standard",
-  "panX" : -36.0,
-  "panY" : -15.0,
-  "logLevel" : "TRACE",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
   "description" : "When triggered, this will -\r\nGet the list of keywords from the datastore in ElasticSearch\r\nConvert the document to a set of strings\r\nDo a regex capture on any keywords that match between the two\r\nFor those that match it will create the tag for the group \r\nIt will also additionally tag the document with the actual keywords within those that match",
   "jobList" : [ {
     "id" : 7816,
@@ -618,5 +618,5 @@
     "outputVariables" : "[{\"name\":\"trg.tc.entity\",\"type\":\"TCEntity\"}]"
   } ],
   "exportablePipes" : [ ],
-  "dateExported" : "8/16/18 3:37 PM"
+  "dateExported" : "8/16/18 3:57 PM"
 }
