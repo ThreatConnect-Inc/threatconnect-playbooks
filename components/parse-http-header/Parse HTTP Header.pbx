@@ -1,0 +1,320 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Parse HTTP Header",
+  "type" : "Pipe",
+  "panX" : -780.0,
+  "panY" : -75.0,
+  "logLevel" : "WARN",
+  "description" : "This component takes the header from the HTTP Trigger (#trg.http.header) and parses it into useful output variables. ",
+  "jobList" : [ {
+    "id" : 21961,
+    "appCatalogItem" : {
+      "programName" : "TCPB - ValueLookup v1.0",
+      "displayName" : "Value Lookup",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Value Lookup 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_array"
+      },
+      "value" : "#Trigger:2152:cpnt.http.header!KeyValueArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[{\"key\":\"http.header.content_disposition\",\"value\":\"Content-Disposition\"},{\"key\":\"http.header.cookie\",\"value\":\"Cookie\"},{\"key\":\"http.header.accept\",\"value\":\"Accept\"},{\"key\":\"http.header.user_agent\",\"value\":\"User-Agent\"},{\"key\":\"http.header.connection\",\"value\":\"Connection\"},{\"key\":\"http.header.host\",\"value\":\"Host\"},{\"key\":\"http.header.accept_language\",\"value\":\"Accept-Language\"},{\"key\":\"http.header.accept_encoding\",\"value\":\"Accept-Encoding\"},{\"key\":\"http.header.authorization\",\"value\":\"Authorization\"},{\"key\":\"http.header.accept_version\",\"value\":\"Accept-Version\"},{\"key\":\"http.header.content_type\",\"value\":\"Content-Type\"},{\"key\":\"http.header.content_length\",\"value\":\"Content-Length\"},{\"key\":\"http.header.date\",\"value\":\"Date\"}]"
+    } ],
+    "locationLeft" : 530.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"http.header.accept\",\"type\":\"String\"},{\"name\":\"http.header.user_agent\",\"type\":\"String\"},{\"name\":\"http.header.connection\",\"type\":\"String\"},{\"name\":\"http.header.accept_encoding\",\"type\":\"String\"},{\"name\":\"http.header.accept_version\",\"type\":\"String\"},{\"name\":\"http.header.content_type\",\"type\":\"String\"},{\"name\":\"http.header.host\",\"type\":\"String\"},{\"name\":\"http.header.authorization\",\"type\":\"String\"},{\"name\":\"http.header.content_length\",\"type\":\"String\"},{\"name\":\"http.header.cookie\",\"type\":\"String\"},{\"name\":\"http.header.content_disposition\",\"type\":\"String\"},{\"name\":\"http.header.accept_language\",\"type\":\"String\"},{\"name\":\"http.header.date\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21962,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Regex Extract 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#App:21961:http.header.content_disposition!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"regex.file_name\",\"value\":\"filename[^;\\u003d\\\\n]*\\u003d(([\\u0027\\\"]).*?\\\\2|[^;\\\\n]*)\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 900.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"regex.file_name\",\"type\":\"StringArray\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21963,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Join Array 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"join.file_name\",\"value\":\"#App:21962:regex.file_name!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 1110.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"join.file_name\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21964,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Find and Replace 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "filename="
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:21963:join.file_name!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 1320.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21965,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Find and Replace 2",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:21964:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 1530.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21969,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "if filename",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:21961:http.header.content_disposition!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "filename"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "contains"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 760.0,
+    "locationTop" : 360.0,
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21970,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "set empty filename",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.filename\",\"value\":\" \"}]"
+    } ],
+    "locationLeft" : 1110.0,
+    "locationTop" : 410.0,
+    "outputVariables" : "[{\"name\":\"v.filename\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21971,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "merge filename",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.filename\",\"value\":\"#App:21965:find_replace.output!String\"},{\"key\":\"m.filename\",\"value\":\"#App:21970:v.filename!String\"}]"
+    } ],
+    "locationLeft" : 1760.0,
+    "locationTop" : 380.0,
+    "outputVariables" : "[{\"name\":\"m.filename\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 21961,
+    "sourceTriggerId" : 2152
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21962,
+    "targetJobId" : 21963
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21963,
+    "targetJobId" : 21964
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21964,
+    "targetJobId" : 21965
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21961,
+    "targetJobId" : 21969
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21969,
+    "targetJobId" : 21962
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21969,
+    "targetJobId" : 21970
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21965,
+    "targetJobId" : 21971
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21970,
+    "targetJobId" : 21971
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 21971,
+    "targetTriggerId" : 2152
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21962,
+    "targetJobId" : 21970
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2152,
+    "name" : "Parse HTTP Header",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 290.0,
+    "locationTop" : 90.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"cpnt.http.header\",\"type\":\"KeyValueArray\"}]",
+    "pipeInputParams" : "[{\"label\":\"HTTP Header\",\"dataType\":\"String\",\"playbookDataType\":\"KeyValueArray\",\"required\":true,\"name\":\"cpnt.http.header\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]}]",
+    "pipeOutputParams" : "[{\"key\":\"http.header.accept\",\"value\":\"#App:21961:http.header.accept!String \",\"displayValue\":\"#App:21961:http.header.accept!String \"},{\"key\":\"http.header.accept_encoding\",\"value\":\"#App:21961:http.header.accept_encoding!String \",\"displayValue\":\"#App:21961:http.header.accept_encoding!String \"},{\"key\":\"http.header.accept_language\",\"value\":\"#App:21961:http.header.accept_language!String \",\"displayValue\":\"#App:21961:http.header.accept_language!String \"},{\"key\":\"http.header.accept_version\",\"value\":\"#App:21961:http.header.accept_version!String \",\"displayValue\":\"#App:21961:http.header.accept_version!String \"},{\"key\":\"http.header.authorization\",\"value\":\"#App:21961:http.header.authorization!String \",\"displayValue\":\"#App:21961:http.header.authorization!String \"},{\"key\":\"http.header.connection\",\"value\":\"#App:21961:http.header.connection!String \",\"displayValue\":\"#App:21961:http.header.connection!String \"},{\"key\":\"http.header.content_disposition\",\"value\":\"#App:21961:http.header.content_disposition!String \",\"displayValue\":\"#App:21961:http.header.content_disposition!String \"},{\"key\":\"http.header.content_length\",\"value\":\"#App:21961:http.header.content_length!String \",\"displayValue\":\"#App:21961:http.header.content_length!String \"},{\"key\":\"http.header.content_type\",\"value\":\"#App:21961:http.header.content_type!String \",\"displayValue\":\"#App:21961:http.header.content_type!String \"},{\"key\":\"http.header.cookie\",\"value\":\"#App:21961:http.header.cookie!String \",\"displayValue\":\"#App:21961:http.header.cookie!String \"},{\"key\":\"http.header.date\",\"value\":\"#App:21961:http.header.date!String \",\"displayValue\":\"#App:21961:http.header.date!String \"},{\"key\":\"http.header.host\",\"value\":\"#App:21961:http.header.host!String \",\"displayValue\":\"#App:21961:http.header.host!String \"},{\"key\":\"http.header.user_agent\",\"value\":\"#App:21961:http.header.user_agent!String \",\"displayValue\":\"#App:21961:http.header.user_agent!String \"},{\"key\":\"http.header.content_disposition.file_name\",\"value\":\"#App:21971:m.filename!String \",\"displayValue\":\"#App:21971:m.filename!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "8/31/18 1:01 PM"
+}
