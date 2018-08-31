@@ -3,17 +3,17 @@ This component parses the HTTP Header KeyValueArray into output variables.  It c
 
 The following output variables are currently defined: 
 
-http.header.accept
-http.header.accept_encoding
-http.header.accept_language
-http.header.accept_version
-http.header.authorization
-http.header.connection
-http.header.content_disposition
-http.header.content_disposition.file_name
-http.header.content_length
-http.header.content_type
-http.header.cookie
-http.header.date
-http.header.host
-http.header.user_agent
+http.header.accept\
+http.header.accept_encoding\
+http.header.accept_language\
+http.header.accept_version\
+http.header.authorization\
+http.header.connection\
+http.header.content_disposition\
+http.header.content_disposition.file_name\
+http.header.content_length\
+http.header.content_type\
+http.header.cookie\
+http.header.date\
+http.header.host\
+http.header.user_agent\
