@@ -283,7 +283,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "association_name"
       },
-      "value" : "asnToCidr"
+      "value" : "ASN to CIDR"
     } ],
     "locationLeft" : 40.0,
     "locationTop" : 160.0,
