@@ -1,39 +1,38 @@
 {
-  "definitionVersion" : "1.0.0",
   "name" : "Add Attribute and/or Tag to Associated Indicators - Adder",
-  "panX" : -210.0,
-  "panY" : -955.0,
+  "type" : "Standard",
+  "panX" : -86.0,
+  "panY" : -156.0,
   "logLevel" : "WARN",
   "description" : "This playbook adds attributes and tags to indicators which are associated with a group. It requires the 'Add Attribute and/or Tag to Associated Indicators - Trigger' playbook to be installed and running.",
   "jobList" : [ {
-    "id" : 826863471,
+    "id" : 23191,
     "appCatalogItem" : {
       "programName" : "TCPB - AdversaryRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Adversary by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Adversary By ID 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#App:23220:groupID!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "resource_type"
       },
       "value" : "Adversary"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ids"
-      },
-      "value" : "#App:826863726:groupID!String"
     } ],
     "locationLeft" : -150.0,
     "locationTop" : 290.0,
-    "outputVariables" : "[{\"name\":\"tc.adversaries.json\",\"type\":\"String\"},{\"name\":\"tc.adversary\",\"type\":\"TCEntity\"},{\"name\":\"tc.adversary.associations.indicator\",\"type\":\"TCEntityArray\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.adversary.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.adversary\",\"type\":\"TCEntity\"},{\"name\":\"tc.adversaries.json\",\"type\":\"String\"}]"
   }, {
-    "id" : 826863474,
+    "id" : 23192,
     "appCatalogItem" : {
       "programName" : "TCPB - IncidentRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Incident by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Incident By ID 1",
     "jobParameterList" : [ {
@@ -45,14 +44,13 @@
       "appCatalogItemParameter" : {
         "paramName" : "ids"
       },
-      "value" : "#App:826863726:groupID!String"
+      "value" : "#App:23220:groupID!String"
     } ],
     "locationLeft" : 1130.0,
     "locationTop" : 650.0,
-    "outputVariables" : "[{\"name\":\"tc.incidents.json\",\"type\":\"String\"},{\"name\":\"tc.incident.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.incident\",\"type\":\"TCEntity\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.incidents.json\",\"type\":\"String\"},{\"name\":\"tc.incident.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.incident\",\"type\":\"TCEntity\"}]"
   }, {
-    "id" : 826863477,
+    "id" : 23193,
     "appCatalogItem" : {
       "programName" : "Merge",
       "displayName" : "Merge",
@@ -63,86 +61,82 @@
       "appCatalogItemParameter" : {
         "paramName" : "output_array"
       },
-      "value" : "[{\"key\":\"selectedGroup\",\"value\":\"#App:826863471:tc.adversary!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863479:tc.campaign!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863482:tc.document!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863485:tc.email!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863474:tc.incident!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863488:tc.signature!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:826863491:tc.threat!TCEntity\"}]"
+      "value" : "[{\"key\":\"selectedGroup\",\"value\":\"#App:23191:tc.adversary!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23194:tc.campaign!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23195:tc.document!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23196:tc.email!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23192:tc.incident!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23197:tc.signature!TCEntity\"},{\"key\":\"selectedGroup\",\"value\":\"#App:23198:tc.threat!TCEntity\"}]"
     } ],
     "locationLeft" : 2330.0,
-    "locationTop" : 350.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 350.0
   }, {
-    "id" : 826863479,
+    "id" : 23194,
     "appCatalogItem" : {
       "programName" : "TCPB - CampaignRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Campaign by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Campaign By ID 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#App:23220:groupID!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "resource_type"
       },
       "value" : "Campaign"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ids"
-      },
-      "value" : "#App:826863726:groupID!String"
     } ],
     "locationLeft" : 170.0,
     "locationTop" : 380.0,
-    "outputVariables" : "[{\"name\":\"tc.campaign.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.campaign\",\"type\":\"TCEntity\"},{\"name\":\"tc.campaign.json\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.campaign.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.campaign\",\"type\":\"TCEntity\"},{\"name\":\"tc.campaign.json\",\"type\":\"String\"}]"
   }, {
-    "id" : 826863482,
+    "id" : 23195,
     "appCatalogItem" : {
       "programName" : "TCPB - DocumentRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Document by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Document By ID 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#App:23220:groupID!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "resource_type"
       },
       "value" : "Document"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ids"
-      },
-      "value" : "#App:826863726:groupID!String"
     } ],
     "locationLeft" : 490.0,
     "locationTop" : 470.0,
-    "outputVariables" : "[{\"name\":\"tc.document.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.documents.json\",\"type\":\"String\"},{\"name\":\"tc.document\",\"type\":\"TCEntity\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.documents.json\",\"type\":\"String\"},{\"name\":\"tc.document\",\"type\":\"TCEntity\"},{\"name\":\"tc.document.associations.indicator\",\"type\":\"TCEntityArray\"}]"
   }, {
-    "id" : 826863485,
+    "id" : 23196,
     "appCatalogItem" : {
       "programName" : "TCPB - EmailRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Email by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Email By ID 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#App:23220:groupID!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "resource_type"
       },
       "value" : "Email"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ids"
-      },
-      "value" : "#App:826863726:groupID!String"
     } ],
     "locationLeft" : 810.0,
     "locationTop" : 560.0,
-    "outputVariables" : "[{\"name\":\"tc.email.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.emails.json\",\"type\":\"String\"},{\"name\":\"tc.email\",\"type\":\"TCEntity\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.email.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.emails.json\",\"type\":\"String\"},{\"name\":\"tc.email\",\"type\":\"TCEntity\"}]"
   }, {
-    "id" : 826863488,
+    "id" : 23197,
     "appCatalogItem" : {
       "programName" : "TCPB - SignatureRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Signature by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Signature By ID 1",
     "jobParameterList" : [ {
@@ -154,18 +148,17 @@
       "appCatalogItemParameter" : {
         "paramName" : "ids"
       },
-      "value" : "#App:826863726:groupID!String"
+      "value" : "#App:23220:groupID!String"
     } ],
     "locationLeft" : 1450.0,
     "locationTop" : 740.0,
-    "outputVariables" : "[{\"name\":\"tc.signature\",\"type\":\"TCEntity\"},{\"name\":\"tc.signature.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.signatures.json\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.signature.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.signatures.json\",\"type\":\"String\"},{\"name\":\"tc.signature\",\"type\":\"TCEntity\"}]"
   }, {
-    "id" : 826863491,
+    "id" : 23198,
     "appCatalogItem" : {
       "programName" : "TCPB - ThreatRetrieveById v1.0",
       "displayName" : "Get ThreatConnect Threat by ID",
-      "programVersion" : "1.0.12"
+      "programVersion" : "1.0.22"
     },
     "name" : "Get ThreatConnect Threat By ID 1",
     "jobParameterList" : [ {
@@ -177,14 +170,13 @@
       "appCatalogItemParameter" : {
         "paramName" : "ids"
       },
-      "value" : "#App:826863726:groupID!String"
+      "value" : "#App:23220:groupID!String"
     } ],
     "locationLeft" : 1770.0,
     "locationTop" : 830.0,
-    "outputVariables" : "[{\"name\":\"tc.threats.json\",\"type\":\"String\"},{\"name\":\"tc.threat\",\"type\":\"TCEntity\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"tc.threat.associations.indicator\",\"type\":\"TCEntityArray\"},{\"name\":\"tc.threat\",\"type\":\"TCEntity\"},{\"name\":\"tc.threats.json\",\"type\":\"String\"}]"
   }, {
-    "id" : 826863494,
+    "id" : 23199,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -203,9 +195,9 @@
       "value" : "{"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
+        "paramName" : "operand_1"
       },
-      "value" : "false"
+      "value" : "#App:23191:tc.adversaries.json!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "match_case"
@@ -213,15 +205,14 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
+        "paramName" : "as_numeric"
       },
-      "value" : "#App:826863471:tc.adversaries.json!String"
+      "value" : "false"
     } ],
     "locationLeft" : 60.0,
-    "locationTop" : 280.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 280.0
   }, {
-    "id" : 826863500,
+    "id" : 23200,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -235,14 +226,9 @@
       "value" : "{"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "operator"
+        "paramName" : "operand_1"
       },
-      "value" : "contains"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
+      "value" : "#App:23194:tc.campaign.json!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "match_case"
@@ -250,15 +236,19 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
+        "paramName" : "as_numeric"
       },
-      "value" : "#App:826863479:tc.campaign.json!String"
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "contains"
     } ],
     "locationLeft" : 380.0,
-    "locationTop" : 370.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 370.0
   }, {
-    "id" : 826863506,
+    "id" : 23201,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -267,9 +257,14 @@
     "name" : "Copy of If / Else 1 2",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
+        "paramName" : "operand_1"
       },
-      "value" : "{"
+      "value" : "#App:23195:tc.documents.json!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "match_case"
@@ -282,20 +277,14 @@
       "value" : "contains"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
+        "paramName" : "operand_2"
       },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863482:tc.documents.json!String"
+      "value" : "{"
     } ],
     "locationLeft" : 700.0,
-    "locationTop" : 460.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 460.0
   }, {
-    "id" : 826863512,
+    "id" : 23202,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -304,16 +293,6 @@
     "name" : "Copy of If / Else 1 3",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "contains"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "operand_2"
       },
       "value" : "{"
@@ -324,15 +303,24 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "operand_1"
       },
-      "value" : "#App:826863485:tc.emails.json!String"
+      "value" : "#App:23196:tc.emails.json!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "contains"
     } ],
     "locationLeft" : 1020.0,
-    "locationTop" : 550.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 550.0
   }, {
-    "id" : 826863518,
+    "id" : 23203,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -341,14 +329,9 @@
     "name" : "Copy of If / Else 1 4",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "operator"
+        "paramName" : "operand_1"
       },
-      "value" : "contains"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
+      "value" : "#App:23192:tc.incidents.json!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "operand_2"
@@ -361,15 +344,19 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
+        "paramName" : "operator"
       },
-      "value" : "#App:826863474:tc.incidents.json!String"
+      "value" : "contains"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
     } ],
     "locationLeft" : 1340.0,
-    "locationTop" : 640.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 640.0
   }, {
-    "id" : 826863524,
+    "id" : 23204,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -378,14 +365,19 @@
     "name" : "Copy of If / Else 1 5",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
+        "paramName" : "operand_1"
       },
-      "value" : "false"
+      "value" : "#App:23197:tc.signatures.json!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "operand_2"
       },
       "value" : "{"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "match_case"
@@ -396,17 +388,11 @@
         "paramName" : "operator"
       },
       "value" : "contains"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863488:tc.signatures.json!String"
     } ],
     "locationLeft" : 1660.0,
-    "locationTop" : 730.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 730.0
   }, {
-    "id" : 826863530,
+    "id" : 23205,
     "appCatalogItem" : {
       "programName" : "If / Else",
       "displayName" : "If / Else",
@@ -415,9 +401,9 @@
     "name" : "Copy of If / Else 1 6",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
+        "paramName" : "match_case"
       },
-      "value" : "{"
+      "value" : "false"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "as_numeric"
@@ -425,25 +411,24 @@
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:23198:tc.threats.json!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "operator"
       },
       "value" : "contains"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "match_case"
+        "paramName" : "operand_2"
       },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863491:tc.threats.json!String"
+      "value" : "{"
     } ],
     "locationLeft" : 1980.0,
-    "locationTop" : 820.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 820.0
   }, {
-    "id" : 826863641,
+    "id" : 23206,
     "appCatalogItem" : {
       "programName" : "Decode URL",
       "displayName" : "Decode URL",
@@ -454,90 +439,30 @@
       "appCatalogItemParameter" : {
         "paramName" : "input"
       },
-      "value" : "#Trigger:826863470:trg.http.body!String"
+      "value" : "#Trigger:2306:trg.http.body!String"
     } ],
     "locationLeft" : 70.0,
     "locationTop" : 30.0,
-    "outputVariables" : "[{\"name\":\"decode_url.output\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"decode_url.output\",\"type\":\"String\"}]"
   }, {
-    "id" : 826863643,
-    "appCatalogItem" : {
-      "programName" : "TCPB - JoinArray v1.0",
-      "displayName" : "Join Array",
-      "programVersion" : "1.0.5"
-    },
-    "name" : "Join Array 2",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "delimiter"
-      },
-      "value" : ","
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "array_mapping"
-      },
-      "value" : "[{\"key\":\"descriptionExists\",\"value\":\"#App:826863652:descriptionExists!StringArray\"}]"
-    } ],
-    "locationLeft" : 70.0,
-    "locationTop" : 1460.0,
-    "outputVariables" : "[{\"name\":\"descriptionExists\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863646,
-    "appCatalogItem" : {
-      "programName" : "TCPB - JoinArray v1.0",
-      "displayName" : "Join Array",
-      "programVersion" : "1.0.5"
-    },
-    "name" : "Join Array 3",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "delimiter"
-      },
-      "value" : ","
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "array_mapping"
-      },
-      "value" : "[{\"key\":\"sourceExists\",\"value\":\"#App:826863657:sourceExists!StringArray\"}]"
-    } ],
-    "locationLeft" : 70.0,
-    "locationTop" : 1620.0,
-    "outputVariables" : "[{\"name\":\"sourceExists\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863649,
-    "appCatalogItem" : {
-      "programName" : "TCPB - JoinArray v1.0",
-      "displayName" : "Join Array",
-      "programVersion" : "1.0.5"
-    },
-    "name" : "Join Array 4",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "delimiter"
-      },
-      "value" : ","
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "array_mapping"
-      },
-      "value" : "[{\"key\":\"aacExists\",\"value\":\"#App:826863662:aacExists!StringArray\"}]"
-    } ],
-    "locationLeft" : 60.0,
-    "locationTop" : 1870.0,
-    "outputVariables" : "[{\"name\":\"aacExists\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863652,
+    "id" : 23210,
     "appCatalogItem" : {
       "programName" : "TCPB - RegexExtract v1.0",
       "displayName" : "Regex Extract",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Check if Description Exists",
     "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#App:23220:description!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "false"
+    }, {
       "appCatalogItemParameter" : {
         "paramName" : "regex_pattern_mapping"
       },
@@ -547,32 +472,20 @@
         "paramName" : "capture_groups"
       },
       "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "strip_nulls"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "input_content"
-      },
-      "value" : "#App:826863726:description!String"
     } ],
     "locationLeft" : -160.0,
-    "locationTop" : 1460.0,
-    "outputVariables" : "[{\"name\":\"descriptionExists\",\"type\":\"StringArray\"}]",
-    "playbookRetryEnabled" : false
+    "locationTop" : 1460.0
   }, {
-    "id" : 826863657,
+    "id" : 23211,
     "appCatalogItem" : {
       "programName" : "TCPB - RegexExtract v1.0",
       "displayName" : "Regex Extract",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Check if Source Exists",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "strip_nulls"
+        "paramName" : "capture_groups"
       },
       "value" : "false"
     }, {
@@ -582,30 +495,28 @@
       "value" : "[{\"key\":\"sourceExists\",\"value\":\".+\"}]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "capture_groups"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "input_content"
       },
-      "value" : "#App:826863726:source!String"
+      "value" : "#App:23220:source!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "false"
     } ],
     "locationLeft" : -160.0,
-    "locationTop" : 1620.0,
-    "outputVariables" : "[{\"name\":\"sourceExists\",\"type\":\"StringArray\"}]",
-    "playbookRetryEnabled" : false
+    "locationTop" : 1620.0
   }, {
-    "id" : 826863662,
+    "id" : 23212,
     "appCatalogItem" : {
       "programName" : "TCPB - RegexExtract v1.0",
       "displayName" : "Regex Extract",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Check if Additional Analysis and Context Exists",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "strip_nulls"
+        "paramName" : "capture_groups"
       },
       "value" : "false"
     }, {
@@ -615,95 +526,19 @@
       "value" : "[{\"key\":\"aacExists\",\"value\":\".+\"}]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "capture_groups"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "input_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "false"
     } ],
     "locationLeft" : -160.0,
-    "locationTop" : 1870.0,
-    "outputVariables" : "[{\"name\":\"aacExists\",\"type\":\"StringArray\"}]",
-    "playbookRetryEnabled" : false
+    "locationTop" : 1790.0
   }, {
-    "id" : 826863667,
-    "appCatalogItem" : {
-      "programName" : "If / Else",
-      "displayName" : "If / Else",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "Description?",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
-      },
-      "value" : "null"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "not equals"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863643:descriptionExists!String"
-    } ],
-    "locationLeft" : 340.0,
-    "locationTop" : 1420.0,
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863673,
-    "appCatalogItem" : {
-      "programName" : "If / Else",
-      "displayName" : "If / Else",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "Source?",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
-      },
-      "value" : "null"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "not equals"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863646:sourceExists!String"
-    } ],
-    "locationLeft" : 330.0,
-    "locationTop" : 1630.0,
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863685,
+    "id" : 23215,
     "appCatalogItem" : {
       "programName" : "Merge",
       "displayName" : "Merge",
@@ -716,11 +551,10 @@
       },
       "value" : "[{\"key\":\"abc\",\"value\":\"def\"}]"
     } ],
-    "locationLeft" : 2250.0,
-    "locationTop" : 1470.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1700.0,
+    "locationTop" : 1460.0
   }, {
-    "id" : 826863687,
+    "id" : 23216,
     "appCatalogItem" : {
       "programName" : "Merge",
       "displayName" : "Merge",
@@ -733,11 +567,10 @@
       },
       "value" : "[{\"key\":\"abc\",\"value\":\"def\"}]"
     } ],
-    "locationLeft" : 2250.0,
-    "locationTop" : 1710.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1700.0,
+    "locationTop" : 1620.0
   }, {
-    "id" : 826863689,
+    "id" : 23217,
     "appCatalogItem" : {
       "programName" : "Merge",
       "displayName" : "Merge",
@@ -750,15 +583,14 @@
       },
       "value" : "[{\"key\":\"abc\",\"value\":\"def\"}]"
     } ],
-    "locationLeft" : 2250.0,
-    "locationTop" : 1970.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1700.0,
+    "locationTop" : 1790.0
   }, {
-    "id" : 826863719,
+    "id" : 23218,
     "appCatalogItem" : {
       "programName" : "TCPB - SetVariable v1.0",
       "displayName" : "Set Variable",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Set Variable 1",
     "jobParameterList" : [ {
@@ -768,26 +600,25 @@
       "value" : "[{\"key\":\"errorMessagePrefix\",\"value\":\"[Attribute and Tag Adder PB]:\"}]"
     } ],
     "locationLeft" : -150.0,
-    "locationTop" : 30.0,
-    "playbookRetryEnabled" : false
+    "locationTop" : 30.0
   }, {
-    "id" : 826863721,
+    "id" : 23219,
     "appCatalogItem" : {
       "programName" : "TCPB - RegexExtract v1.0",
       "displayName" : "Regex Extract",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Regex Extract 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "strip_nulls"
+        "paramName" : "capture_groups"
       },
       "value" : "true"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "capture_groups"
+        "paramName" : "input_content"
       },
-      "value" : "true"
+      "value" : "#App:23206:decode_url.output!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "regex_pattern_mapping"
@@ -795,20 +626,19 @@
       "value" : "[{\"key\":\"groupIDArray\",\"value\":\"groupID\\u003d([0-9]*?)\\u0026\"},{\"key\":\"tagArray\",\"value\":\"tag\\u003d(.*)\"},{\"key\":\"descriptionArray\",\"value\":\"description\\u003d(.*?)\\u0026\"},{\"key\":\"sourceArray\",\"value\":\"source\\u003d(.*?)\\u0026\"},{\"key\":\"additionalAnalysisAndContextArray\",\"value\":\"additionalAnalysisAndContext\\u003d(.*?)\\u0026\"}]"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "input_content"
+        "paramName" : "strip_nulls"
       },
-      "value" : "#App:826863641:decode_url.output!String"
+      "value" : "true"
     } ],
     "locationLeft" : -150.0,
     "locationTop" : 160.0,
-    "outputVariables" : "[{\"name\":\"tagArray\",\"type\":\"StringArray\"},{\"name\":\"sourceArray\",\"type\":\"StringArray\"},{\"name\":\"groupIDArray\",\"type\":\"StringArray\"},{\"name\":\"descriptionArray\",\"type\":\"StringArray\"},{\"name\":\"additionalAnalysisAndContextArray\",\"type\":\"StringArray\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"groupIDArray\",\"type\":\"StringArray\"},{\"name\":\"descriptionArray\",\"type\":\"StringArray\"},{\"name\":\"tagArray\",\"type\":\"StringArray\"},{\"name\":\"additionalAnalysisAndContextArray\",\"type\":\"StringArray\"},{\"name\":\"sourceArray\",\"type\":\"StringArray\"}]"
   }, {
-    "id" : 826863726,
+    "id" : 23220,
     "appCatalogItem" : {
       "programName" : "TCPB - JoinArray v1.0",
       "displayName" : "Join Array",
-      "programVersion" : "1.0.5"
+      "programVersion" : "1.0.11"
     },
     "name" : "Join Array 1",
     "jobParameterList" : [ {
@@ -820,14 +650,13 @@
       "appCatalogItemParameter" : {
         "paramName" : "array_mapping"
       },
-      "value" : "[{\"key\":\"groupID\",\"value\":\"#App:826863721:groupIDArray!StringArray\"},{\"key\":\"tag\",\"value\":\"#App:826863721:tagArray!StringArray\"},{\"key\":\"description\",\"value\":\"#App:826863721:descriptionArray!StringArray\"},{\"key\":\"source\",\"value\":\"#App:826863721:sourceArray!StringArray\"},{\"key\":\"additionalAnalysisAndContext\",\"value\":\"#App:826863721:additionalAnalysisAndContextArray!StringArray\"}]"
+      "value" : "[{\"key\":\"groupID\",\"value\":\"#App:23219:groupIDArray!StringArray\"},{\"key\":\"tag\",\"value\":\"#App:23219:tagArray!StringArray\"},{\"key\":\"description\",\"value\":\"#App:23219:descriptionArray!StringArray\"},{\"key\":\"source\",\"value\":\"#App:23219:sourceArray!StringArray\"},{\"key\":\"additionalAnalysisAndContext\",\"value\":\"#App:23219:additionalAnalysisAndContextArray!StringArray\"}]"
     } ],
     "locationLeft" : 70.0,
     "locationTop" : 160.0,
-    "outputVariables" : "[{\"name\":\"additionalAnalysisAndContext\",\"type\":\"String\"},{\"name\":\"tag\",\"type\":\"String\"},{\"name\":\"groupID\",\"type\":\"String\"},{\"name\":\"source\",\"type\":\"String\"},{\"name\":\"description\",\"type\":\"String\"}]",
-    "playbookRetryEnabled" : false
+    "outputVariables" : "[{\"name\":\"description\",\"type\":\"String\"},{\"name\":\"tag\",\"type\":\"String\"},{\"name\":\"additionalAnalysisAndContext\",\"type\":\"String\"},{\"name\":\"groupID\",\"type\":\"String\"},{\"name\":\"source\",\"type\":\"String\"}]"
   }, {
-    "id" : 826863536,
+    "id" : 23221,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -836,9 +665,9 @@
     "name" : "Add Description if Adversary",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
+        "paramName" : "attribute_content"
       },
-      "value" : "Description"
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
@@ -846,20 +675,19 @@
       "value" : "true"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
+        "paramName" : "attribute_type"
       },
-      "value" : "#App:826863471:tc.adversary.associations.indicator!TCEntityArray"
+      "value" : "Description"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
+        "paramName" : "indicator_name"
       },
-      "value" : "#App:826863726:description!String"
+      "value" : "#App:23191:tc.adversary.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 470.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 80.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863551,
+    "id" : 23222,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -868,14 +696,14 @@
     "name" : "Add Description if Campaign",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863479:tc.campaign.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Description"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23194:tc.campaign.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
@@ -885,13 +713,12 @@
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:description!String"
+      "value" : "#App:23220:description!String"
     } ],
-    "locationLeft" : 690.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 300.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863566,
+    "id" : 23223,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -900,30 +727,29 @@
     "name" : "Add Description if Document",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "update"
+        "paramName" : "attribute_content"
       },
-      "value" : "true"
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863482:tc.document.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
-      },
-      "value" : "#App:826863726:description!String"
+      "value" : "#App:23195:tc.document.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Description"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
     } ],
-    "locationLeft" : 910.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 520.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863581,
+    "id" : 23224,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -934,7 +760,12 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863485:tc.email.associations.indicator!TCEntityArray"
+      "value" : "#App:23196:tc.email.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_content"
+      },
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -945,17 +776,11 @@
         "paramName" : "update"
       },
       "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
-      },
-      "value" : "#App:826863726:description!String"
     } ],
-    "locationLeft" : 1140.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 750.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863596,
+    "id" : 23225,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -966,28 +791,27 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863474:tc.incident.associations.indicator!TCEntityArray"
+      "value" : "#App:23192:tc.incident.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:description!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
-      },
-      "value" : "Description"
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "Description"
     } ],
-    "locationLeft" : 1360.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 970.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863611,
+    "id" : 23226,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -998,12 +822,12 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
+      "value" : "#App:23197:tc.signature.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:description!String"
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
@@ -1015,11 +839,10 @@
       },
       "value" : "Description"
     } ],
-    "locationLeft" : 1580.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1190.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863626,
+    "id" : 23227,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1030,7 +853,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:description!String"
+      "value" : "#App:23220:description!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -1038,20 +861,19 @@
       "value" : "Description"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23198:tc.threat.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 1800.0,
-    "locationTop" : 1390.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1410.0,
+    "locationTop" : 1410.0
   }, {
-    "id" : 826863541,
+    "id" : 23228,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1062,12 +884,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "update"
-      },
-      "value" : "true"
+      "value" : "#App:23220:source!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -1077,13 +894,17 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863471:tc.adversary.associations.indicator!TCEntityArray"
+      "value" : "#App:23191:tc.adversary.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
     } ],
-    "locationLeft" : 470.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 80.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863556,
+    "id" : 23229,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1092,6 +913,11 @@
     "name" : "Add Source if Campaign",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Source"
@@ -1099,23 +925,17 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863479:tc.campaign.associations.indicator!TCEntityArray"
+      "value" : "#App:23194:tc.campaign.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "update"
-      },
-      "value" : "true"
+      "value" : "#App:23220:source!String"
     } ],
-    "locationLeft" : 690.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 300.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863571,
+    "id" : 23230,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1124,30 +944,29 @@
     "name" : "Add Source if Document",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
-      },
-      "value" : "Source"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "Source"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863482:tc.document.associations.indicator!TCEntityArray"
+      "value" : "#App:23195:tc.document.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
+      "value" : "#App:23220:source!String"
     } ],
-    "locationLeft" : 920.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 530.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863586,
+    "id" : 23231,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1156,9 +975,9 @@
     "name" : "Add Source if Email",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
+        "paramName" : "update"
       },
-      "value" : "#App:826863485:tc.email.associations.indicator!TCEntityArray"
+      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -1168,18 +987,17 @@
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
+      "value" : "#App:23220:source!String"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "update"
+        "paramName" : "indicator_name"
       },
-      "value" : "true"
+      "value" : "#App:23196:tc.email.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 1140.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 750.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863606,
+    "id" : 23232,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1188,14 +1006,14 @@
     "name" : "Add Source if Incident",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
-      },
-      "value" : "#App:826863726:source!String"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863474:tc.incident.associations.indicator!TCEntityArray"
+      "value" : "#App:23192:tc.incident.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -1203,15 +1021,14 @@
       "value" : "Source"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "update"
+        "paramName" : "attribute_content"
       },
-      "value" : "true"
+      "value" : "#App:23220:source!String"
     } ],
-    "locationLeft" : 1360.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 970.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863616,
+    "id" : 23233,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1220,30 +1037,29 @@
     "name" : "Add Source if Signature",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
+        "paramName" : "attribute_type"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
+      "value" : "Source"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
+      "value" : "#App:23220:source!String"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
+        "paramName" : "indicator_name"
       },
-      "value" : "Source"
+      "value" : "#App:23197:tc.signature.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
     } ],
-    "locationLeft" : 1580.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1190.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863631,
+    "id" : 23234,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1252,30 +1068,29 @@
     "name" : "Add Source if Threat",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "Source"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
+      "value" : "#App:23198:tc.threat.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:source!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
-      },
-      "value" : "Source"
+      "value" : "#App:23220:source!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
     } ],
-    "locationLeft" : 1800.0,
-    "locationTop" : 1590.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1410.0,
+    "locationTop" : 1580.0
   }, {
-    "id" : 826863546,
+    "id" : 23235,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1284,6 +1099,11 @@
     "name" : "Add AA&C if Adversary",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23191:tc.adversary.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
@@ -1294,20 +1114,14 @@
       "value" : "Additional Analysis and Context"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863471:tc.adversary.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
     } ],
-    "locationLeft" : 480.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 80.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863561,
+    "id" : 23236,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1316,9 +1130,9 @@
     "name" : "Add AA&C if Campaign",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
+        "paramName" : "attribute_content"
       },
-      "value" : "#App:826863479:tc.campaign.associations.indicator!TCEntityArray"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
@@ -1331,15 +1145,14 @@
       "value" : "true"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
+        "paramName" : "indicator_name"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23194:tc.campaign.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 700.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 300.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863576,
+    "id" : 23237,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1348,30 +1161,29 @@
     "name" : "Add AA&C if Document",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863482:tc.document.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23195:tc.document.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Additional Analysis and Context"
     } ],
-    "locationLeft" : 930.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 530.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863591,
+    "id" : 23238,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1380,16 +1192,6 @@
     "name" : "Add AA&C if Email",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "attribute_content"
-      },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "attribute_type"
-      },
-      "value" : "Additional Analysis and Context"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
@@ -1397,13 +1199,22 @@
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863485:tc.email.associations.indicator!TCEntityArray"
+      "value" : "#App:23196:tc.email.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_content"
+      },
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "Additional Analysis and Context"
     } ],
-    "locationLeft" : 1150.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 750.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863601,
+    "id" : 23239,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1417,25 +1228,24 @@
       "value" : "Additional Analysis and Context"
     }, {
       "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23192:tc.incident.associations.indicator!TCEntityArray"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "update"
       },
       "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863474:tc.incident.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 1370.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 970.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863621,
+    "id" : 23240,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1444,6 +1254,11 @@
     "name" : "Add AA&C if Signature",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Additional Analysis and Context"
@@ -1451,23 +1266,17 @@
       "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "indicator_name"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "update"
-      },
-      "value" : "true"
+      "value" : "#App:23197:tc.signature.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 1590.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1190.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863636,
+    "id" : 23241,
     "appCatalogItem" : {
       "programName" : "Add Attribute",
       "displayName" : "Create ThreatConnect Attribute",
@@ -1476,188 +1285,141 @@
     "name" : "Add AA&C if Threat",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "attribute_content"
       },
-      "value" : "#App:826863726:additionalAnalysisAndContext!String"
+      "value" : "#App:23220:additionalAnalysisAndContext!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#App:23198:tc.threat.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "attribute_type"
       },
       "value" : "Additional Analysis and Context"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "indicator_name"
-      },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "update"
-      },
-      "value" : "true"
     } ],
-    "locationLeft" : 1810.0,
-    "locationTop" : 1840.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1410.0,
+    "locationTop" : 1750.0
   }, {
-    "id" : 826863679,
-    "appCatalogItem" : {
-      "programName" : "If / Else",
-      "displayName" : "If / Else",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "AA&C?",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:826863649:aacExists!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "not equals"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
-      },
-      "value" : "null"
-    } ],
-    "locationLeft" : 330.0,
-    "locationTop" : 1890.0,
-    "playbookRetryEnabled" : false
-  }, {
-    "id" : 826863691,
+    "id" : 23243,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Adversary",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "tag"
+      },
+      "value" : "#App:23220:tag!String"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "fail_on_error"
       },
       "value" : "false"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "tag"
-      },
-      "value" : "#App:826863726:tag!String"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863471:tc.adversary.associations.indicator!TCEntityArray"
+      "value" : "#App:23191:tc.adversary.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : -160.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 80.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863695,
+    "id" : 23244,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Campaign",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863479:tc.campaign.associations.indicator!TCEntityArray"
+      "value" : "#App:23194:tc.campaign.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "tag"
       },
-      "value" : "#App:826863726:tag!String"
+      "value" : "#App:23220:tag!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
     } ],
-    "locationLeft" : 60.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 300.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863699,
+    "id" : 23245,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Document",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "tag"
+        "paramName" : "fail_on_error"
       },
-      "value" : "#App:826863726:tag!String"
+      "value" : "false"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863482:tc.document.associations.indicator!TCEntityArray"
+      "value" : "#App:23195:tc.document.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
+        "paramName" : "tag"
       },
-      "value" : "false"
+      "value" : "#App:23220:tag!String"
     } ],
-    "locationLeft" : 280.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 520.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863703,
+    "id" : 23246,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Email",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863485:tc.email.associations.indicator!TCEntityArray"
+      "value" : "#App:23196:tc.email.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "tag"
       },
-      "value" : "#App:826863726:tag!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "false"
+      "value" : "#App:23220:tag!String"
     } ],
-    "locationLeft" : 500.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 740.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863707,
+    "id" : 23247,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Incident",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "entity"
-      },
-      "value" : "#App:826863474:tc.incident.associations.indicator!TCEntityArray"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "fail_on_error"
       },
       "value" : "false"
@@ -1665,422 +1427,390 @@
       "appCatalogItemParameter" : {
         "paramName" : "tag"
       },
-      "value" : "#App:826863726:tag!String"
+      "value" : "#App:23220:tag!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "entity"
+      },
+      "value" : "#App:23192:tc.incident.associations.indicator!TCEntityArray"
     } ],
-    "locationLeft" : 720.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 960.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863711,
+    "id" : 23248,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Signature",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "tag"
-      },
-      "value" : "#App:826863726:tag!String"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
+      "value" : "#App:23197:tc.signature.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "fail_on_error"
       },
       "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tag"
+      },
+      "value" : "#App:23220:tag!String"
     } ],
-    "locationLeft" : 940.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1180.0,
+    "locationTop" : 1920.0
   }, {
-    "id" : 826863715,
+    "id" : 23249,
     "appCatalogItem" : {
       "programName" : "TCPB - TagCreate v1.0",
       "displayName" : "Create ThreatConnect Tag",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.0.9"
     },
     "name" : "Add Tag if Threat",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
         "paramName" : "entity"
       },
-      "value" : "#App:826863488:tc.signature.associations.indicator!TCEntityArray"
+      "value" : "#App:23198:tc.threat.associations.indicator!TCEntityArray"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "tag"
       },
-      "value" : "#App:826863726:tag!String"
+      "value" : "#App:23220:tag!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
     } ],
-    "locationLeft" : 1160.0,
-    "locationTop" : 2110.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 1400.0,
+    "locationTop" : 1920.0
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 826863719,
-    "sourceTriggerId" : 826863470
+    "targetJobId" : 23218,
+    "sourceTriggerId" : 2306
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863471,
-    "targetJobId" : 826863494
+    "sourceJobId" : 23191,
+    "targetJobId" : 23199
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863494,
-    "targetJobId" : 826863479
+    "sourceJobId" : 23199,
+    "targetJobId" : 23194
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863479,
-    "targetJobId" : 826863500
+    "sourceJobId" : 23194,
+    "targetJobId" : 23200
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863500,
-    "targetJobId" : 826863482
+    "sourceJobId" : 23200,
+    "targetJobId" : 23195
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863482,
-    "targetJobId" : 826863506
+    "sourceJobId" : 23195,
+    "targetJobId" : 23201
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863506,
-    "targetJobId" : 826863485
+    "sourceJobId" : 23201,
+    "targetJobId" : 23196
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863506,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23201,
+    "targetJobId" : 23193
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863485,
-    "targetJobId" : 826863512
+    "sourceJobId" : 23196,
+    "targetJobId" : 23202
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863512,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23202,
+    "targetJobId" : 23193
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863512,
-    "targetJobId" : 826863474
+    "sourceJobId" : 23202,
+    "targetJobId" : 23192
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863518,
-    "targetJobId" : 826863488
+    "sourceJobId" : 23203,
+    "targetJobId" : 23197
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863488,
-    "targetJobId" : 826863524
+    "sourceJobId" : 23197,
+    "targetJobId" : 23204
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863524,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23204,
+    "targetJobId" : 23193
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863524,
-    "targetJobId" : 826863491
+    "sourceJobId" : 23204,
+    "targetJobId" : 23198
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863491,
-    "targetJobId" : 826863530
+    "sourceJobId" : 23198,
+    "targetJobId" : 23205
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863530,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23205,
+    "targetJobId" : 23193
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863721,
-    "targetJobId" : 826863726
+    "sourceJobId" : 23219,
+    "targetJobId" : 23220
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863474,
-    "targetJobId" : 826863518
+    "sourceJobId" : 23192,
+    "targetJobId" : 23203
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863500,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23200,
+    "targetJobId" : 23193
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863494,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23199,
+    "targetJobId" : 23193
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863518,
-    "targetJobId" : 826863477
+    "sourceJobId" : 23203,
+    "targetJobId" : 23193
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863719,
-    "targetJobId" : 826863641
+    "sourceJobId" : 23218,
+    "targetJobId" : 23206
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863652,
-    "targetJobId" : 826863643
+    "sourceJobId" : 23221,
+    "targetJobId" : 23222
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863643,
-    "targetJobId" : 826863667
+    "sourceJobId" : 23222,
+    "targetJobId" : 23223
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863667,
-    "targetJobId" : 826863536
+    "sourceJobId" : 23223,
+    "targetJobId" : 23224
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863536,
-    "targetJobId" : 826863551
+    "sourceJobId" : 23224,
+    "targetJobId" : 23225
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863551,
-    "targetJobId" : 826863566
+    "sourceJobId" : 23225,
+    "targetJobId" : 23226
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863566,
-    "targetJobId" : 826863581
+    "sourceJobId" : 23226,
+    "targetJobId" : 23227
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863581,
-    "targetJobId" : 826863596
+    "sourceJobId" : 23227,
+    "targetJobId" : 23215
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863596,
-    "targetJobId" : 826863611
+    "sourceJobId" : 23215,
+    "targetJobId" : 23211
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863611,
-    "targetJobId" : 826863626
+    "sourceJobId" : 23234,
+    "targetJobId" : 23216
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23228,
+    "targetJobId" : 23229
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23229,
+    "targetJobId" : 23230
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23230,
+    "targetJobId" : 23231
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23231,
+    "targetJobId" : 23232
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23232,
+    "targetJobId" : 23233
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23233,
+    "targetJobId" : 23234
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23235,
+    "targetJobId" : 23236
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23236,
+    "targetJobId" : 23237
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23237,
+    "targetJobId" : 23238
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23238,
+    "targetJobId" : 23239
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23239,
+    "targetJobId" : 23240
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23240,
+    "targetJobId" : 23241
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23241,
+    "targetJobId" : 23217
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23216,
+    "targetJobId" : 23212
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23217,
+    "targetJobId" : 23243
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23243,
+    "targetJobId" : 23244
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23244,
+    "targetJobId" : 23245
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23245,
+    "targetJobId" : 23246
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23246,
+    "targetJobId" : 23247
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23247,
+    "targetJobId" : 23248
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23248,
+    "targetJobId" : 23249
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23206,
+    "targetJobId" : 23219
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23220,
+    "targetJobId" : 23191
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23193,
+    "targetJobId" : 23210
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 23210,
+    "targetJobId" : 23221
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863667,
-    "targetJobId" : 826863685
+    "sourceJobId" : 23210,
+    "targetJobId" : 23215
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863626,
-    "targetJobId" : 826863685
+    "sourceJobId" : 23212,
+    "targetJobId" : 23235
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863657,
-    "targetJobId" : 826863646
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863646,
-    "targetJobId" : 826863673
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863685,
-    "targetJobId" : 826863657
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863673,
-    "targetJobId" : 826863541
+    "sourceJobId" : 23211,
+    "targetJobId" : 23228
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863673,
-    "targetJobId" : 826863687
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863631,
-    "targetJobId" : 826863687
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863541,
-    "targetJobId" : 826863556
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863556,
-    "targetJobId" : 826863571
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863571,
-    "targetJobId" : 826863586
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863586,
-    "targetJobId" : 826863606
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863606,
-    "targetJobId" : 826863616
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863616,
-    "targetJobId" : 826863631
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863662,
-    "targetJobId" : 826863649
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863649,
-    "targetJobId" : 826863679
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863679,
-    "targetJobId" : 826863546
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863546,
-    "targetJobId" : 826863561
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863561,
-    "targetJobId" : 826863576
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863576,
-    "targetJobId" : 826863591
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863591,
-    "targetJobId" : 826863601
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863601,
-    "targetJobId" : 826863621
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863621,
-    "targetJobId" : 826863636
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863636,
-    "targetJobId" : 826863689
+    "sourceJobId" : 23211,
+    "targetJobId" : 23216
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 826863679,
-    "targetJobId" : 826863689
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863687,
-    "targetJobId" : 826863662
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863689,
-    "targetJobId" : 826863691
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863691,
-    "targetJobId" : 826863695
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863695,
-    "targetJobId" : 826863699
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863699,
-    "targetJobId" : 826863703
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863703,
-    "targetJobId" : 826863707
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863707,
-    "targetJobId" : 826863711
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863711,
-    "targetJobId" : 826863715
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863641,
-    "targetJobId" : 826863721
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863726,
-    "targetJobId" : 826863471
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 826863477,
-    "targetJobId" : 826863652
+    "sourceJobId" : 23212,
+    "targetJobId" : 23217
   } ],
   "playbookTriggerList" : [ {
-    "id" : 826863470,
+    "id" : 2306,
     "name" : "HttpLink Trigger 1",
     "type" : "HttpLink",
     "eventType" : "External",
     "locationLeft" : -430.0,
     "locationTop" : 30.0,
-    "httpBasicAuthEnable" : false,
-    "httpBasicAuthUsername" : "Y1OX1K1DDEO7AK84HRKY",
-    "httpBasicAuthPassword" : "TW4HGAWEEDAQZP5EFUEJ",
     "anyOrg" : true,
-    "orFilters" : false,
-    "fireOnDuplicate" : false,
-    "renderBodyAsTip" : false,
+    "playbookTriggerFilterList" : [ ],
     "outputVariables" : "[{\"name\":\"trg.http.body\",\"type\":\"String\"}]"
   } ],
-  "dateExported" : "1/19/18 2:13 PM"
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
 }
