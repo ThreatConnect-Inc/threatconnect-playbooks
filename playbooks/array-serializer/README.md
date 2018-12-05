@@ -1,6 +1,6 @@
 # Summary
 
-**YOU SHOULD STOP USING THIS PLAYBOOK. Instead, use the array iterator described at [https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/components/array-iterator](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/components/array-iterator).** 
+**YOU SHOULD STOP USING THIS PLAYBOOK. Instead, use the array iterator app described at [https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/apps/TCPB_-_Array_Iterator](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/apps/TCPB_-_Array_Iterator).** If you cannot install custom apps, you should use the array iterator component here: [https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/components/array-iterator](https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/components/array-iterator).
 
 Given an array, this playbook sends each item in the array one at a time to another playbook. This allows you to run a playbook on each item of an array.
 
