@@ -1,0 +1,97 @@
+{
+  "name" : "[utility] String Is Not Empty",
+  "type" : "Pipe",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "Fail if the given string is empty.",
+  "jobList" : [ {
+    "id" : 22197,
+    "appCatalogItem" : {
+      "programName" : "TCPB - RegexExtract v1.0",
+      "displayName" : "Regex Extract",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Regex Extract 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "regex_pattern_mapping"
+      },
+      "value" : "[{\"key\":\"stringExists\",\"value\":\".+\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_nulls"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "capture_groups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#Trigger:2183:string!String"
+    } ],
+    "locationLeft" : 560.0,
+    "locationTop" : 430.0
+  }, {
+    "id" : 22200,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Fail Component",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "{}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"a\",\"value\":\"a\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 810.0,
+    "locationTop" : 510.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 22197,
+    "sourceTriggerId" : 2183
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 22197,
+    "targetJobId" : 22200
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2183,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 340.0,
+    "locationTop" : 430.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"string\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"String\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"string\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
