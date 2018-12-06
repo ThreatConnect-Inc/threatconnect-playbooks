@@ -1,0 +1,14 @@
+{
+  "package": {
+    "app_name": "TCPB_-_Punycode_Decoder_Encoder",
+    "app_version": "v1.0",
+    "excludes": [
+      "requirements.txt",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  },
+  "profile_include_dirs": [
+    "tcex.d/profiles"
+  ]
+}
