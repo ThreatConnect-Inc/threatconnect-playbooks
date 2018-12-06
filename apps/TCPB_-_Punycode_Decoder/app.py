@@ -13,11 +13,14 @@ class App(PlaybookApp):
 
         This method should contain the core logic of the App.
         """
-        if self.args.action == 'decode':
-            self.updated_domain = self.args.domain.encode('idna').decode('utf-8')
-        elif self.args.action == 'encode':
-            self.updated_domain = self.args.domain.encode('utf-8').decode('idna')
-        self.exit_message = '{} has been {}ed to {}'.format(self.args.domain, self.args.action, self.updated_domain)
+        action = self.tcex.playbook.read(self.args.action)
+        domain = self.tcex.playbook.read(self.args.domain)
+
+        if action == 'decode':
+            self.updated_domain = domain.encode('idna').decode('utf-8')
+        elif action == 'encode':
+            self.updated_domain = domain.encode('utf-8').decode('idna')
+        self.exit_message = '{} has been {}ed to {}'.format(domain, action, self.updated_domain)
 
     def write_output(self):
         """Write the Playbook output variables.
@@ -26,7 +29,9 @@ class App(PlaybookApp):
         configuration file.
         """
         self.tcex.log.info('Writing Output')
-        if self.args.action == 'decode':
+
+        action = self.tcex.playbook.read(self.args.action)
+        if action == 'decode':
             self.tcex.playbook.create_output('decodedDomain', self.updated_domain)
         else:
             self.tcex.playbook.create_output('encodedDomain', self.updated_domain)
