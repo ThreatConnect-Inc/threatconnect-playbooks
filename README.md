@@ -26,6 +26,8 @@ Documentation specific to Playbooks can be found here: https://docs.threatconnec
 
 Best practices for creating effective and maintainable Playbooks can be found here: [https://pb-constructs.hightower.space/playbooks/](https://pb-constructs.hightower.space/playbooks/).
 
+To create a job or playbook app using tcex, you can use the `tcinit` command provided in the [tcex](https://pypi.org/project/tcex/) package (documentation on this function is coming soon).
+
 ## Other Repositories
 
 We currently provide our customers with four repositories to share your projects with the rest of the ThreatConnect Community.
