@@ -2,6 +2,8 @@
 
 Contributing to the ThreatConnect Playbooks Github repository is a powerful and scalable way to make a positive impact to the infosec community. At ThreatConnect, we believe that Threat Intelligence can have a visible impact on your company’s success, and that orchestration and automation is a force multiplier for Threat Intelligence.
 
+**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
+
 ## Guidelines
 
 + All Playbooks, Components, and Playbook Apps must have their own README.md files.
