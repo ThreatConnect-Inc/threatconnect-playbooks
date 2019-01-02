@@ -27,8 +27,8 @@ class App(PlaybookApp):
 
         This method should contain the core logic of the App.
         """
-        # todo:add support for tcentity arrays
-        urls = self.tcex.playbook.read(self.args.urls, True)   # always return array
+        # todo:add support for tcentities/tcentity arrays
+        urls = self.tcex.playbook.read(self.args.urls, True)
 
         self.tcex.log.info('Processing {} urls'.format(len(urls)))
 

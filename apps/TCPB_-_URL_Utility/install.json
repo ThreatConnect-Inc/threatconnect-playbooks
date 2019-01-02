@@ -3,7 +3,7 @@
     "allowRunAsUser": false,
     "apiUserTokenParam": false,
     "commitHash": null,
-    "displayName": "URL Operations",
+    "displayName": "URL Utility",
     "features": [
         "secureParams",
         "appBuilderCompliant",
