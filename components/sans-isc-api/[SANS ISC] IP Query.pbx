@@ -1,0 +1,192 @@
+{
+  "name" : "[SANS ISC] IP Query",
+  "type" : "Pipe",
+  "panX" : 97.0,
+  "panY" : 114.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "jobList" : [ {
+    "id" : 24538,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "HTTP Client 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:24539:url!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : 620.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 24539,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.12"
+    },
+    "name" : "Set Variable 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"url\",\"value\":\"http://isc.sans.edu/api/ip/#Trigger:2495:ip_address!String\"}]"
+    } ],
+    "locationLeft" : 400.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"url\",\"type\":\"String\"}]"
+  }, {
+    "id" : 24542,
+    "appCatalogItem" : {
+      "programName" : "JSON <> XML",
+      "displayName" : "Convert JSON <> XML",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Convert JSON <> XML 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#App:24538:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_format"
+      },
+      "value" : "JSON"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_format"
+      },
+      "value" : "XML"
+    } ],
+    "locationLeft" : 840.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"json_xml.output\",\"type\":\"String\"}]"
+  }, {
+    "id" : 24544,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Json Path 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"ipData\",\"value\":\"ip\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:24542:json_xml.output!String"
+    } ],
+    "outputVariables" : "[{\"name\":\"ipData\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24539,
+    "targetJobId" : 24538
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24538,
+    "targetJobId" : 24542
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 24539,
+    "sourceTriggerId" : 2495
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24542,
+    "targetJobId" : 24544
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 24544,
+    "targetTriggerId" : 2495
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2495,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 160.0,
+    "locationTop" : 280.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"ip_address\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"IP Address\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ip_address\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"results\",\"value\":\"#App:24544:ipData!String\",\"displayValue\":\"#App:24544:ipData!String\"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
