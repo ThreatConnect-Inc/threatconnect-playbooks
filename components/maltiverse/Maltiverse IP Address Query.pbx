@@ -1,0 +1,125 @@
+{
+  "name" : "Maltiverse IP Address Query",
+  "type" : "Pipe",
+  "panX" : 636.0,
+  "panY" : 26.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "jobList" : [ {
+    "id" : 24552,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "HTTP Client 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:24553:url!String"
+    } ],
+    "locationLeft" : 590.0,
+    "locationTop" : 400.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 24553,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.12"
+    },
+    "name" : "Set Variable 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"url\",\"value\":\"https://api.maltiverse.com/ip/#Trigger:2497:ip!String\"}]"
+    } ],
+    "locationLeft" : 390.0,
+    "locationTop" : 400.0,
+    "outputVariables" : "[{\"name\":\"url\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24553,
+    "targetJobId" : 24552
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 24553,
+    "sourceTriggerId" : 2497
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 24552,
+    "targetTriggerId" : 2497
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2497,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 160.0,
+    "locationTop" : 280.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"ip\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"IP Address\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ip\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"results\",\"value\":\"#App:24552:http.content!String\",\"displayValue\":\"#App:24552:http.content!String\"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
