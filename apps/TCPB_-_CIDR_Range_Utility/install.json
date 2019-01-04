@@ -3,7 +3,7 @@
     "allowRunAsUser": false,
     "apiUserTokenParam": false,
     "commitHash": null,
-    "displayName": "CIDR Range Utility ",
+    "displayName": "CIDR Range Utility",
     "features": [
         "secureParams",
         "appBuilderCompliant",
@@ -61,7 +61,7 @@
     },
     "programLanguage": "PYTHON",
     "programMain": "run",
-    "programName": "TCAB_-_dd3cb892-a2c6-4708-8a39-3af501d19415_Dev",
+    "programName": "cidr_range_utility",
     "programVersion": "0.0.1",
     "publishOutFiles": [],
     "repeatingMinutes": [],

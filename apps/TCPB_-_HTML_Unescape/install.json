@@ -3,7 +3,7 @@
     "allowRunAsUser": false,
     "apiUserTokenParam": false,
     "commitHash": null,
-    "displayName": "IP Address Utility",
+    "displayName": "Unescape HTML",
     "features": [
         "secureParams",
         "appBuilderCompliant",
@@ -19,13 +19,13 @@
             "encrypt": false,
             "feedDeployer": false,
             "hidden": false,
-            "label": "IP Address",
-            "name": "ip_address",
+            "label": "String",
+            "name": "string",
             "playbookDataType": [
-                "String",
-                "StringArray"
+                "String"
             ],
-            "required": false,
+            "required": true,
+            "sequence": 1,
             "setup": false,
             "type": "String",
             "validValues": [
@@ -37,27 +37,7 @@
     "playbook": {
         "outputVariables": [
             {
-                "name": "ip.isPrivate",
-                "type": "String"
-            },
-            {
-                "name": "ip.version",
-                "type": "String"
-            },
-            {
-                "name": "ipv6.exploded",
-                "type": "String"
-            },
-            {
-                "name": "ipv6.compressed",
-                "type": "String"
-            },
-            {
-                "name": "ipv6.threatConnectFormat",
-                "type": "String"
-            },
-            {
-                "name": "ip.isReserved",
+                "name": "html.unescaped",
                 "type": "String"
             }
         ],
@@ -65,7 +45,7 @@
     },
     "programLanguage": "PYTHON",
     "programMain": "run",
-    "programName": "ip_address_utility",
+    "programName": "unescape_html",
     "programVersion": "0.0.1",
     "publishOutFiles": [],
     "repeatingMinutes": [],
