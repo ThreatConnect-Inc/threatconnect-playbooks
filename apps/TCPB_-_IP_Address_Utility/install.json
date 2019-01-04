@@ -3,7 +3,7 @@
     "allowRunAsUser": false,
     "apiUserTokenParam": false,
     "commitHash": null,
-    "displayName": "IP Address Operations",
+    "displayName": "IP Address Utility",
     "features": [
         "secureParams",
         "appBuilderCompliant",
@@ -65,7 +65,7 @@
     },
     "programLanguage": "PYTHON",
     "programMain": "run",
-    "programName": "TCAB_-_22762dbc-2470-4c51-9671-bb0150b11af7_Dev",
+    "programName": "ip_address_utility",
     "programVersion": "0.0.1",
     "publishOutFiles": [],
     "repeatingMinutes": [],
