@@ -14,6 +14,8 @@ It is not uncommon for Javascript malware to obfuscate itself using the [String.
 
 This playbook app replicates Javascript's [String.fromCharCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) function.
 
+In the `test_playbooks` directory included in this directory, there are some playbooks for testing/using this app.
+
 ## Release Notes
 
 ### 0.0.1
