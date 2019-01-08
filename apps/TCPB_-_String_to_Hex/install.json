@@ -1,0 +1,54 @@
+{
+  "programName": "string_to_hex",
+  "displayName": "String to Hex",
+  "programVersion": "0.0.1",
+  "programLanguage": "PYTHON",
+  "programMain": "run",
+  "languageVersion": "3.7",
+  "listDelimiter": "|",
+  "runtimeLevel": "Playbook",
+  "allowOnDemand": true,
+  "allowRunAsUser": false,
+  "apiUserTokenParam": false,
+  "note": "",
+  "playbook": {
+    "type": "Utility",
+    "outputVariables": [
+      {
+        "name": "hex",
+        "type": "String"
+      }
+    ]
+  },
+  "params": [
+    {
+      "name": "string",
+      "type": "String",
+      "label": "String",
+      "allowMultiple": false,
+      "encrypt": false,
+      "required": true,
+      "hidden": false,
+      "setup": false,
+      "feedDeployer": false,
+      "viewRows": 1,
+      "sequence": 1,
+      "validValues": [
+        "${TEXT}"
+      ],
+      "playbookDataType": [
+        "String"
+      ]
+    }
+  ],
+  "feeds": [],
+  "repeatingMinutes": [],
+  "publishOutFiles": [],
+  "runtimeContext": [],
+  "features": [
+    "aotExecutionEnabled",
+    "appBuilderCompliant",
+    "secureParams"
+  ],
+  "labels": []
+}
