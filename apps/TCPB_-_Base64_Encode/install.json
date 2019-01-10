@@ -1,0 +1,38 @@
+{
+    "allowOnDemand": true,
+    "displayName": "Base64 Encode",
+    "features": [
+        "secureParams"
+    ],
+    "languageVersion": "3.6",
+    "listDelimiter": "|",
+    "note": "Encode as base64.",
+    "params": [
+        {
+            "label": "String",
+            "name": "string",
+            "note": "The string to encode.",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ]
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "base64.encodedString",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programVersion": "1.0.0",
+    "runtimeLevel": "Playbook"
+}
