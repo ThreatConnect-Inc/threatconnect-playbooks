@@ -1,0 +1,79 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "Random Number Generator",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Max Random Integer",
+            "name": "max_rand",
+            "note": "A random integer between the minimum and maximum (which is set by this parameter) will be created.",
+            "default": 10,
+            "playbookDataType": [
+                "String"
+            ],
+            "required": false,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ]
+        },
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Min Random Integer",
+            "name": "min_rand",
+            "note": "A random integer between the minimum (which is set by this parameter) and maximum will be created.",
+            "default": 0,
+            "playbookDataType": [
+                "String"
+            ],
+            "required": false,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ]
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "random.integer",
+                "type": "String"
+            },
+            {
+                "name": "random.floatingPoint",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "random_numbers",
+    "programVersion": "0.0.1",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}
