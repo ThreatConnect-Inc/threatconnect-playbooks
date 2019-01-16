@@ -1,0 +1,13 @@
+{
+  "package": {
+    "app_name": "ioc_parser",
+    "app_version": "v0",
+    "bundle": false,
+    "excludes": [
+      "images",
+      "requirements.txt",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  }
+}
