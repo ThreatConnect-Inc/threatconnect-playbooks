@@ -5,7 +5,7 @@
   "panX" : -521.6224,
   "panY" : -45.1676,
   "logLevel" : "WARN",
-  "description" : "Generates Bro Intelligence Framework signatures from an indicator.",
+  "description" : "Generates Bro Intelligence Framework signatures from an indicator",
   "jobList" : [ {
     "id" : 18782,
     "appCatalogItem" : {
