@@ -5,7 +5,7 @@
   "panX" : -150.6775,
   "panY" : 52.5091,
   "logLevel" : "TRACE",
-  "description" : "This playbook checks the status of a feed and sends a notificaiton if there is a fault in the feed status.",
+  "description" : "Sends a notification if there's a problem with a feed.",
   "jobList" : [ {
     "id" : 20012,
     "appCatalogItem" : {
