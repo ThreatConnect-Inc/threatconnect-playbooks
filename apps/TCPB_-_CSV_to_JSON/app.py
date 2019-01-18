@@ -24,3 +24,4 @@ class App(PlaybookApp):
         self.tcex.playbook.create_output('csvToJson.json', output_json, 'String')
 
         csv_string = self.tcex.playbook.read(self.args.csv_string)
+        self.exit_message = 'CSV converted to JSON!'
