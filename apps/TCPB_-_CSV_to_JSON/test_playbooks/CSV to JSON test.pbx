@@ -1,54 +1,64 @@
 {
-  "name" : "hamming distance test",
+  "name" : "CSV to JSON test",
   "type" : "Standard",
   "panX" : 20.0,
   "panY" : 20.0,
   "logLevel" : "WARN",
   "description" : "",
-  "version" : "1.2",
+  "version" : "1.6",
+  "comment" : "Auto-Saved on Fri Jan 18 22:53:48 UTC 2019",
   "jobList" : [ {
-    "id" : 174,
+    "id" : 206,
     "appCatalogItem" : {
-      "programName" : "hamming distance v0",
-      "displayName" : "Hamming Distance",
+      "programName" : "csv to json v0",
+      "displayName" : "CSV to JSON",
       "programVersion" : "0.0.1"
     },
-    "name" : "Hamming Distance 1",
+    "name" : "CSV to JSON 1",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "string_2"
+        "paramName" : "comment_character"
       },
-      "value" : "cba"
+      "value" : "#"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "string_1"
+        "paramName" : "delimiter"
       },
-      "value" : "abc"
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "csv_string"
+      },
+      "value" : "foo,bar\n1,2"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "heading_row"
+      },
+      "value" : ""
     } ],
-    "locationLeft" : 590.0,
-    "locationTop" : 480.0,
-    "outputVariables" : "[{\"name\":\"hammingDistance\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"hammingDistance.percentage\",\"type\":\"String\",\"loopVariables\":false}]"
+    "locationLeft" : 540.0,
+    "locationTop" : 380.0
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 174,
-    "sourceTriggerId" : 120
+    "targetJobId" : 206,
+    "sourceTriggerId" : 146
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : true,
-    "sourceJobId" : 174,
-    "targetTriggerId" : 120
+    "sourceJobId" : 206,
+    "targetTriggerId" : 146
   } ],
   "playbookTriggerList" : [ {
-    "id" : 120,
+    "id" : 146,
     "name" : "HttpLink Trigger 1",
     "type" : "HttpLink",
     "eventType" : "External",
-    "locationLeft" : 370.0,
-    "locationTop" : 340.0,
+    "locationLeft" : 280.0,
+    "locationTop" : 260.0,
     "httpResponseHeader" : "[]",
-    "httpResponseBody" : "#App:174:hammingDistance!String-#App:174:hammingDistance.percentage!String",
+    "httpResponseBody" : "#App:206:csvToJson.json!String",
     "anyOrg" : true,
     "playbookTriggerFilterList" : [ ],
     "cacheMinutes" : 120,
