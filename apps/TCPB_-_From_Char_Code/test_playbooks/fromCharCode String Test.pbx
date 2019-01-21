@@ -9,7 +9,7 @@
   "jobList" : [ {
     "id" : 68,
     "appCatalogItem" : {
-      "programName" : "from_char_code v0",
+      "programName" : "from char code v0",
       "displayName" : "Convert Character Code to String",
       "programVersion" : "0.0.1"
     },

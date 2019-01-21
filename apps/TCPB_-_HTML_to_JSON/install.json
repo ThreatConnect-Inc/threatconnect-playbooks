@@ -1,0 +1,71 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "HTML to JSON",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "HTML String",
+            "name": "html_string",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 1,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 2
+        },
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Convert Tables",
+            "name": "convert_tables",
+            "note": "If this is set, the app will only convert the tables in the HTML String. If not set, all of the html will be converted.",
+            "playbookDataType": [],
+            "required": false,
+            "sequence": 2,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "htmlToJson.json",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "html_to_json",
+    "programVersion": "0.1.0",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}

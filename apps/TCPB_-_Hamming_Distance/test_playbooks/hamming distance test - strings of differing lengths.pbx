@@ -9,7 +9,7 @@
   "jobList" : [ {
     "id" : 176,
     "appCatalogItem" : {
-      "programName" : "hamming_distance v0",
+      "programName" : "hamming distance v0",
       "displayName" : "Hamming Distance",
       "programVersion" : "0.0.1"
     },

@@ -1,0 +1,2 @@
+tcex>=0.9,<1.0
+git+https://gitlab.com/fhightower/csv-to-json.git
