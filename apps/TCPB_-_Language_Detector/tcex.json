@@ -1,0 +1,13 @@
+{
+  "package": {
+    "app_name": "language_detector",
+    "app_version": "v0",
+    "bundle": false,
+    "excludes": [
+      "images",
+      "requirements.txt",
+      "tcex.d"
+    ],
+    "outdir": "target"
+  }
+}
