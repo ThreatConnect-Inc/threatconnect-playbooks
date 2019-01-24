@@ -2,4 +2,4 @@
 
 This components gets the value of an array at the given index.
 
-Documentation is available at [https://tc.hightower.space/post/components/get-array-value-at-index/](https://tc.hightower.space/post/components/get-array-value-at-index/).
+Documentation is available at [https://tc.hightower.space/post/playbook-components/get-array-value-at-index/](https://tc.hightower.space/post/playbook-components/get-array-value-at-index/).

@@ -1,0 +1,56 @@
+{
+  "programName": "language_detector",
+  "displayName": "Language Detector",
+  "programVersion": "0.1.0",
+  "programLanguage": "PYTHON",
+  "programMain": "run",
+  "languageVersion": "3.7",
+  "listDelimiter": "|",
+  "runtimeLevel": "Playbook",
+  "allowOnDemand": true,
+  "allowRunAsUser": false,
+  "apiUserTokenParam": false,
+  "playbook": {
+    "type": "Utility",
+    "outputVariables": [
+      {
+        "name": "detectedLanguageCode",
+        "type": "String"
+      },
+      {
+        "name": "detectedLanguageProbability",
+        "type": "String"
+      }
+    ]
+  },
+  "params": [
+    {
+      "name": "text",
+      "type": "String",
+      "label": "Text",
+      "allowMultiple": false,
+      "encrypt": false,
+      "required": true,
+      "hidden": false,
+      "setup": false,
+      "feedDeployer": false,
+      "viewRows": 2,
+      "sequence": 1,
+      "validValues": [
+        "${TEXT}"
+      ],
+      "playbookDataType": [
+        "String"
+      ]
+    }
+  ],
+  "feeds": [],
+  "repeatingMinutes": [],
+  "publishOutFiles": [],
+  "runtimeContext": [],
+  "features": [
+    "secureParams",
+    "appBuilderCompliant"
+  ],
+  "labels": []
+}
