@@ -1,0 +1,73 @@
+{
+  "programName": "pyparsing_grammar_search",
+  "displayName": "Pyparsing Grammar Search",
+  "programVersion": "0.1.0",
+  "programLanguage": "PYTHON",
+  "programMain": "run",
+  "languageVersion": "3.7",
+  "listDelimiter": "|",
+  "runtimeLevel": "Playbook",
+  "allowOnDemand": true,
+  "allowRunAsUser": false,
+  "apiUserTokenParam": false,
+  "playbook": {
+    "type": "Utility",
+    "outputVariables": [
+      {
+        "name": "pyparser.output",
+        "type": "String"
+      }
+    ]
+  },
+  "params": [
+    {
+      "name": "grammar",
+      "type": "String",
+      "label": "Grammar",
+      "allowMultiple": false,
+      "encrypt": false,
+      "required": true,
+      "hidden": false,
+      "setup": false,
+      "feedDeployer": false,
+      "viewRows": 1,
+      "note": "A pyparsing grammar.",
+      "sequence": 1,
+      "validValues": [
+        "${TEXT}"
+      ],
+      "playbookDataType": [
+        "String"
+      ]
+    },
+    {
+      "name": "string",
+      "type": "String",
+      "label": "String",
+      "allowMultiple": false,
+      "encrypt": false,
+      "required": true,
+      "hidden": false,
+      "setup": false,
+      "feedDeployer": false,
+      "viewRows": 2,
+      "note": "The string through which the grammar will search.",
+      "sequence": 2,
+      "validValues": [
+        "${TEXT}"
+      ],
+      "playbookDataType": [
+        "String"
+      ]
+    }
+  ],
+  "feeds": [],
+  "repeatingMinutes": [],
+  "publishOutFiles": [],
+  "runtimeContext": [],
+  "features": [
+    "secureParams",
+    "appBuilderCompliant"
+  ],
+  "labels": []
+}
