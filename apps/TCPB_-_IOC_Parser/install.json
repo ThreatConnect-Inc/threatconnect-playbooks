@@ -1,0 +1,166 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "IOC Parser",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Text",
+            "name": "text",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 1,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 2
+        },
+        {
+            "allowMultiple": false,
+            "default": "true",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Parse Host from Email Address",
+            "name": "parse_host_from_email_address",
+            "playbookDataType": [],
+            "required": false,
+            "sequence": 3,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "default": "true",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Parse Address from CIDR",
+            "name": "parse_address_from_cidr",
+            "playbookDataType": [],
+            "required": false,
+            "sequence": 4,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "default": "true",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Parse Host from URL",
+            "name": "parse_host_from_url",
+            "playbookDataType": [],
+            "required": false,
+            "sequence": 5,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "iocParser.bitcoinAddresses",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.asns",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.cves",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.domains",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.emailAddresses",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.googleAnalyticsIds",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.ipv4Cidrs",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.ipv4s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.ipv6s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.md5s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.registryKeyPaths",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.sha1s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.sha256s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.sha512s",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.simpleEmailAddresses",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.urls",
+                "type": "StringArray"
+            },
+            {
+                "name": "iocParser.googleAdsensePublisherIds",
+                "type": "StringArray"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "ioc_parser",
+    "programVersion": "0.1.0",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}

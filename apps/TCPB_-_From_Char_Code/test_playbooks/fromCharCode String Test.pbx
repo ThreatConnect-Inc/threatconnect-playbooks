@@ -1,0 +1,54 @@
+{
+  "name" : "fromCharCode String Test",
+  "type" : "Standard",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "DEBUG",
+  "description" : "",
+  "version" : "1.8",
+  "jobList" : [ {
+    "id" : 68,
+    "appCatalogItem" : {
+      "programName" : "from char code v0",
+      "displayName" : "Convert Character Code to String",
+      "programVersion" : "0.0.1"
+    },
+    "name" : "fromCharCode 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "character_codes"
+      },
+      "value" : "118, 97, 114, 32, 115, 111, 109, 101, 115, 116, 114, 105, 110, 103"
+    } ],
+    "locationLeft" : 800.0,
+    "locationTop" : 590.0,
+    "outputVariables" : "[{\"name\":\"fromCharCode.convertedString\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 68,
+    "targetTriggerId" : 33
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 68,
+    "sourceTriggerId" : 33
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 33,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 530.0,
+    "locationTop" : 420.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:68:fromCharCode.convertedString!String",
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

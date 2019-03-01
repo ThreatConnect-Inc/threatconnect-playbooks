@@ -1,0 +1,59 @@
+{
+  "name" : "hamming distance test - strings of differing lengths",
+  "type" : "Standard",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.2",
+  "jobList" : [ {
+    "id" : 176,
+    "appCatalogItem" : {
+      "programName" : "hamming distance v0",
+      "displayName" : "Hamming Distance",
+      "programVersion" : "0.0.1"
+    },
+    "name" : "Hamming Distance 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_1"
+      },
+      "value" : "a"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_2"
+      },
+      "value" : "ab"
+    } ],
+    "locationLeft" : 590.0,
+    "locationTop" : 480.0,
+    "outputVariables" : "[{\"name\":\"hammingDistance\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 176,
+    "sourceTriggerId" : 122
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 176,
+    "targetTriggerId" : 122
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 122,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 370.0,
+    "locationTop" : 340.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:176:hammingDistance!String",
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

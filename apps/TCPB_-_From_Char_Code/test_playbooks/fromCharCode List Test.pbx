@@ -1,0 +1,91 @@
+{
+  "name" : "fromCharCode List Test",
+  "type" : "Standard",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "DEBUG",
+  "description" : "",
+  "version" : "1.7",
+  "jobList" : [ {
+    "id" : 68,
+    "appCatalogItem" : {
+      "programName" : "from char code v0",
+      "displayName" : "Convert Character Code to String",
+      "programVersion" : "0.0.1"
+    },
+    "name" : "fromCharCode 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "character_codes"
+      },
+      "value" : "#App:70:codes!StringArray"
+    } ],
+    "locationLeft" : 800.0,
+    "locationTop" : 590.0,
+    "outputVariables" : "[{\"name\":\"fromCharCode.convertedString\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 70,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Json Path 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "{\"codes\": [118, 97, 114, 32, 115, 111, 109, 101, 115, 116, 114, 105, 110, 103]}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[{\"key\":\"codes\",\"value\":\"codes\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 800.0,
+    "locationTop" : 420.0,
+    "outputVariables" : "[{\"name\":\"codes\",\"type\":\"StringArray\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 68,
+    "targetTriggerId" : 33
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 70,
+    "targetJobId" : 68
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 70,
+    "sourceTriggerId" : 33
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 33,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 530.0,
+    "locationTop" : 420.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:68:fromCharCode.convertedString!String",
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

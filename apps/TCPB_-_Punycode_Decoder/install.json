@@ -1,0 +1,52 @@
+{
+    "allowOnDemand": true,
+    "displayName": "Punycode Decoder/Encoder",
+    "features": [
+        "secureParams",
+        "aotExecutionEnabled"
+    ],
+    "languageVersion": "3.6",
+    "listDelimiter": "|",
+    "note": "Decode/encode a domain.",
+    "params": [
+        {
+            "label": "Action",
+            "name": "action",
+            "note": "Whether to decode or encode domain.",
+            "playbookDataType": [
+                "String"
+            ],
+            "type": "Choice",
+            "validValues": [
+                "encode",
+                "decode"
+            ]
+        },
+        {
+            "label": "Domain",
+            "name": "domain",
+            "note": "The domain you would like to decode or encode.",
+            "playbookDataType": [
+                "String"
+            ],
+            "type": "String"
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "decodedDomain",
+                "type": "String"
+            },
+            {
+                "name": "encodedDomain",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programVersion": "1.0.0",
+    "runtimeLevel": "Playbook"
+}

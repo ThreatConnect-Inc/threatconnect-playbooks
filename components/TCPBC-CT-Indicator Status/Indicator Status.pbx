@@ -1,0 +1,66 @@
+{
+  "name" : "Indicator Status",
+  "type" : "Pipe",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "jobList" : [ {
+    "id" : 23405,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "ThreatConnect API 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : "{\n\"active\": #Trigger:2321:active!String\n}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#Trigger:2321:indicatorType!String/#Trigger:2321:indicator!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "PUT"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"owner\",\"value\":\"#Trigger:2321:owner!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 320.0,
+    "locationTop" : 430.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 23405,
+    "sourceTriggerId" : 2321
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2321,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 100.0,
+    "locationTop" : 430.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"owner\",\"type\":\"String\"},{\"name\":\"active\",\"type\":\"String\"},{\"name\":\"indicator\",\"type\":\"String\"},{\"name\":\"indicatorType\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Indicator\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"indicator\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Owner\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"owner\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Indicator Type (must be plural)\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"indicatorType\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Indicator active? (Check the box to set the indicator's status to active)\",\"dataType\":\"Boolean\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"active\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

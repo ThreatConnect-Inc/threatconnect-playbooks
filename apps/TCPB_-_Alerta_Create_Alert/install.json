@@ -1,0 +1,174 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "Create Alerta Alert",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "encrypt": true,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Alerta API Key",
+            "name": "alerta_api_key",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 0,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${KEYCHAIN}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Alerta API Endpoint",
+            "name": "alerta_api_endpoint",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 2,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Resource Under Alarm",
+            "name": "resource_under_alarm",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 2,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Event Name",
+            "name": "event_name",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 3,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "default": "Production",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Environment",
+            "name": "environment",
+            "note": "Used to namespace the resource",
+            "playbookDataType": [],
+            "required": true,
+            "sequence": 4,
+            "setup": false,
+            "type": "Choice",
+            "validValues": [
+                "Production",
+                "Development"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Severity",
+            "name": "severity",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 5,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Services",
+            "name": "services",
+            "playbookDataType": [
+                "String",
+                "StringArray"
+            ],
+            "required": true,
+            "sequence": 6,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "alerta.response",
+                "type": "String"
+            },
+            {
+                "name": "alerta.alertId",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "alerta_create_alert",
+    "programVersion": "0.1.0",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}

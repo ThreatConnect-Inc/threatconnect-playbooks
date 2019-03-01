@@ -1,0 +1,81 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "Verify DataStore Data",
+  "type" : "Standard",
+  "panX" : 197.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "This will only need to be ran to verify the first playbook created the data that is expected from the \"Populate DataStore with Keywords\" playbook.",
+  "jobList" : [ {
+    "id" : 8360,
+    "appCatalogItem" : {
+      "programName" : "DataStore",
+      "displayName" : "DataStore",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Data Store 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "domain_type"
+      },
+      "value" : "Organization"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "type_name"
+      },
+      "value" : "keywords"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "organization_name"
+      },
+      "value" : "DOITNC"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "request_entity"
+      },
+      "value" : "{ \"from\" : 0, \"size\": 5000}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "db_method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : 490.0,
+    "locationTop" : 310.0,
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 8360,
+    "sourceTriggerId" : 1045
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 8360,
+    "targetTriggerId" : 1045
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1045,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 210.0,
+    "locationTop" : 190.0,
+    "httpBasicAuthEnable" : false,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:8360:datastore.response!String",
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "8/16/18 3:57 PM"
+}

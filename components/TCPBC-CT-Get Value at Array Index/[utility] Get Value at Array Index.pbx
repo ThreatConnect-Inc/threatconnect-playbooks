@@ -1,0 +1,126 @@
+{
+  "definitionVersion" : "1.0.0",
+  "name" : "[utility] Get Value at Array Index",
+  "type" : "Pipe",
+  "panX" : 192.0,
+  "panY" : 368.0,
+  "logLevel" : "DEBUG",
+  "description" : "Get the value of an array at the given index.",
+  "jobList" : [ {
+    "id" : 21774,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.3"
+    },
+    "name" : "Json Path 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:21778:stringifiedList!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"valueAtIndex\",\"value\":\"$[#Trigger:2124:index!String]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 410.0,
+    "locationTop" : 220.0,
+    "outputVariables" : "[{\"name\":\"valueAtIndex\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21777,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Join Array 1",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"arrayString\",\"value\":\"#Trigger:2124:array!StringArray\"}]"
+    } ],
+    "locationLeft" : 410.0,
+    "locationTop" : 110.0,
+    "outputVariables" : "[{\"name\":\"arrayString\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  }, {
+    "id" : 21778,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.10"
+    },
+    "name" : "Set Variable 2",
+    "enableNotifications" : false,
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"stringifiedList\",\"value\":\"[#App:21777:arrayString!String]\"}]"
+    } ],
+    "locationLeft" : 620.0,
+    "locationTop" : 110.0,
+    "outputVariables" : "[{\"name\":\"stringifiedList\",\"type\":\"String\"}]",
+    "playbookRetryEnabled" : false
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21777,
+    "targetJobId" : 21778
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21778,
+    "targetJobId" : 21774
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 21774,
+    "targetTriggerId" : 2124
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 21777,
+    "sourceTriggerId" : 2124
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2124,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 200.0,
+    "locationTop" : 110.0,
+    "httpBasicAuthEnable" : false,
+    "anyOrg" : true,
+    "orFilters" : false,
+    "fireOnDuplicate" : false,
+    "renderBodyAsTip" : false,
+    "outputVariables" : "[{\"name\":\"index\",\"type\":\"String\"},{\"name\":\"array\",\"type\":\"StringArray\"}]",
+    "pipeInputParams" : "[{\"label\":\"Array\",\"dataType\":\"String\",\"playbookDataType\":\"StringArray\",\"required\":true,\"name\":\"array\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Array Index (enter a #)\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"index\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"valueAtIndex\",\"value\":\"#App:21774:valueAtIndex!String \",\"displayValue\":\"#App:21774:valueAtIndex!String \"}]"
+  } ],
+  "exportablePipes" : [ ],
+  "dateExported" : "8/15/18 5:30 PM"
+}

@@ -1,0 +1,76 @@
+{
+    "allowOnDemand": true,
+    "displayName": "Text Blob",
+    "languageVersion": "3.6.x",
+    "listDelimiter": "|",
+    "note": "Playbook app wrapper for TextBlob (https://github.com/sloria/TextBlob).",
+    "params": [
+    {
+        "required": true,
+        "type": "String",
+        "label": "String",
+        "name": "string"
+    },
+    {
+        "note": "The number of characters included in an n-gram",
+        "type": "String",
+        "label": "n-gram length",
+        "name": "n_gram",
+        "default": "3"
+    }],
+    "playbook":
+    {
+        "outputVariables": [
+        {
+            "type": "KeyValueArray",
+            "name": "json"
+        },
+        {
+            "type": "StringArray",
+            "name": "nounPhrases"
+        },
+        {
+            "type": "StringArray",
+            "name": "nGrams"
+        },
+        {
+            "type": "KeyValueArray",
+            "name": "npCounts"
+        },
+        {
+            "type": "String",
+            "name": "polarity"
+        },
+        {
+            "type": "String",
+            "name": "subjectivity"
+        },
+        {
+            "type": "StringArray",
+            "name": "sentences"
+        },
+        {
+            "type": "StringArray",
+            "name": "tokens"
+        },
+        {
+            "type": "KeyValue",
+            "name": "tags"
+        },
+        {
+            "type": "StringArray",
+            "name": "words"
+        },
+        {
+            "type": "KeyValueArray",
+            "name": "wordCounts"
+        }],
+        "retry": {},
+        "type": "Utility"
+    },
+    "programLanguage": "python",
+    "programMain": "text_blob",
+    "programVersion": "0.1.0",
+    "repeatingMinutes": [],
+    "runtimeLevel": "Playbook"
+}

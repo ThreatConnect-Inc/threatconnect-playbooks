@@ -1,0 +1,194 @@
+{
+  "name" : "[SANS ISC] ASN Query",
+  "type" : "Pipe",
+  "panX" : 99.0,
+  "panY" : 111.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "jobList" : [ {
+    "id" : 24560,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "HTTP Client 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:24561:url!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 620.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 24561,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.12"
+    },
+    "name" : "Set Variable 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"url\",\"value\":\"https://isc.sans.edu/api/asnum/10/#Trigger:2499:asn!String\"}]"
+    } ],
+    "locationLeft" : 400.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"url\",\"type\":\"String\"}]"
+  }, {
+    "id" : 24562,
+    "appCatalogItem" : {
+      "programName" : "JSON <> XML",
+      "displayName" : "Convert JSON <> XML",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Convert JSON <> XML 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_format"
+      },
+      "value" : "XML"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_content"
+      },
+      "value" : "#App:24560:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_format"
+      },
+      "value" : "JSON"
+    } ],
+    "locationLeft" : 840.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"json_xml.output\",\"type\":\"String\"}]"
+  }, {
+    "id" : 24563,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.6"
+    },
+    "name" : "Json Path 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:24562:json_xml.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"data\",\"value\":\"asnum\"}]"
+    } ],
+    "locationLeft" : 1050.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"data\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24561,
+    "targetJobId" : 24560
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24560,
+    "targetJobId" : 24562
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 24561,
+    "sourceTriggerId" : 2499
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24562,
+    "targetJobId" : 24563
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 24563,
+    "targetTriggerId" : 2499
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2499,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 160.0,
+    "locationTop" : 280.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"asn\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"ASN\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"asn\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"results\",\"value\":\"#App:24563:data!String \",\"displayValue\":\"#App:24563:data!String \"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

@@ -1,0 +1,152 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "URL Utility",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Remove Query Strings",
+            "name": "remove_query_strings",
+            "note": "If this is selected, the app will return all of the given urls with their query strings removed (it will output these urls as the \"url.updatedUrls\" variable). This can be used in conjunction with the \"Remove Fragments\" and \"Remove Path\" options.",
+            "playbookDataType": [],
+            "required": false,
+            "sequence": 1,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [
+              "${TEXT}"
+            ],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "URL(s)",
+            "name": "urls",
+            "playbookDataType": [
+                "String",
+                "StringArray"
+            ],
+            "required": true,
+            "sequence": 0,
+            "setup": false,
+            "type": "String",
+            "validValues": [],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Remove Fragments",
+            "name": "remove_fragments",
+            "note": "If this is selected, the app will return all of the given urls with their fragments removed (it will output these urls as the \"url.updatedUrls\" variable). This can be used in conjunction with the \"Remove Query Strings\" and \"Remove Path\" options.",
+            "playbookDataType": [],
+            "required": false,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        },
+        {
+            "allowMultiple": false,
+            "default": "false",
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "Remove Path",
+            "name": "remove_path",
+            "note": "If this is selected, the app will return all of the given urls with their paths removed (it will output these urls as the \"url.updatedUrls\" variable). This can be used in conjunction with the \"Remove Query Strings\" and \"Remove Fragments\" options.",
+            "playbookDataType": [],
+            "required": false,
+            "setup": false,
+            "type": "Boolean",
+            "validValues": [],
+            "viewRows": 1
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "url.schemes",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.schemes.0",
+                "type": "String"
+            },
+            {
+                "name": "url.paths",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.paths.0",
+                "type": "String"
+            },
+            {
+                "name": "url.params",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.params.0",
+                "type": "String"
+            },
+            {
+                "name": "url.queries",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.queries.0",
+                "type": "String"
+            },
+            {
+                "name": "url.fragments",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.fragments.0",
+                "type": "String"
+            },
+            {
+                "name": "url.domainNames",
+                "type": "StringArray"
+            },
+            {
+                "name": "url.domainNames.0",
+                "type": "String"
+            },
+            {
+                "name": "url.updatedUrls",
+                "type": "StringArray"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "url_utility",
+    "programVersion": "0.0.1",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}

@@ -1,0 +1,35 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "XKCD Random Number Generator",
+    "note": "See https://xkcd.com/221/",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "xkcdRandom.integer",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "xkcd_random_number",
+    "programVersion": "0.0.1",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}

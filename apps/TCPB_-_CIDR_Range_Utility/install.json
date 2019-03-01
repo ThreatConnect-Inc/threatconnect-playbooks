@@ -1,0 +1,70 @@
+{
+    "allowOnDemand": true,
+    "allowRunAsUser": false,
+    "apiUserTokenParam": false,
+    "commitHash": null,
+    "displayName": "CIDR Range Utility",
+    "features": [
+        "secureParams",
+        "appBuilderCompliant",
+        "aotExecutionEnabled"
+    ],
+    "feeds": [],
+    "labels": [],
+    "languageVersion": "3.7",
+    "listDelimiter": "|",
+    "params": [
+        {
+            "allowMultiple": false,
+            "encrypt": false,
+            "feedDeployer": false,
+            "hidden": false,
+            "label": "CIDR Range",
+            "name": "cidr_range",
+            "playbookDataType": [
+                "String"
+            ],
+            "required": true,
+            "sequence": 1,
+            "setup": false,
+            "type": "String",
+            "validValues": [
+                "${TEXT}"
+            ],
+            "viewRows": 1
+        }
+    ],
+    "playbook": {
+        "outputVariables": [
+            {
+                "name": "cidr.addressCount",
+                "type": "String"
+            },
+            {
+                "name": "cidr.rangeString",
+                "type": "String"
+            },
+            {
+                "name": "cidr.broadcastAddress",
+                "type": "String"
+            },
+            {
+                "name": "cidr.hostmask",
+                "type": "String"
+            },
+            {
+                "name": "cidr.netmask",
+                "type": "String"
+            }
+        ],
+        "type": "Utility"
+    },
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programName": "cidr_range_utility",
+    "programVersion": "0.0.1",
+    "publishOutFiles": [],
+    "repeatingMinutes": [],
+    "runtimeContext": [],
+    "runtimeLevel": "Playbook"
+}
