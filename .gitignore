@@ -9,6 +9,9 @@
 .vscode
 nbproject
 *.iml
+<<<<<<< HEAD
+.DS_Store
+=======
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -114,3 +117,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+>>>>>>> 3dd0dc6860db5a02d512e7c36b41930a40fa6002

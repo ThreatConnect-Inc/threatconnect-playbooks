@@ -1,0 +1,187 @@
+{
+  "name" : "Get ReversingLabs Historic TitaniumCloud Multi-AV Scan Records",
+  "type" : "Pipe",
+  "panX" : 50.0,
+  "panY" : 506.0,
+  "logLevel" : "WARN",
+  "description" : "This Component is meant for taking file hash indicators in ThreatConnect and querying ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records. The Component will query ReversingLabs' API, pull back the JSON response, and parse the various fields out, exposing them as output variables. Additionally, the raw JSON response is exposed as an output variable so users can work directly with the JSON if they so choose. \n\n\nThe Component requires the following configuration parameters:\n- **Input Hash Value**: The MD5, SHA1, or SHA256 of the File IOC that you want to query in ReversingLabs.\n\n- **Input Hash Type**: You need to tell ReversingLabs the file hash algorithm of the File IOC.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.\n\n\nFor more information on ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)",
+  "jobList" : [ {
+    "id" : 5036,
+    "appCatalogItem" : {
+      "programName" : "Basic Encoding",
+      "displayName" : "Encode Base64",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Encode Credentials",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "basicUser"
+      },
+      "value" : "#Trigger:506:rl.username!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "password"
+      }
+    } ],
+    "locationLeft" : 750.0,
+    "locationTop" : -330.0,
+    "outputVariables" : "[{\"name\":\"basic.encode.signature\",\"type\":\"String\"}]"
+  }, {
+    "id" : 5037,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.9"
+    },
+    "name" : "Malware XREF Query",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Authorization\",\"value\":\"Basic #App:5036:basic.encode.signature!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://#Trigger:506:ticloud.server!String/api/xref/v2/query/#Trigger:506:hash.type!String/#Trigger:506:hash.value!String?format=json"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 1000.0,
+    "locationTop" : -330.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 5038,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.1"
+    },
+    "name" : "Parse Malware XREF Response",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"rl.sample.xref.scanners\",\"value\":\"rl.sample.xref[].scanners[]\"},{\"key\":\"rl.sample.xref.results\",\"value\":\"rl.sample.xref[].results[]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"rl.sample.sha1\",\"value\":\"rl.sample.sha1\"},{\"key\":\"rl.sample.first_seen_on\",\"value\":\"rl.sample.first_seen_on\"},{\"key\":\"rl.sample.last_scanned_on\",\"value\":\"rl.sample.last_scanned_on\"},{\"key\":\"rl.sample.last_seen_on\",\"value\":\"rl.sample.last_seen_on\"},{\"key\":\"rl.sample.single_scan\",\"value\":\"rl.sample.single_scan\"},{\"key\":\"rl.sample.first_scanned_on\",\"value\":\"rl.sample.first_scanned_on\"},{\"key\":\"rl.sample.sample_type\",\"value\":\"rl.sample.sample_type\"},{\"key\":\"rl.sample.sample_size\",\"value\":\"rl.sample.sample_size\"},{\"key\":\"rl.sample.xref.scanner_match\",\"value\":\"rl.sample.xref[].scanner_match\"},{\"key\":\"rl.sample.xref.scanner_count\",\"value\":\"rl.sample.xref[].scanner_count\"},{\"key\":\"rl.sample.xref.scanned_on\",\"value\":\"rl.sample.xref[].scanned_on\"},{\"key\":\"rl.sample.sha384\",\"value\":\"rl.sample.sha384\"},{\"key\":\"rl.sample.sha256\",\"value\":\"rl.sample.sha256\"},{\"key\":\"rl.sample.sha512\",\"value\":\"rl.sample.sha512\"},{\"key\":\"rl.sample.ripemd160\",\"value\":\"rl.sample.ripemd160\"},{\"key\":\"rl.sample.md5\",\"value\":\"rl.sample.md5\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:5037:http.content!String"
+    } ],
+    "locationLeft" : 750.0,
+    "locationTop" : -90.0,
+    "outputVariables" : "[{\"name\":\"rl.sample.last_scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.results\",\"type\":\"StringArray\"},{\"name\":\"rl.sample.sample_size\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanner_count\",\"type\":\"String\"},{\"name\":\"rl.sample.md5\",\"type\":\"String\"},{\"name\":\"rl.sample.sample_type\",\"type\":\"String\"},{\"name\":\"rl.sample.single_scan\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanner_match\",\"type\":\"String\"},{\"name\":\"rl.sample.sha512\",\"type\":\"String\"},{\"name\":\"rl.sample.first_scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.last_seen_on\",\"type\":\"String\"},{\"name\":\"rl.sample.sha256\",\"type\":\"String\"},{\"name\":\"rl.sample.ripemd160\",\"type\":\"String\"},{\"name\":\"rl.sample.first_seen_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanners\",\"type\":\"StringArray\"},{\"name\":\"rl.sample.sha1\",\"type\":\"String\"},{\"name\":\"rl.sample.sha384\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 5036,
+    "sourceTriggerId" : 506
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 5037,
+    "targetJobId" : 5038
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 5036,
+    "targetJobId" : 5037
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 5038,
+    "targetTriggerId" : 506
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 506,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 490.0,
+    "locationTop" : -330.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"rl.password\",\"type\":\"String\"},{\"name\":\"hash.type\",\"type\":\"String\"},{\"name\":\"hash.value\",\"type\":\"String\"},{\"name\":\"rl.username\",\"type\":\"String\"},{\"name\":\"ticloud.server\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Input Hash Value\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.value\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"Input Hash Type\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.type\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"rl.sample.sha1\",\"value\":\"#App:5038:rl.sample.sha1!String\",\"displayValue\":\"#App:5038:rl.sample.sha1!String\"},{\"key\":\"rl.sample.first_seen_on\",\"value\":\"#App:5038:rl.sample.first_seen_on!String\",\"displayValue\":\"#App:5038:rl.sample.first_seen_on!String\"},{\"key\":\"rl.sample.last_scanned_on\",\"value\":\"#App:5038:rl.sample.last_scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.last_scanned_on!String\"},{\"key\":\"rl.sample.last_seen_on\",\"value\":\"#App:5038:rl.sample.last_seen_on!String\",\"displayValue\":\"#App:5038:rl.sample.last_seen_on!String\"},{\"key\":\"rl.sample.single_scan\",\"value\":\"#App:5038:rl.sample.single_scan!String\",\"displayValue\":\"#App:5038:rl.sample.single_scan!String\"},{\"key\":\"rl.sample.first_scanned_on\",\"value\":\"#App:5038:rl.sample.first_scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.first_scanned_on!String\"},{\"key\":\"rl.sample.sample_type\",\"value\":\"#App:5038:rl.sample.sample_type!String\",\"displayValue\":\"#App:5038:rl.sample.sample_type!String\"},{\"key\":\"rl.sample.sample_size\",\"value\":\"#App:5038:rl.sample.sample_size!String\",\"displayValue\":\"#App:5038:rl.sample.sample_size!String\"},{\"key\":\"rl.sample.xref.scanner_match\",\"value\":\"#App:5038:rl.sample.xref.scanner_match!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanner_match!String\"},{\"key\":\"rl.sample.xref.scanner_count\",\"value\":\"#App:5038:rl.sample.xref.scanner_count!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanner_count!String\"},{\"key\":\"rl.sample.xref.scanners\",\"value\":\"#App:5038:rl.sample.xref.scanners!StringArray\",\"displayValue\":\"#App:5038:rl.sample.xref.scanners!StringArray\"},{\"key\":\"rl.sample.xref.scanned_on\",\"value\":\"#App:5038:rl.sample.xref.scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanned_on!String\"},{\"key\":\"rl.sample.xref.results\",\"value\":\"#App:5038:rl.sample.xref.results!StringArray\",\"displayValue\":\"#App:5038:rl.sample.xref.results!StringArray\"},{\"key\":\"rl.sample.sha384\",\"value\":\"#App:5038:rl.sample.sha384!String\",\"displayValue\":\"#App:5038:rl.sample.sha384!String\"},{\"key\":\"rl.sample.sha256\",\"value\":\"#App:5038:rl.sample.sha256!String\",\"displayValue\":\"#App:5038:rl.sample.sha256!String\"},{\"key\":\"rl.sample.sha512\",\"value\":\"#App:5038:rl.sample.sha512!String\",\"displayValue\":\"#App:5038:rl.sample.sha512!String\"},{\"key\":\"rl.sample.ripemd160\",\"value\":\"#App:5038:rl.sample.ripemd160!String\",\"displayValue\":\"#App:5038:rl.sample.ripemd160!String\"},{\"key\":\"rl.sample.md5\",\"value\":\"#App:5038:rl.sample.md5!String\",\"displayValue\":\"#App:5038:rl.sample.md5!String\"},{\"key\":\"rl.response.json\",\"value\":\"#App:5037:http.content!String\",\"displayValue\":\"#App:5037:http.content!String\"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "Sandbox"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "ReversingLabs"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "File"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Malware"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Anti-Virus"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
