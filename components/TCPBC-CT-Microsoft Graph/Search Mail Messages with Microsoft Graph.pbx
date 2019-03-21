@@ -1,0 +1,199 @@
+{
+  "name" : "Search Mail Messages with Microsoft Graph",
+  "type" : "Pipe",
+  "panX" : -324.0,
+  "panY" : 25.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.8",
+  "comment" : "Auto-Saved on Thu Mar 21 00:35:16 UTC 2019",
+  "jobList" : [ {
+    "id" : 26718,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.9"
+    },
+    "name" : "GET messages",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[{\"key\":\"$search\",\"value\":\"\\\"#Trigger:2754:search.query!String\\\"\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://graph.microsoft.com/v1.0/users/#Trigger:2754:email.inbox!String/messages"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Authorization\",\"value\":\"Bearer #App:26738:aad.access_token!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 1150.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 26720,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.1"
+    },
+    "name" : "JMESPath Response",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"sent_datetime\",\"value\":\"value[].sentDateTime\"},{\"key\":\"received_datetime\",\"value\":\"value[].receivedDateTime\"},{\"key\":\"has_attachments\",\"value\":\"value[].hasAttachments\"},{\"key\":\"subject\",\"value\":\"value[].subject\"},{\"key\":\"is_read\",\"value\":\"value[].isRead\"},{\"key\":\"sender.address\",\"value\":\"value[].sender.emailAddress.address\"},{\"key\":\"sender.name\",\"value\":\"value[].sender.emailAddress.name\"},{\"key\":\"from.name\",\"value\":\"value[].from.emailAddress.name\"},{\"key\":\"from.address\",\"value\":\"value[].from.emailAddress.address\"},{\"key\":\"to.names\",\"value\":\"value[].toRecipients[].emailAddress.name\"},{\"key\":\"to.addresses\",\"value\":\"value[].toRecipients[].emailAddress.address\"},{\"key\":\"id\",\"value\":\"value[].id\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:26718:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 1370.0,
+    "locationTop" : 390.0
+  }, {
+    "id" : 26738,
+    "appCatalogItem" : {
+      "programName" : "TCPB - MS Azure AD Access Token v1.0",
+      "displayName" : "Microsoft Azure AD Access Token",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Microsoft Azure AD Access Token 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "scope"
+      },
+      "value" : "${ORGANIZATION:TEXT:Microsoft AAD Scope.Graph}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "client_secret"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:Microsoft AAD Client Secret}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "client_id"
+      },
+      "value" : "${ORGANIZATION:TEXT:Microsoft AAD Client ID}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tenant_id"
+      },
+      "value" : "${ORGANIZATION:TEXT:Microsoft AAD Tenant ID}"
+    } ],
+    "locationLeft" : 920.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"name\":\"aad.access_token\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26718,
+    "targetJobId" : 26720
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 26720,
+    "targetTriggerId" : 2754
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 26738,
+    "sourceTriggerId" : 2754
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26738,
+    "targetJobId" : 26718
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2754,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 1140.0,
+    "locationTop" : 220.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"email.inbox\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.subject\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Microsoft AAD Client ID\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ms.aad.client.id\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Microsoft AAD Client Secret\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ms.aad.client.secret\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]},{\"label\":\"Microsoft AAD Tenant ID\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ms.aad.tenant.id\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Microsoft AAD Scope\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ms.aad.scope\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"E-mail Inbox\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"email.inbox\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"Search Query\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"search.query\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]}]",
+    "pipeOutputParams" : "[{\"key\":\"ms.graph.mail.messages.sent_datetime\",\"value\":\"#App:26720:sent_datetime!StringArray \",\"displayValue\":\"#App:26720:sent_datetime!StringArray \"},{\"key\":\"ms.graph.mail.messages.received_datetime\",\"value\":\"#App:26720:received_datetime!StringArray \",\"displayValue\":\"#App:26720:received_datetime!StringArray \"},{\"key\":\"ms.graph.mail.messages.has_attachments\",\"value\":\"#App:26720:has_attachments!StringArray \",\"displayValue\":\"#App:26720:has_attachments!StringArray \"},{\"key\":\"ms.graph.mail.messages.subject\",\"value\":\"#App:26720:subject!StringArray \",\"displayValue\":\"#App:26720:subject!StringArray \"},{\"key\":\"ms.graph.mail.messages.is_read\",\"value\":\"#App:26720:is_read!StringArray \",\"displayValue\":\"#App:26720:is_read!StringArray \"},{\"key\":\"ms.graph.mail.messages.sender.address\",\"value\":\"#App:26720:sender.address!StringArray \",\"displayValue\":\"#App:26720:sender.address!StringArray \"},{\"key\":\"ms.graph.mail.messages.sender.name\",\"value\":\"#App:26720:sender.name!StringArray \",\"displayValue\":\"#App:26720:sender.name!StringArray \"},{\"key\":\"ms.graph.mail.messages.from.name\",\"value\":\"#App:26720:from.name!StringArray \",\"displayValue\":\"#App:26720:from.name!StringArray \"},{\"key\":\"ms.graph.mail.messages.from.address\",\"value\":\"#App:26720:from.address!StringArray \",\"displayValue\":\"#App:26720:from.address!StringArray \"},{\"key\":\"ms.graph.mail.messages.to.names\",\"value\":\"#App:26720:to.names!StringArray \",\"displayValue\":\"#App:26720:to.names!StringArray \"},{\"key\":\"ms.graph.mail.messages.to.addresses\",\"value\":\"#App:26720:to.addresses!StringArray \",\"displayValue\":\"#App:26720:to.addresses!StringArray \"},{\"key\":\"ms.graph.mail.messages.id\",\"value\":\"#App:26720:id!StringArray \",\"displayValue\":\"#App:26720:id!StringArray \"},{\"key\":\"ms.graph.mail.messages.raw_json\",\"value\":\"#App:26718:http.content!String \",\"displayValue\":\"#App:26718:http.content!String \"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "email"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "o3655"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Office365"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "outlook"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
