@@ -1,0 +1,186 @@
+{
+  "name" : "Get ReversingLabs TitaniumCloud File Reputation",
+  "type" : "Pipe",
+  "panX" : 81.0,
+  "panY" : 450.0,
+  "logLevel" : "WARN",
+  "description" : "This Component is meant for taking file hash indicators in ThreatConnect and querying ReveringLabs' TitaniumCloud File Reputation service. The Component will query ReversingLabs' API, pull back the JSON response, and parse the various fields out, exposing them as output variables. Additionally, the raw JSON response is exposed as an output variable so users can work directly with the JSON if they so choose. \n\n\nThe Component requires the following configuration parameters:\n- **Input Hash Value**: The MD5, SHA1, or SHA256 of the File IOC that you want to query in ReversingLabs.\n\n- **Input Hash Type**: You need to tell ReversingLabs the file hash algorithm of the File IOC.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.\n\nAdditionally, there are two optional configuration parameters:\n- **Extended Response**: Enable this if you want to return additional information from ReversingLabs such as Trust Factor, Threat Level, and more. Default for this parameter is set to False.\n\n- **Show Hashes**: Enable if you want to return the other hash algorithms (if you supply an MD5, ReversingLabs will return the SHA1 and SHA256 if they are known). Default for this parameter is set to False.\n\nFor more information on ReveringLabs' TitaniumCloud File Reputation service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)",
+  "jobList" : [ {
+    "id" : 4986,
+    "appCatalogItem" : {
+      "programName" : "Basic Encoding",
+      "displayName" : "Encode Base64",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Encode Credentials",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "basicUser"
+      },
+      "value" : "#Trigger:500:rl.username!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "password"
+      }
+    } ],
+    "locationLeft" : 750.0,
+    "locationTop" : -330.0,
+    "outputVariables" : "[{\"name\":\"basic.encode.signature\",\"type\":\"String\"}]"
+  }, {
+    "id" : 4987,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.9"
+    },
+    "name" : "Malware Presence Query",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Authorization\",\"value\":\"Basic #App:4986:basic.encode.signature!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://#Trigger:500:ticloud.server!String/api/databrowser/malware_presence/query/#Trigger:500:hash.type!String/#Trigger:500:hash.value!String?format=json&extended=#Trigger:500:extended.response!String&show_hashes=#Trigger:500:show.hashes!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 1000.0,
+    "locationTop" : -330.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 5019,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.1"
+    },
+    "name" : "Parse Malware Presence Response",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"rl.malware_presence.status\",\"value\":\"rl.malware_presence.status\"},{\"key\":\"rl.malware_presence.sha1\",\"value\":\"rl.malware_presence.sha1\"},{\"key\":\"rl.malware_presence.threat_level\",\"value\":\"rl.malware_presence.threat_level\"},{\"key\":\"rl.malware_presence.classification.subplatform\",\"value\":\"rl.malware_presence.classification.subplatform\"},{\"key\":\"rl.malware_presence.classification.platform\",\"value\":\"rl.malware_presence.classification.platform\"},{\"key\":\"rl.malware_presence.classification.type\",\"value\":\"rl.malware_presence.classification.type\"},{\"key\":\"rl.malware_presence.classification.is_generic\",\"value\":\"rl.malware_presence.classification.is_generic\"},{\"key\":\"rl.malware_presence.classification.family_name\",\"value\":\"rl.malware_presence.classification.family_name\"},{\"key\":\"rl.malware_presence.scanner_percent\",\"value\":\"rl.malware_presence.scanner_percent\"},{\"key\":\"rl.malware_presence.threat_name\",\"value\":\"rl.malware_presence.threat_name\"},{\"key\":\"rl.malware_presence.scanner_match\",\"value\":\"rl.malware_presence.scanner_match\"},{\"key\":\"rl.malware_presence.last_seen\",\"value\":\"rl.malware_presence.last_seen\"},{\"key\":\"rl.malware_presence.scanner_count\",\"value\":\"rl.malware_presence.scanner_count\"},{\"key\":\"rl.malware_presence.first_seen\",\"value\":\"rl.malware_presence.first_seen\"},{\"key\":\"rl.malware_presence.sha256\",\"value\":\"rl.malware_presence.sha256\"},{\"key\":\"rl.malware_presence.trust_factor\",\"value\":\"rl.malware_presence.trust_factor\"},{\"key\":\"rl.malware_presence.md5\",\"value\":\"rl.malware_presence.md5\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:4987:http.content!String"
+    } ],
+    "locationLeft" : 750.0,
+    "locationTop" : -90.0,
+    "outputVariables" : "[{\"name\":\"rl.malware_presence.classification.subplatform\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.classification.family_name\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.status\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.classification.type\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.trust_factor\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.last_seen\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.classification.is_generic\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.scanner_percent\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.threat_name\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.scanner_match\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.sha1\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.sha256\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.classification.platform\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.md5\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.threat_level\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.scanner_count\",\"type\":\"String\"},{\"name\":\"rl.malware_presence.first_seen\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 4986,
+    "sourceTriggerId" : 500
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 4987,
+    "targetJobId" : 5019
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 4986,
+    "targetJobId" : 4987
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 5019,
+    "targetTriggerId" : 500
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 500,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 490.0,
+    "locationTop" : -330.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"hash.type\",\"type\":\"String\"},{\"name\":\"extended.response\",\"type\":\"String\"},{\"name\":\"rl.password\",\"type\":\"String\"},{\"name\":\"hash.value\",\"type\":\"String\"},{\"name\":\"show.hashes\",\"type\":\"String\"},{\"name\":\"ticloud.server\",\"type\":\"String\"},{\"name\":\"rl.username\",\"type\":\"String\"}]",
+    "pipeInputParams" : "[{\"label\":\"Input Hash Value\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.value\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"Input Hash Type\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.type\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]},{\"label\":\"Extended Response\",\"dataType\":\"Boolean\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"extended.response\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]},{\"label\":\"Show Hashes\",\"dataType\":\"Boolean\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"show.hashes\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"rl.malware_presence.status\",\"value\":\"#App:5019:rl.malware_presence.status!String\",\"displayValue\":\"#App:5019:rl.malware_presence.status!String\"},{\"key\":\"rl.malware_presence.sha1\",\"value\":\"#App:5019:rl.malware_presence.sha1!String\",\"displayValue\":\"#App:5019:rl.malware_presence.sha1!String\"},{\"key\":\"rl.malware_presence.threat_level\",\"value\":\"#App:5019:rl.malware_presence.threat_level!String\",\"displayValue\":\"#App:5019:rl.malware_presence.threat_level!String\"},{\"key\":\"rl.malware_presence.classification.subplatform\",\"value\":\"#App:5019:rl.malware_presence.classification.subplatform!String\",\"displayValue\":\"#App:5019:rl.malware_presence.classification.subplatform!String\"},{\"key\":\"rl.malware_presence.classification.platform\",\"value\":\"#App:5019:rl.malware_presence.classification.platform!String\",\"displayValue\":\"#App:5019:rl.malware_presence.classification.platform!String\"},{\"key\":\"rl.malware_presence.classification.is_generic\",\"value\":\"#App:5019:rl.malware_presence.classification.is_generic!String\",\"displayValue\":\"#App:5019:rl.malware_presence.classification.is_generic!String\"},{\"key\":\"rl.malware_presence.classification.family_name\",\"value\":\"#App:5019:rl.malware_presence.classification.family_name!String\",\"displayValue\":\"#App:5019:rl.malware_presence.classification.family_name!String\"},{\"key\":\"rl.malware_presence.scanner_percent\",\"value\":\"#App:5019:rl.malware_presence.scanner_percent!String\",\"displayValue\":\"#App:5019:rl.malware_presence.scanner_percent!String\"},{\"key\":\"rl.malware_presence.threat_name\",\"value\":\"#App:5019:rl.malware_presence.threat_name!String\",\"displayValue\":\"#App:5019:rl.malware_presence.threat_name!String\"},{\"key\":\"rl.malware_presence.scanner_match\",\"value\":\"#App:5019:rl.malware_presence.scanner_match!String\",\"displayValue\":\"#App:5019:rl.malware_presence.scanner_match!String\"},{\"key\":\"rl.malware_presence.last_seen\",\"value\":\"#App:5019:rl.malware_presence.last_seen!String\",\"displayValue\":\"#App:5019:rl.malware_presence.last_seen!String\"},{\"key\":\"rl.malware_presence.scanner_count\",\"value\":\"#App:5019:rl.malware_presence.scanner_count!String\",\"displayValue\":\"#App:5019:rl.malware_presence.scanner_count!String\"},{\"key\":\"rl.malware_presence.first_seen\",\"value\":\"#App:5019:rl.malware_presence.first_seen!String\",\"displayValue\":\"#App:5019:rl.malware_presence.first_seen!String\"},{\"key\":\"rl.malware_presence.sha256\",\"value\":\"#App:5019:rl.malware_presence.sha256!String\",\"displayValue\":\"#App:5019:rl.malware_presence.sha256!String\"},{\"key\":\"rl.malware_presence.trust_factor\",\"value\":\"#App:5019:rl.malware_presence.trust_factor!String\",\"displayValue\":\"#App:5019:rl.malware_presence.trust_factor!String\"},{\"key\":\"rl.malware_presence.md5\",\"value\":\"#App:5019:rl.malware_presence.md5!String\",\"displayValue\":\"#App:5019:rl.malware_presence.md5!String\"},{\"key\":\"rl.malware_presence.classification.type\",\"value\":\"#App:5019:rl.malware_presence.classification.type!String\",\"displayValue\":\"#App:5019:rl.malware_presence.classification.type!String\"},{\"key\":\"rl.response.json\",\"value\":\"#App:4987:http.content!String\",\"displayValue\":\"#App:4987:http.content!String\"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "Malware"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Sandbox"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "ReversingLabs"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Reputation"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "File"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
