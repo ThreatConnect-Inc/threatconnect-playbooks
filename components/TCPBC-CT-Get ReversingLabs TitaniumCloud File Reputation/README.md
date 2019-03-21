@@ -44,4 +44,4 @@ Additionally, there are two optional configuration parameters:
 - #rl.response.json	String
 
 
-For more information on ReveringLabs' TitaniumCloud File Reputation service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)
+For more information on ReversingLabs' TitaniumCloud File Reputation service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)

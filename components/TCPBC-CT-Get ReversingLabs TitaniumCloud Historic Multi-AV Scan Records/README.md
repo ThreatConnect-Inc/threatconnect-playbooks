@@ -41,4 +41,4 @@ The Component requires the following configuration parameters:
 - #rl.response.json	String
 
 
-For more information on ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)
+For more information on ReversingLabs' TitaniumCloud Historic Multi-AV Scan Records service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)
