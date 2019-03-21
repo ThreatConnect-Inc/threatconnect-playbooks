@@ -1,11 +1,11 @@
-#Get ReversingLabs TitaniumCloud Historic Multi-AV Scan Records
-##Summary
+# Get ReversingLabs TitaniumCloud Historic Multi-AV Scan Records
+## Summary
 This Component is meant for taking file hash indicators in ThreatConnect and querying ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records. The Component will query ReversingLabs' API, pull back the JSON response, and parse the various fields out, exposing them as output variables. Additionally, the raw JSON response is exposed as an output variable so users can work directly with the JSON if they so choose. 
 
-##Dependencies
+## Dependencies
 - Valid ReversingLabs TitaniumCloud API credentials
 
-##Input parameters
+## Input parameters
 The Component requires the following configuration parameters:
 - **Input Hash Value**: The MD5, SHA1, or SHA256 of the File IOC that you want to query in ReversingLabs.
 
@@ -19,7 +19,7 @@ The Component requires the following configuration parameters:
 
 
 
-##Output parameters
+## Output parameters
 - #rl.sample.sha1	String
 - #rl.sample.first_seen_on	String
 - #rl.sample.last_scanned_on	String
