@@ -1,0 +1,116 @@
+{
+  "name" : "[utility] Remove Newlines",
+  "type" : "Pipe",
+  "panX" : 858.0,
+  "panY" : 186.0,
+  "logLevel" : "DEBUG",
+  "description" : "",
+  "version" : "1.28",
+  "comment" : "Auto-Saved on Tue Apr 09 11:53:26 UTC 2019",
+  "jobList" : [ {
+    "id" : 27830,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Find and Replace Carriage Return",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#Trigger:3060:text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "#Trigger:3060:replacement!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\\r\\n"
+    } ],
+    "locationLeft" : -410.0,
+    "locationTop" : 160.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27846,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Find and Replace Line Feed",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:27830:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "#Trigger:3060:replacement!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\\n"
+    } ],
+    "locationLeft" : -210.0,
+    "locationTop" : 160.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 27830,
+    "sourceTriggerId" : 3060
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27830,
+    "targetJobId" : 27846
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 27846,
+    "targetTriggerId" : 3060
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 3060,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : -640.0,
+    "locationTop" : 20.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"replacement\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"text\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Text\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"text\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Replacement\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"replacement\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"textWithoutNewlines\",\"value\":\"#App:27846:find_replace.output!String \",\"displayValue\":\"#App:27846:find_replace.output!String \"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
