@@ -12,7 +12,7 @@ This repository gives ThreatConnect customers the ability to create and share Pl
 
 This Repository is public. However, contributions will be accepted only from identified ThreatConnect customers. The ThreatConnect Support Team will validate each contribution request before they are published within the Repository, as well as enforce certain formatting requirements.
 
-> **Please Note**: the Support Team will not validate code for functionality or security.
+> **Please Note**: the Support Team will not support Comunity provided apps nor validate code for functionality or security.
 
 ## Contributing
 
@@ -38,7 +38,8 @@ We currently provide our customers with four repositories to share your projects
 + [Tools & Utilities](https://github.com/ThreatConnect-Inc/threatconnect-tools) - For miscellaneous tools that help other ThreatConnect developers.
 
 ## Contact
-If you have any questions, bugs, or requests please contact support@threatconnect.com.
+If you have any questions or requests please contact support@threatconnect.com.
+If you encounter any bugs please file an issue under the respective app repository.
 
 ## License
 Access to this Repository is governed by the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
