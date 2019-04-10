@@ -43,13 +43,13 @@ class App(PlaybookApp):
 
             if self.args.remove_query_strings:
                 url = url.replace('?{}'.format(parsed_url.query), '')
-            
+
             if self.args.remove_fragments:
                 url = url.replace('#{}'.format(parsed_url.fragment), '')
-            
+
             if self.args.remove_path:
                 url = url.replace(parsed_url.path, '')
-            
+
             self.updated_urls.append(url)
 
         # set the App exit message
