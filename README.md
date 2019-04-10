@@ -39,6 +39,7 @@ We currently provide our customers with four repositories to share your projects
 
 ## Contact
 If you have any questions or requests please contact support@threatconnect.com.
+
 If you encounter any bugs please file an issue under the respective app repository.
 
 ## License
