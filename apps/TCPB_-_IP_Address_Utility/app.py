@@ -12,7 +12,7 @@ class App(PlaybookApp):
 
     @staticmethod
     def _format_ipv6_for_tc(exploded_ipv6):
-        address_sections = [section.replace("0000", "xxxx").lstrip("0") for section in exploded_ipv6.split(":")] 
+        address_sections = [section.replace("0000", "xxxx").lstrip("0") for section in exploded_ipv6.split(":")]
         formatted_address_sections = ":".join(address_sections)
         return formatted_address_sections.replace("xxxx", "0")
 

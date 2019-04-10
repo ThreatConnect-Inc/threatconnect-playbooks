@@ -30,8 +30,8 @@ class App(PlaybookApp):
         This method should be overridden with the output variables defined in the install.json
         configuration file.
         """
-        self.tcex.playbook.create_output('iocParser.asns', self.iocs['asns'], 'StringArray') 
-        self.tcex.playbook.create_output('iocParser.bitcoinAddresses', self.iocs['bitcoin_addresses'], 'StringArray') 
+        self.tcex.playbook.create_output('iocParser.asns', self.iocs['asns'], 'StringArray')
+        self.tcex.playbook.create_output('iocParser.bitcoinAddresses', self.iocs['bitcoin_addresses'], 'StringArray')
         self.tcex.playbook.create_output('iocParser.cves', self.iocs['cves'], 'StringArray')
         self.tcex.playbook.create_output('iocParser.domains', self.iocs['domains'], 'StringArray')
         self.tcex.playbook.create_output('iocParser.emailAddresses', self.iocs['email_addresses'], 'StringArray')
