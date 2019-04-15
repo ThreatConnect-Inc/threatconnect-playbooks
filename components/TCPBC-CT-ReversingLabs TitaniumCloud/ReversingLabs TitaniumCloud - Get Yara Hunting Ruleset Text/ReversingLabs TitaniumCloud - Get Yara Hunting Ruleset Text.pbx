@@ -1,0 +1,234 @@
+{
+  "name" : "ReversingLabs TitaniumCloud - Get Yara Hunting Ruleset Text",
+  "type" : "Pipe",
+  "panX" : 20.0,
+  "panY" : 328.0,
+  "logLevel" : "WARN",
+  "description" : "This Component is meant for retrieving the contents of a YARA rule that has been previously uploaded to ReversingLabs' A1000 Malware Analysis Platform's YARA Hunting capability. Note that if you enter the name of a YARA rule that is not present in A1000, the Component will still completely successfully, but will output the message \"Failed to get ruleset text. Please see logs for more information..\".\n\nFor more information on this capability please visit https://www.reversinglabs.com/products/malware-analysis-appliance\n\nThe Component requires the following configuration parameters:\n- **Input Ruleset Name**: The name of the YARA rule you want to send to ReversingLabs.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.",
+  "version" : "1.8",
+  "comment" : "Auto-Saved on Tue Apr 09 20:51:53 UTC 2019",
+  "jobList" : [ {
+    "id" : 27903,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.11"
+    },
+    "name" : "Get ruleset text from TitaniumCloud",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://#Trigger:3094:ticloud.server!String/api/yara/admin/v1/ruleset/#Trigger:3094:ruleset.name!String/text"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[{\"key\":\"username\",\"value\":\"#Trigger:3094:rl.username!String\"},{\"key\":\"password\",\"value\":\"#Trigger:3094:rl.password!String\"}]"
+    } ],
+    "locationLeft" : 380.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"url\"]",
+    "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"headers\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 27904,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Get Text Failure",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"get.ruleset.failure\",\"value\":\"Failed to get ruleset text. Please see logs for more information.\"}]"
+    } ],
+    "locationLeft" : 850.0,
+    "locationTop" : 110.0
+  }, {
+    "id" : 27905,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Successful Delete",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"get.ruleset.success\",\"value\":\"Ruleset text successfully retrieved.\"}]"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 10.0,
+    "outputVariables" : "[{\"name\":\"get.ruleset.success\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27906,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge HTTP Reasons",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.get.ruleset.condition\",\"value\":\"#App:27904:get.ruleset.failure!String#App:27905:get.ruleset.success!String\"}]"
+    } ],
+    "locationLeft" : 1170.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"m.get.ruleset.condition\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27907,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.2"
+    },
+    "name" : "Parse Ruleset Text",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:27903:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"ruleset.text\",\"value\":\"text\"}]"
+    } ],
+    "locationLeft" : 850.0,
+    "locationTop" : 10.0,
+    "outputVariables" : "[{\"name\":\"ruleset.text\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 27903,
+    "sourceTriggerId" : 3094
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27903,
+    "targetJobId" : 27904
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27903,
+    "targetJobId" : 27905
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27904,
+    "targetJobId" : 27906
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 27906,
+    "targetTriggerId" : 3094
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27905,
+    "targetJobId" : 27907
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27907,
+    "targetJobId" : 27906
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 3094,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 750.0,
+    "locationTop" : -230.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"rl.password\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ruleset.name\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ticloud.server\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.username\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Input Ruleset Name\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ruleset.name\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"rl.response.result\",\"value\":\"#App:27903:http.content!String\",\"displayValue\":\"#App:27903:http.content!String\"},{\"key\":\"rl.ruleset.text\",\"value\":\"#App:27907:ruleset.text!String\",\"displayValue\":\"#App:27907:ruleset.text!String\"},{\"key\":\"rl.get.ruleset.condition\",\"value\":\"#App:27906:m.get.ruleset.condition!String \",\"displayValue\":\"#App:27906:m.get.ruleset.condition!String \"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "Malware"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "ReversingLabs"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Signature"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "YARA"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Hunting"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}

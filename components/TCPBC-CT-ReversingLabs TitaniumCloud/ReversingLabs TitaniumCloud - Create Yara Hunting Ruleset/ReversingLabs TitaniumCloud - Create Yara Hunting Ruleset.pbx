@@ -1,0 +1,249 @@
+{
+  "name" : "ReversingLabs TitaniumCloud - Create Yara Hunting Ruleset",
+  "type" : "Pipe",
+  "panX" : 287.0,
+  "panY" : 317.0,
+  "logLevel" : "WARN",
+  "description" : "This Component is meant for taking a YARA rule in ThreatConnect and uploading it to ReversingLabs' A1000 Malware Analysis Platform's YARA Hunting capability. For more information on this capability please visit https://www.reversinglabs.com/products/malware-analysis-appliance\n\nThe Component requires the following configuration parameters:\n- **Input Ruleset Name**: The name of the YARA rule you want to send to ReversingLabs.\n\n- **Input Ruleset Text**: The YARA rule contents.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.",
+  "version" : "1.3",
+  "comment" : "Auto-Saved on Tue Apr 09 00:29:32 UTC 2019",
+  "jobList" : [ {
+    "id" : 27701,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.11"
+    },
+    "name" : "Create ruleset in TitaniumCloud",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[{\"key\":\"username\",\"value\":\"#Trigger:3021:rl.username!String\"},{\"key\":\"password\",\"value\":\"#Trigger:3021:rl.password!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : "{\"ruleset_name\":\"#Trigger:3021:ruleset.name!String\",\"text\":\"#App:27804:find_replace.output!String\"}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "POST"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[{\"key\":\"Content-Type\",\"value\":\"application/json;charset\\u003dUTF-8\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://#Trigger:3021:ticloud.server!String/api/yara/admin/v1/ruleset"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 490.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"url\"]",
+    "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"headers\",\"body\",\"urlencode_body\",\"multipart\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 27803,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Escape Quotes",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "\\\""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#Trigger:3021:ruleset.text!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 70.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27804,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Clean up newlines and tabs",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\\n|\\s+"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:27803:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : " "
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 280.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27805,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.2"
+    },
+    "name" : "Parse response",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"ruleset.sha1\",\"value\":\"ruleset_sha1\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:27701:http.content!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 700.0,
+    "locationTop" : 50.0,
+    "outputVariables" : "[{\"name\":\"ruleset.sha1\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 27803,
+    "sourceTriggerId" : 3021
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27803,
+    "targetJobId" : 27804
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27804,
+    "targetJobId" : 27701
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27701,
+    "targetJobId" : 27805
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 27805,
+    "targetTriggerId" : 3021
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 3021,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 380.0,
+    "locationTop" : -230.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"ruleset.name\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ticloud.server\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.username\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.password\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ruleset.text\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Input Ruleset Name\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ruleset.name\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"Input Ruleset Text\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ruleset.text\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"rl.ruleset.sha1\",\"value\":\"#App:27805:ruleset.sha1!String\",\"displayValue\":\"#App:27805:ruleset.sha1!String\"},{\"key\":\"rl.response.result\",\"value\":\"#App:27701:http.content!String\",\"displayValue\":\"#App:27701:http.content!String\"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "Malware"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "ReversingLabs"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Signature"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "YARA"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Hunting"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
