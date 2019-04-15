@@ -1,0 +1,196 @@
+{
+  "name" : "ReversingLabs TitaniumCloud - Delete Yara Hunting Ruleset",
+  "type" : "Pipe",
+  "panX" : 35.0,
+  "panY" : 319.0,
+  "logLevel" : "WARN",
+  "description" : "This Component is meant for deleting a YARA rule that has been previously uploaded to ReversingLabs' A1000 Malware Analysis Platform's YARA Hunting capability. Note that if you enter the name of a YARA rule that is not present in A1000, the Component will still completely successfully, but will output the message \"Failed to delete ruleset. Please see logs for more information.\".\n\nFor more information on this capability please visit https://www.reversinglabs.com/products/malware-analysis-appliance\n\nThe Component requires the following configuration parameters:\n- **Input Ruleset Name**: The name of the YARA rule you want to send to ReversingLabs.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.",
+  "version" : "1.6",
+  "comment" : "Auto-Saved on Tue Apr 09 18:15:18 UTC 2019",
+  "jobList" : [ {
+    "id" : 27859,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.11"
+    },
+    "name" : "Create ruleset in TitaniumCloud",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[{\"key\":\"username\",\"value\":\"#Trigger:3073:rl.username!String\"},{\"key\":\"password\",\"value\":\"#Trigger:3073:rl.password!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://#Trigger:3073:ticloud.server!String/api/yara/admin/v1/ruleset/#Trigger:3073:ruleset.name!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "DELETE"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 380.0,
+    "locationTop" : 50.0,
+    "layoutRequiredInputParams" : "[\"url\"]",
+    "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"headers\",\"body\",\"urlencode_body\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 27864,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Failed Delete",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"delete.ruleset.failure\",\"value\":\"Failed to delete ruleset. Please see logs for more information.\"}]"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 110.0,
+    "outputVariables" : "[{\"name\":\"delete.ruleset.failure\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 27865,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Successful Delete",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"delete.ruleset.success.http.reason\",\"value\":\"#App:27859:http.reason!String\"},{\"key\":\"delete.ruleset.success.http.status_code\",\"value\":\"#App:27859:http.status_code!String\"},{\"key\":\"delete.ruleset.success\",\"value\":\"Ruleset successfully deleted.\"}]"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 10.0
+  }, {
+    "id" : 27866,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge HTTP Reasons",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.ruleset.delete.condition\",\"value\":\"#App:27864:delete.ruleset.failure!String#App:27865:delete.ruleset.success!String\"}]"
+    } ],
+    "locationLeft" : 930.0,
+    "locationTop" : 50.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 27859,
+    "sourceTriggerId" : 3073
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27859,
+    "targetJobId" : 27864
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27859,
+    "targetJobId" : 27865
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27865,
+    "targetJobId" : 27866
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 27864,
+    "targetJobId" : 27866
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 27866,
+    "targetTriggerId" : 3073
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 3073,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 640.0,
+    "locationTop" : -150.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"ticloud.server\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.username\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ruleset.name\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.password\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Input Ruleset Name\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ruleset.name\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"rl.response.result\",\"value\":\"#App:27859:http.content!String\",\"displayValue\":\"#App:27859:http.content!String\"},{\"key\":\"delete.ruleset.status\",\"value\":\"#App:27866:m.ruleset.delete.condition!String\",\"displayValue\":\"#App:27866:m.ruleset.delete.condition!String\"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "Malware"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "ReversingLabs"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Signature"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "YARA"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "Hunting"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
