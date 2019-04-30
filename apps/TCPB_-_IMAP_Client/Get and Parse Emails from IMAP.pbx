@@ -1,0 +1,903 @@
+{
+  "name" : "Get and Parse Emails from IMAP",
+  "type" : "Standard",
+  "panX" : 22.0,
+  "panY" : 20.0,
+  "logLevel" : "TRACE",
+  "description" : "Sample playbook for testing",
+  "priority" : 6,
+  "version" : "1.19",
+  "comment" : "Auto-Saved on Mon Apr 29 22:15:48 EDT 2019",
+  "jobList" : [ {
+    "id" : 2032,
+    "appCatalogItem" : {
+      "programName" : "Iterator",
+      "displayName" : "Iterator",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Iterate over each email",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_outputs"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_inputs"
+      },
+      "value" : "[{\"key\":\"it.Binaries\",\"value\":\"#App:2041:EML!BinaryArray\"}]"
+    } ],
+    "locationLeft" : 700.0,
+    "locationTop" : 150.0,
+    "outputVariables" : "[{\"name\":\"it.Binaries\",\"type\":\"Binary\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"array_inputs\"]",
+    "layoutDisplayedInputParams" : "[\"array_inputs\",\"array_outputs\"]"
+  }, {
+    "id" : 2033,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Parse Eml v1.1",
+      "displayName" : "Parse EML",
+      "programVersion" : "1.1.0"
+    },
+    "name" : "Parse Original Email",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "eml_data"
+      },
+      "value" : "#App:2032:it.Binaries!Binary"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sending_server_string"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 20.0,
+    "locationTop" : 370.0,
+    "outputVariables" : "[{\"name\":\"email.delivered_to.addresses\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"email.subject\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.attachments.filename\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"email.body\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.headers.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.from.addresses\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"email.attachments.payload.decoded\",\"type\":\"BinaryArray\",\"loopVariables\":false},{\"name\":\"email.attachments.count\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 2034,
+    "appCatalogItem" : {
+      "programName" : "268ca2cd65a1198cf78c35062a0911ec",
+      "displayName" : "Parse EML Attachment",
+      "programVersion" : "1.0.0",
+      "pipeRunLevel" : true
+    },
+    "name" : "Parse EML Attachment",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "trg.Eml.JSON"
+      },
+      "value" : "#App:2033:email.json!String"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 580.0,
+    "outputVariables" : "[{\"name\":\"extracted_eml\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 2035,
+    "appCatalogItem" : {
+      "programName" : "TCPB - EmailCreate v1.0",
+      "displayName" : "Create ThreatConnect Email",
+      "programVersion" : "1.0.23"
+    },
+    "name" : "Create Phishing Email",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_header"
+      },
+      "value" : "#App:2036:email.headers.json!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_body"
+      },
+      "value" : "#App:2036:email.body!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Email"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:2038:tc.email!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_to"
+      },
+      "value" : "#App:2036:email.delivered_to.addresses!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_from"
+      },
+      "value" : "#App:2036:email.from.addresses!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "Customer Org"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:2036:email.subject!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_subject"
+      },
+      "value" : "#App:2036:email.subject!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1250.0,
+    "locationTop" : 600.0
+  }, {
+    "id" : 2036,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Parse Eml v1.1",
+      "displayName" : "Parse EML",
+      "programVersion" : "1.1.0"
+    },
+    "name" : "Parse Attachment",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "sending_server_string"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "eml_data"
+      },
+      "value" : "#App:2034:extracted_eml!String"
+    } ],
+    "locationLeft" : 1010.0,
+    "locationTop" : 600.0,
+    "outputVariables" : "[{\"name\":\"email.delivered_to.addresses\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"email.headers.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.from.addresses\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"email.body\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"email.subject\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 2037,
+    "appCatalogItem" : {
+      "programName" : "TCPB - DocumentCreate v1.0",
+      "displayName" : "Create ThreatConnect Document",
+      "programVersion" : "1.0.23"
+    },
+    "name" : "Create Document",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "vault_pw"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_data"
+      },
+      "value" : "#App:2033:email.attachments.payload.decoded!BinaryArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:2033:email.attachments.filename!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Document"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "document_file_name"
+      },
+      "value" : "#App:2033:email.attachments.filename!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "Customer Org"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:2038:tc.email!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "add_to_malware"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 660.0,
+    "locationTop" : 420.0
+  }, {
+    "id" : 2038,
+    "appCatalogItem" : {
+      "programName" : "TCPB - EmailCreate v1.0",
+      "displayName" : "Create ThreatConnect Email",
+      "programVersion" : "1.0.23"
+    },
+    "name" : "Create Original Email",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Email"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:2033:email.subject!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_from"
+      },
+      "value" : "#App:2033:email.from.addresses!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_header"
+      },
+      "value" : "#App:2033:email.headers.json!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_body"
+      },
+      "value" : "#App:2033:email.body!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_subject"
+      },
+      "value" : "#App:2033:email.subject!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_to"
+      },
+      "value" : "#App:2033:email.delivered_to.addresses!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "Customer Org"
+    } ],
+    "locationLeft" : 230.0,
+    "locationTop" : 370.0,
+    "outputVariables" : "[{\"name\":\"tc.email\",\"type\":\"TCEntity\",\"loopVariables\":false}]"
+  }, {
+    "id" : 2039,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"1\",\"value\":\"1\"}]"
+    } ],
+    "locationLeft" : 1460.0,
+    "locationTop" : 360.0
+  }, {
+    "id" : 2040,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Attachments?",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "not equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:2033:email.attachments.count!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 480.0,
+    "locationTop" : 430.0
+  }, {
+    "id" : 2053,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Emails to process?",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:2034:extracted_eml!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "No emails to process."
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 870.0,
+    "locationTop" : 530.0
+  }, {
+    "id" : 2087,
+    "appCatalogItem" : {
+      "programName" : "TCAB - f1ce3917-abf5-4f64-895c-f7d3e9d95cc2 v1",
+      "displayName" : "IMAP Client",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "IMAP Client 1",
+    "jobParameterList" : [ ],
+    "locationLeft" : 410.0,
+    "locationTop" : 150.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "StartLoop",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2032,
+    "targetJobId" : 2033
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2036,
+    "targetJobId" : 2035
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2033,
+    "targetJobId" : 2038
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2037,
+    "targetJobId" : 2039
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2035,
+    "targetJobId" : 2039
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 2039,
+    "targetJobId" : 2032
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2038,
+    "targetJobId" : 2040
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2040,
+    "targetJobId" : 2034
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2040,
+    "targetJobId" : 2037
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2034,
+    "targetJobId" : 2053
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2053,
+    "targetJobId" : 2036
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2053,
+    "targetJobId" : 2039
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 2087,
+    "sourceTriggerId" : 269
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2087,
+    "targetJobId" : 2032
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 269,
+    "name" : "HttpLink 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 150.0,
+    "locationTop" : 150.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ]
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ {
+    "definitionVersion" : "268ca2cd65a1198cf78c35062a0911ec",
+    "name" : "Parse EML Attachment",
+    "type" : "Pipe",
+    "panX" : -413.0,
+    "panY" : 408.0,
+    "logLevel" : "TRACE",
+    "description" : "",
+    "priority" : 6,
+    "version" : "1.10",
+    "comment" : "Auto-Saved on Mon Apr 29 21:25:54 EDT 2019",
+    "jobList" : [ {
+      "id" : 1937,
+      "appCatalogItem" : {
+        "programName" : "TCPB - JMESPath v2.0",
+        "displayName" : "JMESPath",
+        "programVersion" : "2.0.2"
+      },
+      "name" : "Extract Body",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "string_array_expressions"
+        },
+        "value" : "[]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "json_data"
+        },
+        "value" : "#Trigger:256:trg.Eml.JSON!String"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "strip_quotes"
+        },
+        "value" : "true"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "string_expressions"
+        },
+        "value" : "[{\"key\":\"jmes.body\",\"value\":\"body\"}]"
+      } ],
+      "locationLeft" : 800.0,
+      "locationTop" : 90.0,
+      "outputVariables" : "[{\"name\":\"jmes.body\",\"type\":\"String\",\"loopVariables\":false}]"
+    }, {
+      "id" : 1938,
+      "appCatalogItem" : {
+        "programName" : "TCPB - RegexExtract v1.0",
+        "displayName" : "Regex Extract",
+        "programVersion" : "1.0.13"
+      },
+      "name" : "Regex out EML attachment",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "strip_nulls"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "input_content"
+        },
+        "value" : "#App:1937:jmes.body!String"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "regex_pattern_mapping"
+        },
+        "value" : "[{\"key\":\"r.EML.Base64\",\"value\":\"--- mail_boundary ---\\\\\\\\n(.*)\\\\\\\\n--- mail_boundary ---\"}]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "capture_groups"
+        },
+        "value" : "true"
+      } ],
+      "locationLeft" : 1010.0,
+      "locationTop" : 90.0,
+      "outputVariables" : "[{\"name\":\"r.EML.Base64\",\"type\":\"StringArray\",\"loopVariables\":false}]"
+    }, {
+      "id" : 1939,
+      "appCatalogItem" : {
+        "programName" : "TCPB - JoinArray v1.0",
+        "displayName" : "Join Array",
+        "programVersion" : "1.0.13"
+      },
+      "name" : "Convert StringArray to String",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "delimiter"
+        },
+        "value" : ","
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "array_mapping"
+        },
+        "value" : "[{\"key\":\"j.EmailB64String\",\"value\":\"#App:1938:r.EML.Base64!StringArray\"}]"
+      } ],
+      "locationLeft" : 1250.0,
+      "locationTop" : 90.0,
+      "outputVariables" : "[{\"name\":\"j.EmailB64String\",\"type\":\"String\",\"loopVariables\":false}]"
+    }, {
+      "id" : 1940,
+      "appCatalogItem" : {
+        "programName" : "TCPB - String Operations v1.0",
+        "displayName" : "String Operations",
+        "programVersion" : "1.0.0"
+      },
+      "name" : "Convert from Base64",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "input_strings"
+        },
+        "value" : "#App:1941:find_replace.output!String"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "prepend_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "strip_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "replace_count"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "fail_on_not_found"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "count_start"
+        },
+        "value" : "0"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "slice_stop"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "count_stop"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "replace_old"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "find_stop"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "starts_with_start"
+        },
+        "value" : "0"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "append_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "slice_start"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "ends_with_start"
+        },
+        "value" : "0"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "in_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "tc_action"
+        },
+        "value" : "Convert from Base64"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "find_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "fail_on_false"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "count_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "ends_with_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "slice_step"
+        },
+        "value" : "1"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "ends_with_stop"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "replace_new"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "starts_with_chars"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "find_start"
+        },
+        "value" : "0"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "encode_plus"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "starts_with_stop"
+        }
+      } ],
+      "locationLeft" : 1670.0,
+      "locationTop" : 90.0,
+      "outputVariables" : "[{\"name\":\"string.outputs.0\",\"type\":\"String\",\"loopVariables\":false}]",
+      "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\"]",
+      "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\"]"
+    }, {
+      "id" : 1941,
+      "appCatalogItem" : {
+        "programName" : "Find / Replace",
+        "displayName" : "Find and Replace",
+        "programVersion" : "1.0.0"
+      },
+      "name" : "Replace new line\\returns",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "input_text"
+        },
+        "value" : "#App:1939:j.EmailB64String!String"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "as_regex"
+        },
+        "value" : "true"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "replace_regex"
+        },
+        "value" : ""
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "find_regex"
+        },
+        "value" : "(\\\\r|\\\\n)"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "match_case"
+        },
+        "value" : "false"
+      } ],
+      "locationLeft" : 1460.0,
+      "locationTop" : 90.0,
+      "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+    }, {
+      "id" : 2043,
+      "appCatalogItem" : {
+        "programName" : "Merge",
+        "displayName" : "Merge",
+        "programVersion" : "1.0.0"
+      },
+      "name" : "Merge 1",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "output_array"
+        },
+        "value" : "[{\"key\":\"m.Response\",\"value\":\"#App:2044:NoEmails!String\"},{\"key\":\"m.Response\",\"value\":\"#App:1940:string.outputs.0!String\"}]"
+      } ],
+      "locationLeft" : 1320.0,
+      "locationTop" : -50.0,
+      "outputVariables" : "[{\"name\":\"m.Response\",\"type\":\"String\",\"loopVariables\":false}]"
+    }, {
+      "id" : 2044,
+      "appCatalogItem" : {
+        "programName" : "TCPB - SetVariable v1.0",
+        "displayName" : "Set Variable",
+        "programVersion" : "1.0.13"
+      },
+      "name" : "Set no emails to process",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "variable_mapping"
+        },
+        "value" : "[{\"key\":\"NoEmails\",\"value\":\"No emails to process.\"}]"
+      } ],
+      "locationLeft" : 1080.0,
+      "locationTop" : -50.0,
+      "outputVariables" : "[{\"name\":\"NoEmails\",\"type\":\"String\",\"loopVariables\":false}]"
+    } ],
+    "playbookConnectionList" : [ {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1937,
+      "targetJobId" : 1938
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1938,
+      "targetJobId" : 1939
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1939,
+      "targetJobId" : 1941
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1941,
+      "targetJobId" : 1940
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "targetJobId" : 1937,
+      "sourceTriggerId" : 256
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1940,
+      "targetJobId" : 2043
+    }, {
+      "type" : "Fail",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 1938,
+      "targetJobId" : 2044
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 2044,
+      "targetJobId" : 2043
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : true,
+      "sourceJobId" : 2043,
+      "targetTriggerId" : 256
+    } ],
+    "playbookTriggerList" : [ {
+      "id" : 256,
+      "name" : "Component Trigger",
+      "type" : "PipeConfig",
+      "eventType" : "External",
+      "locationLeft" : 530.0,
+      "locationTop" : -180.0,
+      "anyOrg" : true,
+      "playbookTriggerFilterList" : [ ],
+      "outputVariables" : "[{\"name\":\"trg.Eml.JSON\",\"type\":\"String\",\"loopVariables\":false}]",
+      "pipeInputParams" : "[{\"label\":\"JSON Body from EML App\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"trg.Eml.JSON\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+      "pipeOutputParams" : "[{\"key\":\"extracted_eml\",\"value\":\"#App:2043:m.Response!String \",\"displayValue\":\"#App:2043:m.Response!String \"}]"
+    } ],
+    "playbookLabels" : [ ]
+  } ]
+}
