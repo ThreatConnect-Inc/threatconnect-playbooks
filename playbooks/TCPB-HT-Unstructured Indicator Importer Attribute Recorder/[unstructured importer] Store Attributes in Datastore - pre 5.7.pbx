@@ -1,6 +1,6 @@
 {
   "definitionVersion" : "1.0.0",
-  "name" : "[unstructured data importer] Store Attributes in Datastore",
+  "name" : "[unstructured importer] Store Attributes in Datastore",
   "type" : "Standard",
   "panX" : 20.0,
   "panY" : 20.0,
