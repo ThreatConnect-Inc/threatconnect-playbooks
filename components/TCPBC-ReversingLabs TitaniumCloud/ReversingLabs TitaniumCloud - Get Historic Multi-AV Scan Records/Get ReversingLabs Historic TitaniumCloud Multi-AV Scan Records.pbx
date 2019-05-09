@@ -1,10 +1,12 @@
 {
   "name" : "Get ReversingLabs Historic TitaniumCloud Multi-AV Scan Records",
   "type" : "Pipe",
-  "panX" : 50.0,
-  "panY" : 506.0,
+  "panX" : -148.0,
+  "panY" : 644.0,
   "logLevel" : "WARN",
   "description" : "This Component is meant for taking file hash indicators in ThreatConnect and querying ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records. The Component will query ReversingLabs' API, pull back the JSON response, and parse the various fields out, exposing them as output variables. Additionally, the raw JSON response is exposed as an output variable so users can work directly with the JSON if they so choose. \n\n\nThe Component requires the following configuration parameters:\n- **Input Hash Value**: The MD5, SHA1, or SHA256 of the File IOC that you want to query in ReversingLabs.\n\n- **Input Hash Type**: You need to tell ReversingLabs the file hash algorithm of the File IOC.\n\n- **TitaniumCloud Server**: The TitaniumCloud server that your organization uses in production.\n\n- **ReversingLabs Username**: The username that RevesingLabs has supplied to you with API permissions.\n\n- **ReversingLabs Password**: The password coupled with the above Username.\n\n\nFor more information on ReveringLabs' TitaniumCloud Historic Multi-AV Scan Records service, please refer to [https://www.reversinglabs.com/products/file-reputation-service](https://www.reversinglabs.com/products/file-reputation-service)",
+  "version" : "1.2",
+  "comment" : "Auto-Saved on Wed Apr 17 13:56:02 EDT 2019",
   "jobList" : [ {
     "id" : 5036,
     "appCatalogItem" : {
@@ -25,13 +27,13 @@
     } ],
     "locationLeft" : 750.0,
     "locationTop" : -330.0,
-    "outputVariables" : "[{\"name\":\"basic.encode.signature\",\"type\":\"String\"}]"
+    "outputVariables" : "[{\"name\":\"basic.encode.signature\",\"type\":\"String\",\"loopVariables\":false}]"
   }, {
     "id" : 5037,
     "appCatalogItem" : {
       "programName" : "TCPB - HTTP Client v2.0",
       "displayName" : "HTTP Client",
-      "programVersion" : "2.0.9"
+      "programVersion" : "2.0.14"
     },
     "name" : "Malware XREF Query",
     "jobParameterList" : [ {
@@ -92,7 +94,7 @@
     } ],
     "locationLeft" : 1000.0,
     "locationTop" : -330.0,
-    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\"}]",
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
     "playbookRetryDelayMinutes" : 1,
     "playbookRetryMaxRetries" : 5
   }, {
@@ -100,7 +102,7 @@
     "appCatalogItem" : {
       "programName" : "TCPB - JMESPath v2.0",
       "displayName" : "JMESPath",
-      "programVersion" : "2.0.1"
+      "programVersion" : "2.0.2"
     },
     "name" : "Parse Malware XREF Response",
     "jobParameterList" : [ {
@@ -126,7 +128,23 @@
     } ],
     "locationLeft" : 750.0,
     "locationTop" : -90.0,
-    "outputVariables" : "[{\"name\":\"rl.sample.last_scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.results\",\"type\":\"StringArray\"},{\"name\":\"rl.sample.sample_size\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanner_count\",\"type\":\"String\"},{\"name\":\"rl.sample.md5\",\"type\":\"String\"},{\"name\":\"rl.sample.sample_type\",\"type\":\"String\"},{\"name\":\"rl.sample.single_scan\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanner_match\",\"type\":\"String\"},{\"name\":\"rl.sample.sha512\",\"type\":\"String\"},{\"name\":\"rl.sample.first_scanned_on\",\"type\":\"String\"},{\"name\":\"rl.sample.last_seen_on\",\"type\":\"String\"},{\"name\":\"rl.sample.sha256\",\"type\":\"String\"},{\"name\":\"rl.sample.ripemd160\",\"type\":\"String\"},{\"name\":\"rl.sample.first_seen_on\",\"type\":\"String\"},{\"name\":\"rl.sample.xref.scanners\",\"type\":\"StringArray\"},{\"name\":\"rl.sample.sha1\",\"type\":\"String\"},{\"name\":\"rl.sample.sha384\",\"type\":\"String\"}]"
+    "outputVariables" : "[{\"name\":\"rl.sample.last_scanned_on\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.xref.scanned_on\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.xref.results\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"rl.sample.sample_size\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.xref.scanner_count\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.md5\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.sample_type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.single_scan\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.xref.scanner_match\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.sha512\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.first_scanned_on\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.last_seen_on\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.sha256\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.ripemd160\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.first_seen_on\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.xref.scanners\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"rl.sample.sha1\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.sample.sha384\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 13882,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Error getting results",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"xref.query.error\",\"value\":\"Error getting multi-AV scan records. Please see log for more details.\"}]"
+    } ],
+    "locationLeft" : 1260.0,
+    "locationTop" : -330.0
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
@@ -148,17 +166,22 @@
     "isCircularOnTarget" : true,
     "sourceJobId" : 5038,
     "targetTriggerId" : 506
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 5037,
+    "targetJobId" : 13882
   } ],
   "playbookTriggerList" : [ {
     "id" : 506,
     "name" : "Component Trigger",
     "type" : "PipeConfig",
-    "eventType" : "Create",
+    "eventType" : "External",
     "locationLeft" : 490.0,
     "locationTop" : -330.0,
     "anyOrg" : true,
     "playbookTriggerFilterList" : [ ],
-    "outputVariables" : "[{\"name\":\"rl.password\",\"type\":\"String\"},{\"name\":\"hash.type\",\"type\":\"String\"},{\"name\":\"hash.value\",\"type\":\"String\"},{\"name\":\"rl.username\",\"type\":\"String\"},{\"name\":\"ticloud.server\",\"type\":\"String\"}]",
+    "outputVariables" : "[{\"name\":\"rl.password\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"hash.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"hash.value\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"rl.username\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ticloud.server\",\"type\":\"String\",\"loopVariables\":false}]",
     "pipeInputParams" : "[{\"label\":\"Input Hash Value\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.value\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"Input Hash Type\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"hash.type\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]},{\"label\":\"TitaniumCloud Server\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ticloud.server\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Username\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.username\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"ReversingLabs Password\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"rl.password\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${KEYCHAIN}\"]}]",
     "pipeOutputParams" : "[{\"key\":\"rl.sample.sha1\",\"value\":\"#App:5038:rl.sample.sha1!String\",\"displayValue\":\"#App:5038:rl.sample.sha1!String\"},{\"key\":\"rl.sample.first_seen_on\",\"value\":\"#App:5038:rl.sample.first_seen_on!String\",\"displayValue\":\"#App:5038:rl.sample.first_seen_on!String\"},{\"key\":\"rl.sample.last_scanned_on\",\"value\":\"#App:5038:rl.sample.last_scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.last_scanned_on!String\"},{\"key\":\"rl.sample.last_seen_on\",\"value\":\"#App:5038:rl.sample.last_seen_on!String\",\"displayValue\":\"#App:5038:rl.sample.last_seen_on!String\"},{\"key\":\"rl.sample.single_scan\",\"value\":\"#App:5038:rl.sample.single_scan!String\",\"displayValue\":\"#App:5038:rl.sample.single_scan!String\"},{\"key\":\"rl.sample.first_scanned_on\",\"value\":\"#App:5038:rl.sample.first_scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.first_scanned_on!String\"},{\"key\":\"rl.sample.sample_type\",\"value\":\"#App:5038:rl.sample.sample_type!String\",\"displayValue\":\"#App:5038:rl.sample.sample_type!String\"},{\"key\":\"rl.sample.sample_size\",\"value\":\"#App:5038:rl.sample.sample_size!String\",\"displayValue\":\"#App:5038:rl.sample.sample_size!String\"},{\"key\":\"rl.sample.xref.scanner_match\",\"value\":\"#App:5038:rl.sample.xref.scanner_match!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanner_match!String\"},{\"key\":\"rl.sample.xref.scanner_count\",\"value\":\"#App:5038:rl.sample.xref.scanner_count!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanner_count!String\"},{\"key\":\"rl.sample.xref.scanners\",\"value\":\"#App:5038:rl.sample.xref.scanners!StringArray\",\"displayValue\":\"#App:5038:rl.sample.xref.scanners!StringArray\"},{\"key\":\"rl.sample.xref.scanned_on\",\"value\":\"#App:5038:rl.sample.xref.scanned_on!String\",\"displayValue\":\"#App:5038:rl.sample.xref.scanned_on!String\"},{\"key\":\"rl.sample.xref.results\",\"value\":\"#App:5038:rl.sample.xref.results!StringArray\",\"displayValue\":\"#App:5038:rl.sample.xref.results!StringArray\"},{\"key\":\"rl.sample.sha384\",\"value\":\"#App:5038:rl.sample.sha384!String\",\"displayValue\":\"#App:5038:rl.sample.sha384!String\"},{\"key\":\"rl.sample.sha256\",\"value\":\"#App:5038:rl.sample.sha256!String\",\"displayValue\":\"#App:5038:rl.sample.sha256!String\"},{\"key\":\"rl.sample.sha512\",\"value\":\"#App:5038:rl.sample.sha512!String\",\"displayValue\":\"#App:5038:rl.sample.sha512!String\"},{\"key\":\"rl.sample.ripemd160\",\"value\":\"#App:5038:rl.sample.ripemd160!String\",\"displayValue\":\"#App:5038:rl.sample.ripemd160!String\"},{\"key\":\"rl.sample.md5\",\"value\":\"#App:5038:rl.sample.md5!String\",\"displayValue\":\"#App:5038:rl.sample.md5!String\"},{\"key\":\"rl.response.json\",\"value\":\"#App:5037:http.content!String\",\"displayValue\":\"#App:5037:http.content!String\"}]"
   } ],
