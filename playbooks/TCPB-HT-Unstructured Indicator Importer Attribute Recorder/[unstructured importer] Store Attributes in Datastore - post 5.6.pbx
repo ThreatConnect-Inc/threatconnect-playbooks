@@ -46,7 +46,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "organization_name"
       },
-      "value" : "Research Labs"
+      "value" : ""
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "db_method"
