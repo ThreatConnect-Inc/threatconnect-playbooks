@@ -1,0 +1,136 @@
+{
+  "name" : "Deploy Yara Rule to CarbonBlack",
+  "type" : "Standard",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.0",
+  "jobList" : [ {
+    "id" : 15829,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SignatureRetrieveById v1.0",
+      "displayName" : "Get ThreatConnect Signature by ID",
+      "programVersion" : "1.0.24"
+    },
+    "name" : "Get ThreatConnect Signature by ID 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#Trigger:1659:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Signature"
+    } ],
+    "locationLeft" : 730.0,
+    "locationTop" : 410.0,
+    "outputVariables" : "[{\"name\":\"tc.signature.file_name\",\"type\":\"String\"},{\"name\":\"tc.signature.file_data\",\"type\":\"String\"}]"
+  }, {
+    "id" : 15830,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SSH v1.0",
+      "displayName" : "SSH Client",
+      "programVersion" : "1.0.5"
+    },
+    "name" : "Send Rule To Carbon Black Yara Manager",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "sudo_username"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "commands"
+      },
+      "value" : "echo -en #App:15829:tc.signature.file_data!String > #App:15831:yara.rule.directory!String/#App:15829:tc.signature.file_name!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "username"
+      },
+      "value" : "${ORGANIZATION:TEXT:Carbon Black Yara Manager SSH Username}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "hostnames"
+      },
+      "value" : "${ORGANIZATION:TEXT:Carbon Black Yara Manager Hostname}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "use_sudo"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "port"
+      },
+      "value" : "22"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "password"
+      },
+      "value" : "#{ORGANIZATION:135}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "private_key"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sudo_password"
+      }
+    } ],
+    "locationLeft" : 960.0,
+    "locationTop" : 410.0
+  }, {
+    "id" : 15831,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set Yara Rule Directory",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"yara.rule.directory\",\"value\":\"/usr/share/cb/integrations/yara/example_rules\"},{\"key\":\"test.var\",\"value\":\"$test_var\"}]"
+    } ],
+    "locationLeft" : 500.0,
+    "locationTop" : 410.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15829,
+    "targetJobId" : 15830
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 15831,
+    "sourceTriggerId" : 1659
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 15831,
+    "targetJobId" : 15829
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1659,
+    "name" : "Deploy Yara Rule To Carbon Black",
+    "type" : "UserAction",
+    "eventType" : "External",
+    "locationLeft" : 250.0,
+    "locationTop" : 410.0,
+    "httpResponseHeader" : "[]",
+    "anyOrg" : true,
+    "userActionTypes" : "Signature",
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"trg.action.entity\",\"type\":\"TCEntity\"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "YARA"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
