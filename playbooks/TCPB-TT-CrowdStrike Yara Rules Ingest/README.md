@@ -1,10 +1,9 @@
-# Daily CrowdStrike Yara Rule Ingest
+# CrowdStrike Yara Rules Ingest
 ## Summary
-This Playbook runs daily on a timer trigger to reach out to CrowdStrike's Falcon Intelligence Rules API, download the latest set of Yara rules, and create them as signatures within the ThreatConnect platform. In addition to storing the rule itself, the description and version number of the Yara rule are extract and added as attributes.
+This Playbook runs on a timer trigger to reach out to CrowdStrike's Falcon Intelligence Rules API, download the latest set of Yara rules, and create them as signatures within the ThreatConnect platform. In addition to storing the rule itself, the description and version number of the Yara rule are extract and added as attributes.
 
 
 ## Dependencies
-- Parse Yara Rules Playbook App
 - Valid CrowdStrike Falcon Intelligence subscription and API access
 
 

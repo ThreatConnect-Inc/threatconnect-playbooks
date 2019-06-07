@@ -1,4 +1,4 @@
-# Daily CrowdStrike Snort Rule Ingest
+# CrowdStrike Snort Rule Ingest
 ## Summary
 This Playbook runs daily on a timer trigger to reach out to CrowdStrike's Falcon Intelligence Rules API, download the latest set of Snort rules, and create them as signatures within the ThreatConnect platform. In addition to storing the rule itself, the report number of the report associated to the Snort rule is extracted and added as a tag. Additionally the version number is added as an attribute.
 
