@@ -1,8 +1,8 @@
 {
   "name" : "Daily CrowdStrike Snort Rules Ingest",
   "type" : "Standard",
-  "panX" : -538.0,
-  "panY" : -2.0,
+  "panX" : -762.0,
+  "panY" : -227.0,
   "logLevel" : "WARN",
   "description" : "# Daily CrowdStrike Snort Rule Ingest\n## Summary\nThis Playbook runs daily on a timer trigger to reach out to CrowdStrike's Falcon Intelligence Rules API, download the latest set of Snort rules, and create them as signatures within the ThreatConnect platform. In addition to storing the rule itself, the report number of the report associated to the Snort rule is extracted and added as a tag. Additionally the version number is added as an attribute.\n\n\n## Dependencies\n- Valid CrowdStrike Falcon Intelligence subscription and API access\n\n\n## Input parameters\nThe Component requires the following configuration parameters:\n- **CrowdStrike Falcon Intelligence API ID**: Your CrowdStrike Falcon Intelligence API ID.\n\n- **CrowdStrike Falcon Intelligence API Secret Key**: Your CrowdStrike Falcon Intelligence API Secret Key.\n\n\n## Output parameters\nN/A\n\n\nFor more information on CrowdStrike Falcon Intelligence service, please refer to [https://www.crowdstrike.com/endpoint-security-products/falcon-x-threat-intelligence/](https://www.crowdstrike.com/endpoint-security-products/falcon-x-threat-intelligence/)",
   "priority" : 6,
@@ -220,8 +220,8 @@
       },
       "value" : "true"
     } ],
-    "locationLeft" : 1770.0,
-    "locationTop" : 340.0
+    "locationLeft" : 1870.0,
+    "locationTop" : 820.0
   }, {
     "id" : 35066,
     "appCatalogItem" : {
@@ -241,9 +241,8 @@
       },
       "value" : ","
     } ],
-    "locationLeft" : 1490.0,
-    "locationTop" : 450.0,
-    "outputVariables" : "[{\"name\":\"j.rule.name\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"j.rule.version\",\"type\":\"String\",\"loopVariables\":false}]"
+    "locationLeft" : 1450.0,
+    "locationTop" : 450.0
   }, {
     "id" : 35068,
     "appCatalogItem" : {
@@ -297,9 +296,8 @@
       },
       "value" : "true"
     } ],
-    "locationLeft" : 1490.0,
-    "locationTop" : 340.0,
-    "outputVariables" : "[{\"name\":\"rule.name\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"rule.version\",\"type\":\"StringArray\",\"loopVariables\":false}]"
+    "locationLeft" : 1450.0,
+    "locationTop" : 340.0
   }, {
     "id" : 35077,
     "appCatalogItem" : {
@@ -329,8 +327,8 @@
       },
       "value" : "false"
     } ],
-    "locationLeft" : 1770.0,
-    "locationTop" : 450.0,
+    "locationLeft" : 1870.0,
+    "locationTop" : 720.0,
     "outputVariables" : "[{\"name\":\"report.ids\",\"type\":\"StringArray\",\"loopVariables\":false}]"
   }, {
     "id" : 35339,
@@ -365,9 +363,103 @@
       },
       "value" : "false"
     } ],
-    "locationLeft" : 1640.0,
-    "locationTop" : 590.0,
+    "locationLeft" : 1870.0,
+    "locationTop" : 610.0,
     "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 35359,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SignatureRetrieveByName v1.0",
+      "displayName" : "Get ThreatConnect Signature by Name",
+      "programVersion" : "1.0.24"
+    },
+    "name" : "Check For Existing Rule",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "CrowdStrike Falcon Intelligence"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Signature"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "names"
+      },
+      "value" : "#App:35066:j.rule.name!String"
+    } ],
+    "locationLeft" : 1450.0,
+    "locationTop" : 560.0
+  }, {
+    "id" : 35360,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Rule Already Exists?",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:35359:tc.signature.count!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 1710.0,
+    "locationTop" : 770.0
+  }, {
+    "id" : 35361,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Rule Already Exists",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"rule.exists\",\"value\":\"Snort Rule Already Exists In Platform\"}]"
+    } ],
+    "locationLeft" : 1870.0,
+    "locationTop" : 940.0
+  }, {
+    "id" : 35362,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge Branches",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 2150.0,
+    "locationTop" : 820.0
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
@@ -400,16 +492,6 @@
     "sourceJobId" : 35077,
     "targetJobId" : 35065
   }, {
-    "type" : "EndLoop",
-    "isCircularOnTarget" : true,
-    "sourceJobId" : 35065,
-    "targetJobId" : 35068
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 35066,
-    "targetJobId" : 35339
-  }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
     "sourceJobId" : 35339,
@@ -419,6 +501,41 @@
     "isCircularOnTarget" : false,
     "targetJobId" : 35062,
     "sourceTriggerId" : 4002
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35066,
+    "targetJobId" : 35359
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35359,
+    "targetJobId" : 35360
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35360,
+    "targetJobId" : 35339
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35360,
+    "targetJobId" : 35361
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35065,
+    "targetJobId" : 35362
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 35361,
+    "targetJobId" : 35362
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 35362,
+    "targetJobId" : 35068
   } ],
   "playbookTriggerList" : [ {
     "id" : 4002,
