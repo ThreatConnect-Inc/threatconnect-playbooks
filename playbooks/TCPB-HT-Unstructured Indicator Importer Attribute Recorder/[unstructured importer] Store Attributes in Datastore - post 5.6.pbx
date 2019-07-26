@@ -1,14 +1,161 @@
 {
   "name" : "[unstructured importer] Store Attributes in Datastore",
   "type" : "Standard",
-  "panX" : 20.0,
-  "panY" : 20.0,
+  "panX" : 165.0,
+  "panY" : 8.0,
   "logLevel" : "WARN",
   "description" : "",
-  "version" : "1.1",
-  "comment" : "Auto-Saved on Thu May 09 16:25:17 UTC 2019",
+  "version" : "1.3",
+  "comment" : "Auto-Saved on Fri Jul 26 15:59:58 UTC 2019",
   "jobList" : [ {
-    "id" : 32268,
+    "id" : 55269,
+    "appCatalogItem" : {
+      "programName" : "TCPB - DataStore v3.0",
+      "displayName" : "DataStore",
+      "programVersion" : "3.0.0"
+    },
+    "name" : "DataStore 2",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_optional"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "mapping"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_required"
+      },
+      "value" : "#App:55256:escapedString!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_type"
+      },
+      "value" : "String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_type"
+      },
+      "value" : "app-data"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_required"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_optional"
+      },
+      "value" : "attributeTest"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "POST"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "domain"
+      },
+      "value" : "Organization"
+    } ],
+    "locationLeft" : 1070.0,
+    "locationTop" : 170.0,
+    "layoutDisplayOutputVariables" : "[{\"name\":\"datastore.response.version\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.id\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.success\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.result\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.total\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"data_required\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"rid_optional\",\"data_required\",\"mapping\"]"
+  }, {
+    "id" : 55256,
+    "appCatalogItem" : {
+      "programName" : "7a73074174047f094b6d7814f5441a5c",
+      "displayName" : "[utility] Escape String for Datastore",
+      "programVersion" : "1.0.0",
+      "pipeRunLevel" : true
+    },
+    "name" : "[utility] Escape String for Datastore 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string"
+      },
+      "value" : "#App:55255:http.content!String"
+    } ],
+    "locationLeft" : 830.0,
+    "locationTop" : 170.0,
+    "outputVariables" : "[{\"name\":\"escapedString\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 55255,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.15"
+    },
+    "name" : "HTTP Client 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "#App:55253:attributeJsonUrl!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : 620.0,
+    "locationTop" : 170.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 55253,
     "appCatalogItem" : {
       "programName" : "TCPB - SetVariable v1.0",
       "displayName" : "Set Variable",
@@ -24,157 +171,30 @@
     "locationLeft" : 400.0,
     "locationTop" : 170.0,
     "outputVariables" : "[{\"name\":\"attributeJsonUrl\",\"type\":\"String\",\"loopVariables\":false}]"
-  }, {
-    "id" : 32269,
-    "appCatalogItem" : {
-      "programName" : "DataStore",
-      "displayName" : "DataStore",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "DataStore 1",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "type_name"
-      },
-      "value" : "app-data"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "domain_type"
-      },
-      "value" : "Organization"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "organization_name"
-      },
-      "value" : ""
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "db_method"
-      },
-      "value" : "POST"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "request_entity"
-      },
-      "value" : "{\"text\": \"#App:32271:escapedString!String\"}"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "path"
-      },
-      "value" : "attributeTest"
-    } ],
-    "locationLeft" : 1050.0,
-    "locationTop" : 170.0
-  }, {
-    "id" : 32270,
-    "appCatalogItem" : {
-      "programName" : "TCPB - HTTP Client v2.0",
-      "displayName" : "HTTP Client",
-      "programVersion" : "2.0.14"
-    },
-    "name" : "HTTP Client 1",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "params"
-      },
-      "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "urlencode_body"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "body"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "headers"
-      },
-      "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_error"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "http_method"
-      },
-      "value" : "GET"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "proxies_enabled"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "verify_ssl"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "url"
-      },
-      "value" : "#App:32268:attributeJsonUrl!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "advanced"
-      },
-      "value" : "[]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "multipart"
-      },
-      "value" : "[]"
-    } ],
-    "locationLeft" : 620.0,
-    "locationTop" : 170.0,
-    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
-    "playbookRetryDelayMinutes" : 1,
-    "playbookRetryMaxRetries" : 5
-  }, {
-    "id" : 32271,
-    "appCatalogItem" : {
-      "programName" : "7a73074174047f094b6d7814f5441a5c",
-      "displayName" : "[utility] Escape String for Datastore",
-      "programVersion" : "1.0.0",
-      "pipeRunLevel" : true
-    },
-    "name" : "[utility] Escape String for Datastore 1",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "string"
-      },
-      "value" : "#App:32270:http.content!String"
-    } ],
-    "locationLeft" : 830.0,
-    "locationTop" : 170.0,
-    "outputVariables" : "[{\"name\":\"escapedString\",\"type\":\"String\",\"loopVariables\":false}]"
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 32268,
-    "sourceTriggerId" : 3503
+    "sourceJobId" : 55256,
+    "targetJobId" : 55269
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 32268,
-    "targetJobId" : 32270
+    "sourceJobId" : 55255,
+    "targetJobId" : 55256
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 32270,
-    "targetJobId" : 32271
+    "sourceJobId" : 55253,
+    "targetJobId" : 55255
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 32271,
-    "targetJobId" : 32269
+    "targetJobId" : 55253,
+    "sourceTriggerId" : 6671
   } ],
   "playbookTriggerList" : [ {
-    "id" : 3503,
+    "id" : 6671,
     "name" : "HttpLink Trigger 1",
     "type" : "HttpLink",
     "eventType" : "External",
@@ -192,47 +212,10 @@
     "panY" : 20.0,
     "logLevel" : "WARN",
     "description" : "",
-    "version" : "1.5",
-    "comment" : "Auto-Saved on Thu May 09 16:24:49 UTC 2019",
+    "version" : "1.1",
+    "comment" : "Auto-Saved on Fri Jul 26 15:53:59 UTC 2019",
     "jobList" : [ {
-      "id" : 32264,
-      "appCatalogItem" : {
-        "programName" : "Find / Replace",
-        "displayName" : "Find and Replace",
-        "programVersion" : "1.0.0"
-      },
-      "name" : "Find and Replace 1",
-      "jobParameterList" : [ {
-        "appCatalogItemParameter" : {
-          "paramName" : "replace_regex"
-        },
-        "value" : "\\\""
-      }, {
-        "appCatalogItemParameter" : {
-          "paramName" : "input_text"
-        },
-        "value" : "#Trigger:3501:string!String"
-      }, {
-        "appCatalogItemParameter" : {
-          "paramName" : "find_regex"
-        },
-        "value" : "\""
-      }, {
-        "appCatalogItemParameter" : {
-          "paramName" : "match_case"
-        },
-        "value" : "false"
-      }, {
-        "appCatalogItemParameter" : {
-          "paramName" : "as_regex"
-        },
-        "value" : "false"
-      } ],
-      "locationLeft" : 440.0,
-      "locationTop" : 280.0,
-      "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
-    }, {
-      "id" : 32265,
+      "id" : 55252,
       "appCatalogItem" : {
         "programName" : "Find / Replace",
         "displayName" : "Find and Replace",
@@ -246,9 +229,9 @@
         "value" : ""
       }, {
         "appCatalogItemParameter" : {
-          "paramName" : "as_regex"
+          "paramName" : "input_text"
         },
-        "value" : "true"
+        "value" : "#App:55251:find_replace.output!String"
       }, {
         "appCatalogItemParameter" : {
           "paramName" : "match_case"
@@ -256,9 +239,9 @@
         "value" : "false"
       }, {
         "appCatalogItemParameter" : {
-          "paramName" : "input_text"
+          "paramName" : "as_regex"
         },
-        "value" : "#App:32264:find_replace.output!String"
+        "value" : "true"
       }, {
         "appCatalogItemParameter" : {
           "paramName" : "find_regex"
@@ -268,25 +251,62 @@
       "locationLeft" : 670.0,
       "locationTop" : 280.0,
       "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
+    }, {
+      "id" : 55251,
+      "appCatalogItem" : {
+        "programName" : "Find / Replace",
+        "displayName" : "Find and Replace",
+        "programVersion" : "1.0.0"
+      },
+      "name" : "Find and Replace 1",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "match_case"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "as_regex"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "replace_regex"
+        },
+        "value" : "\\\\\""
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "find_regex"
+        },
+        "value" : "\""
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "input_text"
+        },
+        "value" : "#Trigger:6670:string!String"
+      } ],
+      "locationLeft" : 440.0,
+      "locationTop" : 280.0,
+      "outputVariables" : "[{\"name\":\"find_replace.output\",\"type\":\"String\",\"loopVariables\":false}]"
     } ],
     "playbookConnectionList" : [ {
       "type" : "Pass",
-      "isCircularOnTarget" : false,
-      "targetJobId" : 32264,
-      "sourceTriggerId" : 3501
-    }, {
-      "type" : "Pass",
-      "isCircularOnTarget" : false,
-      "sourceJobId" : 32264,
-      "targetJobId" : 32265
-    }, {
-      "type" : "Pass",
       "isCircularOnTarget" : true,
-      "sourceJobId" : 32265,
-      "targetTriggerId" : 3501
+      "sourceJobId" : 55252,
+      "targetTriggerId" : 6670
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 55251,
+      "targetJobId" : 55252
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "targetJobId" : 55251,
+      "sourceTriggerId" : 6670
     } ],
     "playbookTriggerList" : [ {
-      "id" : 3501,
+      "id" : 6670,
       "name" : "Component Trigger",
       "type" : "PipeConfig",
       "eventType" : "External",
@@ -296,7 +316,7 @@
       "playbookTriggerFilterList" : [ ],
       "outputVariables" : "[{\"name\":\"string\",\"type\":\"String\",\"loopVariables\":false}]",
       "pipeInputParams" : "[{\"label\":\"String\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"string\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
-      "pipeOutputParams" : "[{\"key\":\"escapedString\",\"value\":\"#App:32265:find_replace.output!String \",\"displayValue\":\"#App:32265:find_replace.output!String \"}]"
+      "pipeOutputParams" : "[{\"key\":\"escapedString\",\"value\":\"#App:55252:find_replace.output!String \",\"displayValue\":\"#App:55252:find_replace.output!String \"}]"
     } ],
     "playbookLabels" : [ ]
   } ]
