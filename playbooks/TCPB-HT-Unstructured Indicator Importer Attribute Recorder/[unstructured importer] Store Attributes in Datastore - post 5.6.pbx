@@ -51,7 +51,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "rid_optional"
       },
-      "value" : "attributeTest"
+      "value" : "attributes"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "tc_action"
