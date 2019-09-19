@@ -1,0 +1,279 @@
+{
+  "name" : "ISO Date Formatter",
+  "type" : "Pipe",
+  "panX" : 467.0,
+  "panY" : 514.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.2",
+  "comment" : "Auto-Saved on Thu Sep 19 15:06:48 UTC 2019",
+  "jobList" : [ {
+    "id" : 83846,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"ISOFormattedDate\",\"value\":\"#App:83842:datetime.format.date!String\"},{\"key\":\"ISOFormattedDate\",\"value\":\"#App:83844:string.outputs.0!String\"}]"
+    } ],
+    "locationLeft" : 846.0,
+    "locationTop" : -69.5,
+    "outputVariables" : "[{\"name\":\"ISOFormattedDate\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 83844,
+    "appCatalogItem" : {
+      "programName" : "TCPB - String Operations v1.0",
+      "displayName" : "String Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "String Operations 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "append_chars"
+      },
+      "value" : "Z"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_old"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_count"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "prepend_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "encode_plus"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_new"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "Append"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_strings"
+      },
+      "value" : "#App:83842:datetime.format.date!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "in_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_chars"
+      }
+    } ],
+    "locationLeft" : 612.0,
+    "locationTop" : -69.5,
+    "outputVariables" : "[{\"name\":\"string.outputs.0\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\",\"append_chars\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\",\"append_chars\"]"
+  }, {
+    "id" : 83843,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "If / Else 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#Trigger:9402:is_utc!String"
+    } ],
+    "locationLeft" : 468.0,
+    "locationTop" : -2.5
+  }, {
+    "id" : 83842,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Datetime Format v2.0",
+      "displayName" : "Datetime Formatter",
+      "programVersion" : "2.0.2"
+    },
+    "name" : "Datetime Formatter 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_timezone"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_input"
+      },
+      "value" : "#Trigger:9402:date!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_format"
+      },
+      "value" : "%Y-%m-%dT%H:%M:%S"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_offset"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"name\":\"datetime.format.date\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 83843,
+    "targetJobId" : 83846
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 83846,
+    "targetTriggerId" : 9402
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 83844,
+    "targetJobId" : 83846
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 83843,
+    "targetJobId" : 83844
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 83842,
+    "targetJobId" : 83843
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 83842,
+    "sourceTriggerId" : 9402
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 9402,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 0.0,
+    "locationTop" : 0.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"is_utc\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"date\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Date\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"date\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Is UTC\",\"dataType\":\"Boolean\",\"playbookDataType\":\"String\",\"required\":false,\"name\":\"is_utc\",\"encrypted\":true,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\",\"${KEYCHAIN}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"ISOFormattedDate\",\"value\":\"#App:83846:ISOFormattedDate!String \",\"displayValue\":\"#App:83846:ISOFormattedDate!String \"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
