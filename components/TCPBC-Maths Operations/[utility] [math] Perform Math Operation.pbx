@@ -1,0 +1,134 @@
+{
+  "name" : "[utility] [math] Perform Maths Operation",
+  "type" : "Pipe",
+  "panX" : 661.0,
+  "panY" : 311.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.3",
+  "comment" : "Auto-Saved on Mon Sep 30 19:39:41 UTC 2019",
+  "jobList" : [ {
+    "id" : 86282,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HTTP Client v2.0",
+      "displayName" : "HTTP Client",
+      "programVersion" : "2.0.15"
+    },
+    "name" : "HTTP Client 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "http_method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "proxies_enabled"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "advanced"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "multipart"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "urlencode_body"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "exclude_null_parameters"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "verify_ssl"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      },
+      "value" : "https://api.mathjs.org/v4/?expr=#App:86283:encode_url.output!String"
+    } ],
+    "locationLeft" : 468.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"Binary\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"url\"]",
+    "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"exclude_null_parameters\",\"headers\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
+    "playbookRetryDelayMinutes" : 1,
+    "playbookRetryMaxRetries" : 5
+  }, {
+    "id" : 86283,
+    "appCatalogItem" : {
+      "programName" : "Encode URL",
+      "displayName" : "Encode URL",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Encode URL 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input"
+      },
+      "value" : "#Trigger:9721:expression!String"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"name\":\"encode_url.output\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 86282,
+    "targetTriggerId" : 9721
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 86283,
+    "targetJobId" : 86282
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 86283,
+    "sourceTriggerId" : 9721
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 9721,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 0.0,
+    "locationTop" : 0.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"expression\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Expression\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"expression\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]}]",
+    "pipeOutputParams" : "[{\"key\":\"math.result\",\"value\":\"#App:86282:http.content!Binary \",\"displayValue\":\"#App:86282:http.content!Binary \"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
