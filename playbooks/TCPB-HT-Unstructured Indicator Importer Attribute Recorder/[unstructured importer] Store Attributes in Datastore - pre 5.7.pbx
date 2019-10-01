@@ -48,7 +48,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "path"
       },
-      "value" : "attributeTest"
+      "value" : "attributes"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "db_method"
