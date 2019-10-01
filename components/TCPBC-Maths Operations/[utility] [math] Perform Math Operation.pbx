@@ -1,12 +1,12 @@
 {
   "name" : "[utility] [math] Perform Maths Operation",
   "type" : "Pipe",
-  "panX" : 661.0,
-  "panY" : 311.0,
+  "panX" : 266.8,
+  "panY" : 194.5938,
   "logLevel" : "WARN",
   "description" : "",
-  "version" : "1.3",
-  "comment" : "Auto-Saved on Mon Sep 30 19:39:41 UTC 2019",
+  "version" : "1.6",
+  "comment" : "Auto-Saved on Tue Oct 01 17:59:41 UTC 2019",
   "jobList" : [ {
     "id" : 86282,
     "appCatalogItem" : {
@@ -77,7 +77,7 @@
     } ],
     "locationLeft" : 468.0,
     "locationTop" : 0.0,
-    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"Binary\",\"loopVariables\":false}]",
+    "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
     "layoutRequiredInputParams" : "[\"url\"]",
     "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"exclude_null_parameters\",\"headers\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
     "playbookRetryDelayMinutes" : 1,
@@ -126,8 +126,8 @@
     "anyOrg" : true,
     "playbookTriggerFilterList" : [ ],
     "outputVariables" : "[{\"name\":\"expression\",\"type\":\"String\",\"loopVariables\":false}]",
-    "pipeInputParams" : "[{\"label\":\"Expression\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"expression\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[]}]",
-    "pipeOutputParams" : "[{\"key\":\"math.result\",\"value\":\"#App:86282:http.content!Binary \",\"displayValue\":\"#App:86282:http.content!Binary \"}]"
+    "pipeInputParams" : "[{\"label\":\"Expression\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"expression\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"math.result\",\"value\":\"#App:86282:http.content!String\",\"displayValue\":\"#App:86282:http.content!String\"}]"
   } ],
   "playbookLabels" : [ ],
   "exportablePipes" : [ ]
