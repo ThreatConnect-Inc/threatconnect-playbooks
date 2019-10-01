@@ -1,0 +1,1011 @@
+{
+  "name" : "Component - IOC All Data Pull",
+  "type" : "Pipe",
+  "panX" : 519.0,
+  "panY" : 808.0,
+  "logLevel" : "WARN",
+  "description" : "The component is built to ingest a single IOC and run API calls to bring back all data on the IOC that can be pulled from API calls. The API data includes Tags, Attributes, Associations, and Security Labels. All returned data is merged into a JSON blob and returned as the output to the Component. If the IOC does not exist in the Sources the Run As user has permissions to, the return data will be a 0. ",
+  "version" : "1.36",
+  "comment" : "Auto-Saved on Thu Sep 12 18:30:10 UTC 2019",
+  "jobList" : [ {
+    "id" : 2838,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "Victim Associations Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#App:2924:find_replace.output!String/#App:2867:find_replace.output!String/victims"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1180.0,
+    "locationTop" : -330.0
+  }, {
+    "id" : 2877,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Pull API Branch Based on IOC Type",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"j.api.branch\",\"value\":\"data.indicatorType[?name\\u003d\\u003d\\u0027#App:2835:j.ioc.type!String\\u0027].apiBranch\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2875:tc.api.result!String"
+    } ],
+    "locationLeft" : -150.0,
+    "locationTop" : -340.0
+  }, {
+    "id" : 2836,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "Group Associations Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#App:2924:find_replace.output!String/#App:2867:find_replace.output!String/groups"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1180.0,
+    "locationTop" : -150.0
+  }, {
+    "id" : 2837,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "Victim Assets Associations Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#App:2924:find_replace.output!String/#App:2867:find_replace.output!String/victimAssets"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : 1180.0,
+    "locationTop" : 30.0
+  }, {
+    "id" : 2863,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "IOC Main Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[{\"key\":\"includeAddtional\",\"value\":\"true\"},{\"key\":\"includes\",\"value\":\"tags\"},{\"key\":\"includes\",\"value\":\"attributes\"},{\"key\":\"filters\",\"value\":\"summary\\u003d#Trigger:157:ioc.ioc!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    } ],
+    "locationLeft" : -980.0,
+    "locationTop" : -470.0
+  }, {
+    "id" : 2868,
+    "appCatalogItem" : {
+      "programName" : "TCPB - String Operations v1.0",
+      "displayName" : "String Operations",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Encode IOC String for API",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_new"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_count"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_old"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "in_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "append_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "prepend_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_strings"
+      },
+      "value" : "#App:2950:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "URL Encode"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "encode_plus"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_start"
+      },
+      "value" : "0"
+    } ],
+    "locationLeft" : 720.0,
+    "locationTop" : -330.0,
+    "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\",\"encode_plus\"]"
+  }, {
+    "id" : 2871,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Victim API Data Parse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"victim.api\",\"value\":\"data.victim\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2838:tc.api.result!String"
+    } ],
+    "locationLeft" : 1390.0,
+    "locationTop" : -330.0
+  }, {
+    "id" : 2869,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Labels API Data Parse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2866:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"label.api\",\"value\":\"data.securityLabel\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 1390.0,
+    "locationTop" : -240.0
+  }, {
+    "id" : 2872,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Groups API Data Parse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"group.api\",\"value\":\"data.group\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2836:tc.api.result!String"
+    } ],
+    "locationLeft" : 1390.0,
+    "locationTop" : -150.0
+  }, {
+    "id" : 2873,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "IOC to IOC Associations Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#App:2924:find_replace.output!String/#App:2867:find_replace.output!String/indicators"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1180.0,
+    "locationTop" : -60.0
+  }, {
+    "id" : 2870,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "IOC Associations API Data Parse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2873:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"ioc.assoc.api\",\"value\":\"data.indicator\"}]"
+    } ],
+    "locationLeft" : 1390.0,
+    "locationTop" : -60.0
+  }, {
+    "id" : 2874,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Victim Assests API Data Parse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2837:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"victim.asset.api\",\"value\":\"data.victimAsset\"}]"
+    } ],
+    "locationLeft" : 1390.0,
+    "locationTop" : 30.0
+  }, {
+    "id" : 2864,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set Result to 0",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"ioc.results.count\",\"value\":\"0\"}]"
+    } ],
+    "locationLeft" : 1700.0,
+    "locationTop" : -540.0
+  }, {
+    "id" : 2857,
+    "appCatalogItem" : {
+      "programName" : "Logger",
+      "displayName" : "Logger",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "All API Calls into new JSON Blob",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "log_message"
+      },
+      "value" : "{\n\"indicator\": #App:2835:ioc.api!String,\n\"securityLabels\": #App:2869:label.api!String,\n\"associatedGroups\": #App:2872:group.api!String,\n\"associatedIndicators\": #App:2870:ioc.assoc.api!String,\n\"victims\": #App:2871:victim.api!String,\n\"victimAssets\": #App:2874:victim.asset.api!String\n}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "logging"
+      },
+      "value" : "INFO"
+    } ],
+    "locationLeft" : 1700.0,
+    "locationTop" : -430.0
+  }, {
+    "id" : 2925,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Drop Brackets from Branch",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:2877:j.api.branch!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "(\\[|\\])"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 60.0,
+    "locationTop" : -340.0
+  }, {
+    "id" : 2924,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Drop Quotes from Branch",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:2925:find_replace.output!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\""
+    } ],
+    "locationLeft" : 280.0,
+    "locationTop" : -340.0
+  }, {
+    "id" : 2875,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "API for IOC Types",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/types/indicatorTypes"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : -440.0,
+    "locationTop" : -290.0
+  }, {
+    "id" : 2866,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TC Api v1.0",
+      "displayName" : "ThreatConnect API",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "Security Labels Pull",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "query_params"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "path"
+      },
+      "value" : "/v2/indicators/#App:2924:find_replace.output!String/#App:2867:find_replace.output!String/securityLabels"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "headers"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 1180.0,
+    "locationTop" : -240.0
+  }, {
+    "id" : 2858,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Join Failure/Success",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.output\",\"value\":\"#App:2857:logger.content!String #App:2864:ioc.results.count!String\"}]"
+    } ],
+    "locationLeft" : 1990.0,
+    "locationTop" : -500.0
+  }, {
+    "id" : 2867,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Replace / for Encoding IOC",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "/"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:2868:string.outputs.0!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "%2F"
+    } ],
+    "locationLeft" : 920.0,
+    "locationTop" : -330.0
+  }, {
+    "id" : 2950,
+    "appCatalogItem" : {
+      "programName" : "Find / Replace",
+      "displayName" : "Find and Replace",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Change \\\\ to \\ in IOC",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_regex"
+      },
+      "value" : "\\"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_text"
+      },
+      "value" : "#App:2835:j.ioc.ioc!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_regex"
+      },
+      "value" : "\\\\"
+    } ],
+    "locationLeft" : 500.0,
+    "locationTop" : -340.0
+  }, {
+    "id" : 2859,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Results Count != 0",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:2863:tc.api.count!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "not equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "0"
+    } ],
+    "locationLeft" : -710.0,
+    "locationTop" : -480.0
+  }, {
+    "id" : 2835,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Parse API Results",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:2863:tc.api.result!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"j.ioc.ioc\",\"value\":\"data.indicator[].summary | [0]\"},{\"key\":\"j.ioc.type\",\"value\":\"data.indicator[].type | [0]\"},{\"key\":\"ioc.api\",\"value\":\"data.indicator\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : -440.0,
+    "locationTop" : -380.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2950,
+    "targetJobId" : 2868
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2924,
+    "targetJobId" : 2950
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2925,
+    "targetJobId" : 2924
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2877,
+    "targetJobId" : 2925
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2859,
+    "targetJobId" : 2864
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2835,
+    "targetJobId" : 2877
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2875,
+    "targetJobId" : 2877
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2859,
+    "targetJobId" : 2875
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 2863,
+    "sourceTriggerId" : 157
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2857,
+    "targetJobId" : 2858
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 2858,
+    "targetTriggerId" : 157
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2863,
+    "targetJobId" : 2859
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2859,
+    "targetJobId" : 2835
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2864,
+    "targetJobId" : 2858
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2868,
+    "targetJobId" : 2867
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2867,
+    "targetJobId" : 2838
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2867,
+    "targetJobId" : 2866
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2867,
+    "targetJobId" : 2836
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2867,
+    "targetJobId" : 2873
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2867,
+    "targetJobId" : 2837
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2838,
+    "targetJobId" : 2871
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2866,
+    "targetJobId" : 2869
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2836,
+    "targetJobId" : 2872
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2873,
+    "targetJobId" : 2870
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2837,
+    "targetJobId" : 2874
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2871,
+    "targetJobId" : 2857
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2869,
+    "targetJobId" : 2857
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2872,
+    "targetJobId" : 2857
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2870,
+    "targetJobId" : 2857
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 2874,
+    "targetJobId" : 2857
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 157,
+    "name" : "IOC API All Data Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : -1270.0,
+    "locationTop" : -750.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"ioc.ioc\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"IOC\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"ioc.ioc\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"all.ioc.data\",\"value\":\"#App:2858:m.output!String \",\"displayValue\":\"#App:2858:m.output!String \"}]"
+  } ],
+  "playbookLabels" : [ {
+    "playbookLabelType" : {
+      "label" : "IOC"
+    }
+  }, {
+    "playbookLabelType" : {
+      "label" : "API"
+    }
+  } ],
+  "exportablePipes" : [ ]
+}
