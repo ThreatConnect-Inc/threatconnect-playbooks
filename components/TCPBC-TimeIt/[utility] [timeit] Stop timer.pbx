@@ -1,0 +1,313 @@
+{
+  "name" : "[utility] [timeit] Stop timer",
+  "type" : "Pipe",
+  "panX" : 310.0,
+  "panY" : 346.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.11",
+  "comment" : "Auto-Saved on Tue Oct 01 18:01:01 UTC 2019",
+  "jobList" : [ {
+    "id" : 86388,
+    "appCatalogItem" : {
+      "programName" : "c8f28dac4cc87f37c47cb3c9f94dc632",
+      "displayName" : "[utility] [math] Perform Maths Operation",
+      "programVersion" : "1.0.0",
+      "pipeRunLevel" : true
+    },
+    "name" : "[utility] [math] Perform Maths Operation 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "expression"
+      },
+      "value" : "(#App:86383:epochTime!String / 1000) - (#App:86384:startTime!String / 1000)"
+    } ],
+    "locationLeft" : 850.0,
+    "locationTop" : 150.0,
+    "outputVariables" : "[{\"name\":\"math.result\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 86384,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JsonPath v1.0",
+      "displayName" : "Json Path",
+      "programVersion" : "2.0.7"
+    },
+    "name" : "Json Path 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_content"
+      },
+      "value" : "#App:86382:datastore.response.json!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping_as_string"
+      },
+      "value" : "[{\"key\":\"startTime\",\"value\":\"[\\\"_source\\\"][\\\"data\\\"]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "null_missing_leaf"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 640.0,
+    "locationTop" : 150.0,
+    "outputVariables" : "[{\"name\":\"startTime\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 86382,
+    "appCatalogItem" : {
+      "programName" : "TCPB - DataStore v3.0",
+      "displayName" : "DataStore",
+      "programVersion" : "3.0.1"
+    },
+    "name" : "DataStore 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "domain"
+      },
+      "value" : "Organization"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_optional"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_type"
+      },
+      "value" : "timeit"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_required"
+      },
+      "value" : "#Trigger:9755:timerName!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_type"
+      },
+      "value" : "String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "mapping"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_optional"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_required"
+      }
+    } ],
+    "locationLeft" : 430.0,
+    "locationTop" : 150.0,
+    "outputVariables" : "[{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutDisplayOutputVariables" : "[{\"name\":\"datastore.found\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.version\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.id\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.success\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.action\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.data.string\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.total\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\",\"fail_on_not_found\"]"
+  }, {
+    "id" : 86383,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set Variable 2",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"epochTime\",\"value\":\"#Global:0:gbl.timestamp.epoch!String\"}]"
+    } ],
+    "locationLeft" : 210.0,
+    "locationTop" : 150.0,
+    "outputVariables" : "[{\"name\":\"epochTime\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 86388,
+    "targetTriggerId" : 9755
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 86384,
+    "targetJobId" : 86388
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 86382,
+    "targetJobId" : 86384
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 86383,
+    "sourceTriggerId" : 9755
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 86383,
+    "targetJobId" : 86382
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 9755,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "External",
+    "locationLeft" : 0.0,
+    "locationTop" : 0.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"timerName\",\"type\":\"String\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Timer Name\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"timerName\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"timeitSeconds\",\"value\":\"#App:86388:math.result!String\",\"displayValue\":\"#App:86388:math.result!String\"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ {
+    "definitionVersion" : "c8f28dac4cc87f37c47cb3c9f94dc632",
+    "name" : "[utility] [math] Perform Maths Operation",
+    "type" : "Pipe",
+    "panX" : 266.8,
+    "panY" : 194.5938,
+    "logLevel" : "WARN",
+    "description" : "",
+    "version" : "1.6",
+    "comment" : "Auto-Saved on Tue Oct 01 17:59:41 UTC 2019",
+    "jobList" : [ {
+      "id" : 86282,
+      "appCatalogItem" : {
+        "programName" : "TCPB - HTTP Client v2.0",
+        "displayName" : "HTTP Client",
+        "programVersion" : "2.0.15"
+      },
+      "name" : "HTTP Client 1",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "http_method"
+        },
+        "value" : "GET"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "fail_on_error"
+        },
+        "value" : "true"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "proxies_enabled"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "advanced"
+        },
+        "value" : "[]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "headers"
+        },
+        "value" : "[]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "multipart"
+        },
+        "value" : "[]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "params"
+        },
+        "value" : "[]"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "urlencode_body"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "body"
+        }
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "exclude_null_parameters"
+        },
+        "value" : "false"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "verify_ssl"
+        },
+        "value" : "true"
+      }, {
+        "appCatalogItemParameter" : {
+          "paramName" : "url"
+        },
+        "value" : "https://api.mathjs.org/v4/?expr=#App:86283:encode_url.output!String"
+      } ],
+      "locationLeft" : 468.0,
+      "locationTop" : 0.0,
+      "outputVariables" : "[{\"name\":\"http.content\",\"type\":\"String\",\"loopVariables\":false}]",
+      "layoutRequiredInputParams" : "[\"url\"]",
+      "layoutDisplayedInputParams" : "[\"url\",\"http_method\",\"params\",\"exclude_null_parameters\",\"headers\",\"advanced\",\"fail_on_error\",\"verify_ssl\",\"proxies_enabled\"]",
+      "playbookRetryDelayMinutes" : 1,
+      "playbookRetryMaxRetries" : 5
+    }, {
+      "id" : 86283,
+      "appCatalogItem" : {
+        "programName" : "Encode URL",
+        "displayName" : "Encode URL",
+        "programVersion" : "1.0.0"
+      },
+      "name" : "Encode URL 1",
+      "jobParameterList" : [ {
+        "appCatalogItemParameter" : {
+          "paramName" : "input"
+        },
+        "value" : "#Trigger:9721:expression!String"
+      } ],
+      "locationLeft" : 234.0,
+      "locationTop" : 0.0,
+      "outputVariables" : "[{\"name\":\"encode_url.output\",\"type\":\"String\",\"loopVariables\":false}]"
+    } ],
+    "playbookConnectionList" : [ {
+      "type" : "Pass",
+      "isCircularOnTarget" : true,
+      "sourceJobId" : 86282,
+      "targetTriggerId" : 9721
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "sourceJobId" : 86283,
+      "targetJobId" : 86282
+    }, {
+      "type" : "Pass",
+      "isCircularOnTarget" : false,
+      "targetJobId" : 86283,
+      "sourceTriggerId" : 9721
+    } ],
+    "playbookTriggerList" : [ {
+      "id" : 9721,
+      "name" : "Component Trigger",
+      "type" : "PipeConfig",
+      "eventType" : "External",
+      "locationLeft" : 0.0,
+      "locationTop" : 0.0,
+      "anyOrg" : true,
+      "playbookTriggerFilterList" : [ ],
+      "outputVariables" : "[{\"name\":\"expression\",\"type\":\"String\",\"loopVariables\":false}]",
+      "pipeInputParams" : "[{\"label\":\"Expression\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"expression\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+      "pipeOutputParams" : "[{\"key\":\"math.result\",\"value\":\"#App:86282:http.content!String\",\"displayValue\":\"#App:86282:http.content!String\"}]"
+    } ],
+    "playbookLabels" : [ ]
+  } ]
+}
