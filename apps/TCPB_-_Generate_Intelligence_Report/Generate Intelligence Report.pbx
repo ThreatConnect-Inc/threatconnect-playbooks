@@ -1,0 +1,105 @@
+{
+  "name" : "Generate Intelligence Report",
+  "type" : "Standard",
+  "panX" : -41.0,
+  "panY" : 11.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.8",
+  "comment" : "Auto-Saved on Thu Oct 03 18:55:18 UTC 2019",
+  "jobList" : [ {
+    "id" : 21075,
+    "appCatalogItem" : {
+      "programName" : "TCAB - 8ee60bb3-b2cf-404a-bd62-dddfec414914 v1",
+      "displayName" : "Generate Intelligence Report",
+      "programVersion" : "1.0.3"
+    },
+    "name" : "Generate Intelligence Report",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "report_id"
+      },
+      "value" : "#Trigger:1809:trg.action.item!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "reportingOrg"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "header_logo"
+      },
+      "value" : "https://threatconnect.com/wp-content/uploads/ThreatConnect-Featured-2019.jpg"
+    } ],
+    "locationLeft" : 520.0,
+    "locationTop" : 310.0,
+    "outputVariables" : "[{\"name\":\"report_html\",\"type\":\"Binary\",\"loopVariables\":false}]"
+  }, {
+    "id" : 21088,
+    "appCatalogItem" : {
+      "programName" : "TCPB - ReportUpload v1.0",
+      "displayName" : "Upload a file to a Report",
+      "programVersion" : "1.0.23"
+    },
+    "name" : "Upload a file to a Report",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_data"
+      },
+      "value" : "#App:21075:report_html!Binary"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Report"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "filename"
+      },
+      "value" : "#Trigger:1809:trg.action.item!String.html"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_id"
+      },
+      "value" : "#Trigger:1809:trg.action.item!String"
+    } ],
+    "locationLeft" : 760.0,
+    "locationTop" : 310.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 21075,
+    "sourceTriggerId" : 1809
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 21075,
+    "targetJobId" : 21088
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 21088,
+    "targetTriggerId" : 1809
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1809,
+    "name" : "Generate Report",
+    "type" : "UserAction",
+    "eventType" : "External",
+    "locationLeft" : 200.0,
+    "locationTop" : 170.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "Report was successfully uploaded. Please refresh the page to see the results.",
+    "anyOrg" : true,
+    "userActionTypes" : "Report",
+    "overrideRunAsUser" : true,
+    "renderBodyAsTip" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"trg.action.item\",\"type\":\"String\",\"loopVariables\":false}]",
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}

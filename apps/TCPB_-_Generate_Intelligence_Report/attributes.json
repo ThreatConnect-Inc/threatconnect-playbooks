@@ -1,0 +1,40 @@
+{
+    "types": [
+        {
+            "allowMarkdown": false,
+            "description": "Report Release Date",
+            "errorMessage": "Length exceeds max of 15 characters. Please format date MM/DD/YYYY",
+            "groups": [
+                "Report"
+            ],
+            "maxLength": 10,
+            "name": "Report Release Date",
+            "system": true,
+            "version": 3
+        },
+        {
+            "allowMarkdown": false,
+            "description": "Report Revision Date",
+            "errorMessage": "Length exceeds max of 15 characters. Please format date MM/DD/YYYY",
+            "groups": [
+                "Report"
+            ],
+            "maxLength": 10,
+            "name": "Report Revision Date",
+            "system": true,
+            "version": 3
+        },
+        {
+            "allowMarkdown": false,
+            "description": "Report Type",
+            "errorMessage": "Length exceeds max of 15 characters.",
+            "groups": [
+                "Report"
+            ],
+            "maxLength": 10,
+            "name": "Report Type",
+            "system": true,
+            "version": 3
+        }
+    ]
+}
