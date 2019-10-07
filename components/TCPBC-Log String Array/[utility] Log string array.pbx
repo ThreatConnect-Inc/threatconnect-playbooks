@@ -1,0 +1,83 @@
+{
+  "name" : "[utility] Log string array",
+  "type" : "Pipe",
+  "panX" : 20.0,
+  "panY" : 20.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.0",
+  "jobList" : [ {
+    "id" : 88369,
+    "appCatalogItem" : {
+      "programName" : "Logger",
+      "displayName" : "Logger",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Logger 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "log_message"
+      },
+      "value" : "#App:88368:joinedArray!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "logging"
+      },
+      "value" : "INFO"
+    } ],
+    "locationLeft" : 740.0,
+    "locationTop" : 400.0
+  }, {
+    "id" : 88368,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Join Array 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : "#Trigger:10051:joinSequence!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"joinedArray\",\"value\":\"#Trigger:10051:array!StringArray\"}]"
+    } ],
+    "locationLeft" : 530.0,
+    "locationTop" : 400.0
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 88369,
+    "targetTriggerId" : 10051
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 88368,
+    "targetJobId" : 88369
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 88368,
+    "sourceTriggerId" : 10051
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 10051,
+    "name" : "Component Trigger",
+    "type" : "PipeConfig",
+    "eventType" : "Create",
+    "locationLeft" : 300.0,
+    "locationTop" : 300.0,
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"name\":\"joinSequence\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"array\",\"type\":\"StringArray\",\"loopVariables\":false}]",
+    "pipeInputParams" : "[{\"label\":\"Array\",\"dataType\":\"String\",\"playbookDataType\":\"StringArray\",\"required\":true,\"name\":\"array\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]},{\"label\":\"Join Character(s)\",\"dataType\":\"String\",\"playbookDataType\":\"String\",\"required\":true,\"name\":\"joinSequence\",\"encrypted\":false,\"hidden\":false,\"hasDollarVariables\":false,\"playbookVariable\":false,\"validValuesList\":[\"${TEXT}\"]}]",
+    "pipeOutputParams" : "[{\"key\":\"joinedArray\",\"value\":\"#App:88368:joinedArray!String \",\"displayValue\":\"#App:88368:joinedArray!String \"}]"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
