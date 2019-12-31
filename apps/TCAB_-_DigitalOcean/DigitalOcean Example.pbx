@@ -1,0 +1,585 @@
+{
+  "name" : "DigitalOcean Example",
+  "type" : "Standard",
+  "panX" : 20.0,
+  "panY" : 22.0,
+  "logLevel" : "TRACE",
+  "description" : "",
+  "priority" : 6,
+  "version" : "1.5",
+  "comment" : "Auto-Saved on Tue Dec 31 22:01:26 UTC 2019",
+  "jobList" : [ {
+    "id" : 24783,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Convert StringArray to String",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"join.SSHResponse\",\"value\":\"#App:24785:ssh.responses!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 1800.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"join.SSHResponse\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24784,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge Responses",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.response\",\"value\":\"#App:24799:v.DestroyDropletError!String #App:24792:v.FailedCreatingDroplet!String #App:24795:v.FailedDestroySSHKEY!String #App:24790:v.FailedSSH!String #App:24793:v.FailedSSH!String #App:24800:v.Success!String #App:24791:v.failedSSHAction_Add!String\"}]"
+    } ],
+    "locationLeft" : 570.0,
+    "locationTop" : 740.0,
+    "outputVariables" : "[{\"name\":\"m.response\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24785,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SSH v1.0",
+      "displayName" : "SSH Client",
+      "programVersion" : "1.0.6"
+    },
+    "name" : "SSH Client",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "use_sudo"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "port"
+      },
+      "value" : "22"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sudo_username"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "hostnames"
+      },
+      "value" : "#App:24786:DigitalOcean.create.address!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "commands"
+      },
+      "value" : "cat /etc/passwd"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "username"
+      },
+      "value" : "root"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "password"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "private_key"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sudo_password"
+      },
+      "value" : ""
+    } ],
+    "locationLeft" : 1090.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"ssh.errors\",\"type\":\"StringArray\",\"loopVariables\":false},{\"name\":\"ssh.responses\",\"type\":\"StringArray\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24786,
+    "appCatalogItem" : {
+      "programName" : "TCAB - a1b94734-61eb-4858-be71-bccb9748446c v1",
+      "displayName" : "DigitalOcean Droplet Actions",
+      "programVersion" : "1.0.8"
+    },
+    "name" : "Create DigitalOcean Droplet",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_fingerprint"
+      },
+      "value" : "#App:24787:DigitalOcean.SSHKey.fingerprint!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_region"
+      },
+      "value" : "nyc1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_name_no_spaces"
+      },
+      "value" : "MyVPS"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_size"
+      },
+      "value" : "s-1vcpu-1gb"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "backups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_image"
+      },
+      "value" : "centos-7-x64"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "digitalocean_api_token"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:DigitalOcean API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_name_to_destroy"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_action"
+      },
+      "value" : "Create"
+    } ],
+    "locationLeft" : 850.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"DigitalOcean.create.address\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"DigitalOcean.action.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"DigitalOcean.create.droplet_name\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"droplet_action\",\"digitalocean_api_token\"]",
+    "layoutDisplayedInputParams" : "[\"droplet_action\",\"digitalocean_api_token\",\"droplet_name_no_spaces\",\"droplet_region\",\"ssh_key_fingerprint\",\"droplet_size\",\"droplet_image\",\"backups\"]"
+  }, {
+    "id" : 24787,
+    "appCatalogItem" : {
+      "programName" : "TCAB - aa098ad1-92de-4ac9-977a-0dbd16f2e06b v1",
+      "displayName" : "DigitalOcean SSH Keys Actions",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Add SSH Key to DigitalOcean",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_name"
+      },
+      "value" : "#Global:0:gbl.timestamp.epoch!StringMyVPS"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_action"
+      },
+      "value" : "Create"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "digitalocean_api_token"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:DigitalOcean API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "public_ssh_key"
+      },
+      "value" : "#App:24788:ssh_pub_key!String"
+    } ],
+    "locationLeft" : 600.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"DigitalOcean.SSHKeyAction.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"DigitalOcean.SSHKey.fingerprint\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"ssh_key_action\",\"digitalocean_api_token\"]",
+    "layoutDisplayedInputParams" : "[\"ssh_key_action\",\"digitalocean_api_token\",\"public_ssh_key\",\"ssh_key_name\"]"
+  }, {
+    "id" : 24788,
+    "appCatalogItem" : {
+      "programName" : "TCAB - 65c14a7a-888f-47c0-96e4-1449ff2288a1 v1",
+      "displayName" : "Generate SSH Key pair for DigitalOcean",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Generate SSH Key Pair",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "public_exponent"
+      },
+      "value" : "65537"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_size"
+      },
+      "value" : "2048"
+    } ],
+    "locationLeft" : 310.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"generate_ssh.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ssh_priv_key\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"ssh_pub_key\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24789,
+    "appCatalogItem" : {
+      "programName" : "TCAB - aa098ad1-92de-4ac9-977a-0dbd16f2e06b v1",
+      "displayName" : "DigitalOcean SSH Keys Actions",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Destroy DigitalOcean SSH Key",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_name"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_action"
+      },
+      "value" : "Destroy"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "digitalocean_api_token"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:DigitalOcean API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "public_ssh_key"
+      },
+      "value" : "#App:24788:ssh_pub_key!String"
+    } ],
+    "locationLeft" : 1570.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"DigitalOcean.SSHKeyAction.failed\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"ssh_key_action\",\"digitalocean_api_token\"]",
+    "layoutDisplayedInputParams" : "[\"ssh_key_action\",\"digitalocean_api_token\",\"public_ssh_key\"]"
+  }, {
+    "id" : 24790,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set failure for generating SSH Key",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedSSH\",\"value\":\"Failed to generate SSH Key. Result was: #App:24788:generate_ssh.failed!String\"}]"
+    } ],
+    "locationLeft" : 320.0,
+    "locationTop" : 260.0,
+    "outputVariables" : "[{\"name\":\"v.FailedSSH\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24791,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set failure for adding SSH Key",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.failedSSHAction_Add\",\"value\":\"Failed adding SSH key to DigitalOcean. Response was: #App:24787:DigitalOcean.SSHKeyAction.failed!String\"}]"
+    } ],
+    "locationLeft" : 630.0,
+    "locationTop" : 270.0,
+    "outputVariables" : "[{\"name\":\"v.failedSSHAction_Add\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24792,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set failure for creating Droplet",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedCreatingDroplet\",\"value\":\"Failed to create droplet. Response was: #App:24786:DigitalOcean.action.failed!String\"}]"
+    } ],
+    "locationLeft" : 870.0,
+    "locationTop" : 270.0,
+    "outputVariables" : "[{\"name\":\"v.FailedCreatingDroplet\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24793,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set SSH Failure",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedSSH\",\"value\":\"Failed to run SSH commands. Response was: #App:24794:join.SSHErrors!String\"}]"
+    } ],
+    "locationLeft" : 1350.0,
+    "locationTop" : 370.0,
+    "outputVariables" : "[{\"name\":\"v.FailedSSH\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24794,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Convert SSH Error to String",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"join.SSHErrors\",\"value\":\"#App:24785:ssh.errors!StringArray\"}]"
+    } ],
+    "locationLeft" : 1110.0,
+    "locationTop" : 270.0,
+    "outputVariables" : "[{\"name\":\"join.SSHErrors\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24795,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set failure for destroying SSH key",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedDestroySSHKEY\",\"value\":\"#App:24789:DigitalOcean.SSHKeyAction.failed!String\"}]"
+    } ],
+    "locationLeft" : 1600.0,
+    "locationTop" : 270.0,
+    "outputVariables" : "[{\"name\":\"v.FailedDestroySSHKEY\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24797,
+    "appCatalogItem" : {
+      "programName" : "TCAB - a1b94734-61eb-4858-be71-bccb9748446c v1",
+      "displayName" : "DigitalOcean Droplet Actions",
+      "programVersion" : "1.0.8"
+    },
+    "name" : "Destroy DigitalOcean Droplet",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "backups"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_name_no_spaces"
+      },
+      "value" : "MyVPS"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_size"
+      },
+      "value" : "s-1vcpu-1gb"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_action"
+      },
+      "value" : "Destroy"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_image"
+      },
+      "value" : "centos-7-x64"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "digitalocean_api_token"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:DigitalOcean API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_name_to_destroy"
+      },
+      "value" : "#App:24786:DigitalOcean.create.droplet_name!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ssh_key_fingerprint"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "droplet_region"
+      },
+      "value" : "nyc1"
+    } ],
+    "locationLeft" : 1340.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"DigitalOcean.destroy.response\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"droplet_action\",\"digitalocean_api_token\"]",
+    "layoutDisplayedInputParams" : "[\"droplet_action\",\"digitalocean_api_token\",\"droplet_name_to_destroy\"]"
+  }, {
+    "id" : 24799,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set failure for Destroy Droplet",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.DestroyDropletError\",\"value\":\"Failure destroying droplet. Error was: #App:24797:DigitalOcean.destroy.response!String\"}]"
+    } ],
+    "locationLeft" : 1350.0,
+    "locationTop" : 270.0,
+    "outputVariables" : "[{\"name\":\"v.DestroyDropletError\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 24800,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.13"
+    },
+    "name" : "Set Success",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.Success\",\"value\":\"#App:24783:join.SSHResponse!String\"}]"
+    } ],
+    "locationLeft" : 2010.0,
+    "locationTop" : 120.0,
+    "outputVariables" : "[{\"name\":\"v.Success\",\"type\":\"String\",\"loopVariables\":false}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 24788,
+    "sourceTriggerId" : 2390
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24788,
+    "targetJobId" : 24787
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24787,
+    "targetJobId" : 24786
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24786,
+    "targetJobId" : 24785
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24789,
+    "targetJobId" : 24783
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 24784,
+    "targetTriggerId" : 2390
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24788,
+    "targetJobId" : 24790
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24787,
+    "targetJobId" : 24791
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24786,
+    "targetJobId" : 24792
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24785,
+    "targetJobId" : 24794
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24794,
+    "targetJobId" : 24793
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24789,
+    "targetJobId" : 24795
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24797,
+    "targetJobId" : 24789
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24797,
+    "targetJobId" : 24799
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24783,
+    "targetJobId" : 24800
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24790,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24791,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24792,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24793,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24799,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24795,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24800,
+    "targetJobId" : 24784
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 24785,
+    "targetJobId" : 24797
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2390,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : 80.0,
+    "locationTop" : 120.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:24784:m.response!String",
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
