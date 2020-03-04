@@ -4,7 +4,7 @@ This Playbook provides the SlashNext Abuse Inbox URL Scan capabilities for the T
 1) A suspected malicious email is forwarded to the mailbox associated with this Playbook.
 2) The URLs from this message are extracted and de-duplicated.
 3) Each URL is scanned using the SlashNext Phishing Incident Response App.
-4) Malicious URLs are stored in the platform and and a report is generated containing each malicious URL.
+4) Malicious URLs are stored in the platform and a report is generated containing each malicious URL.
 5) The original email content is stored and associated with the report that is generated.
 6) Each malicious URL is created as an Indicator and associated with the report.
 7) An in-platform notification is generated to review the report.
