@@ -9,3 +9,6 @@ This Playbook provides the SlashNext Abuse Inbox URL Scan capabilities for the T
 6) Each malicious URL is created as an Indicator and associated with the report.
 7) An in-platform notification is generated to review the report.
 8) A response is sent back to the From address for the original email to indicate the status of the scan.
+
+## Requirements
+In order to make use of this Playbook, you will need to install the SlashNext Phishing Incident Response App into your instance of the ThreatConnect Platform. This app along with the documentation is available here: https://github.com/ThreatConnect-Inc/threatconnect-playbooks/tree/master/apps/SlashNext%20Phishing%20Incident%20Response
