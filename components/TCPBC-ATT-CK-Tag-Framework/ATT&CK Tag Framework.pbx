@@ -1,13 +1,13 @@
 {
   "name" : "ATT&CK Tag Framework",
   "type" : "Pipe",
-  "panX" : -1635.0,
-  "panY" : 77.0,
+  "panX" : -1500.0,
+  "panY" : 314.0,
   "logLevel" : "TRACE",
-  "description" : "Sample playbook for testing",
+  "description" : "This component will generate tags conforming to the ATT&CK framework set up in ThreatConnect.",
   "priority" : 6,
-  "version" : "1.34",
-  "comment" : "Auto-Saved on Wed Mar 11 21:56:54 UTC 2020",
+  "version" : "1.35",
+  "comment" : "Auto-Saved on Thu Mar 12 23:33:08 UTC 2020",
   "jobList" : [ {
     "id" : 295,
     "appCatalogItem" : {
@@ -25,6 +25,74 @@
     "locationLeft" : 1560.0,
     "locationTop" : 0.0,
     "outputVariables" : "[{\"name\":\"array.length\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 302,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "? 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:295:array.length!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 1800.0,
+    "locationTop" : 10.0
+  }, {
+    "id" : 294,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.5"
+    },
+    "name" : "Extract Partial Tag matching Tactic Name",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"partialTag\",\"value\":\"\\\"#App:304:tactic!String\\\"\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:301:json.original!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 2160.0,
+    "locationTop" : 90.0,
+    "outputVariables" : "[{\"name\":\"partialTag\",\"type\":\"String\",\"loopVariables\":false}]"
   }, {
     "id" : 296,
     "appCatalogItem" : {
@@ -94,144 +162,6 @@
     "locationTop" : 0.0,
     "outputVariables" : "[{\"name\":\"tc.api.result\",\"type\":\"String\",\"loopVariables\":false}]"
   }, {
-    "id" : 294,
-    "appCatalogItem" : {
-      "programName" : "TCPB - JMESPath v2.0",
-      "displayName" : "JMESPath",
-      "programVersion" : "2.0.5"
-    },
-    "name" : "Extract Partial Tag matching Tactic Name",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "strip_quotes"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "string_expressions"
-      },
-      "value" : "[{\"key\":\"partialTag\",\"value\":\"\\\"#App:304:tactic!String\\\"\"}]"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "json_data"
-      },
-      "value" : "#App:301:json.original!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "string_array_expressions"
-      },
-      "value" : "[]"
-    } ],
-    "locationLeft" : 2160.0,
-    "locationTop" : 90.0,
-    "outputVariables" : "[{\"name\":\"partialTag\",\"type\":\"String\",\"loopVariables\":false}]"
-  }, {
-    "id" : 299,
-    "appCatalogItem" : {
-      "programName" : "Merge",
-      "displayName" : "Merge",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "Results",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "output_array"
-      },
-      "value" : "[{\"key\":\"tag\",\"value\":\"#App:296:tag!String #App:290:datastore.data.string!String\"}]"
-    } ],
-    "locationLeft" : 3060.0,
-    "locationTop" : -90.0,
-    "outputVariables" : "[{\"name\":\"tag\",\"type\":\"String\",\"loopVariables\":false}]"
-  }, {
-    "id" : 304,
-    "appCatalogItem" : {
-      "programName" : "Merge",
-      "displayName" : "Merge",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "Merge 2",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "output_array"
-      },
-      "value" : "[{\"key\":\"tactic\",\"value\":\"#App:298:taid!String #Trigger:43:taid!String\"}]"
-    } ],
-    "locationLeft" : 940.0,
-    "locationTop" : 0.0,
-    "outputVariables" : "[{\"name\":\"tactic\",\"type\":\"String\",\"loopVariables\":false}]"
-  }, {
-    "id" : 300,
-    "appCatalogItem" : {
-      "programName" : "If / Else",
-      "displayName" : "If / Else",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "? No Match",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:293:string.outputs.0!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "equals"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
-    } ],
-    "locationLeft" : 2490.0,
-    "locationTop" : 290.0
-  }, {
-    "id" : 302,
-    "appCatalogItem" : {
-      "programName" : "If / Else",
-      "displayName" : "If / Else",
-      "programVersion" : "1.0.0"
-    },
-    "name" : "? 1",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_1"
-      },
-      "value" : "#App:295:array.length!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operator"
-      },
-      "value" : "equals"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "match_case"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "operand_2"
-      },
-      "value" : "1"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "as_numeric"
-      },
-      "value" : "true"
-    } ],
-    "locationLeft" : 1800.0,
-    "locationTop" : 10.0
-  }, {
     "id" : 305,
     "appCatalogItem" : {
       "programName" : "If / Else",
@@ -267,138 +197,6 @@
     } ],
     "locationLeft" : 468.0,
     "locationTop" : -2.5
-  }, {
-    "id" : 303,
-    "appCatalogItem" : {
-      "programName" : "TCPB - String Operations v1.0",
-      "displayName" : "String Operations",
-      "programVersion" : "1.0.1"
-    },
-    "name" : "Contains Tactic Name",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "in_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "prepend_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "count_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ends_with_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "find_start"
-      },
-      "value" : "0"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_false"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ends_with_start"
-      },
-      "value" : "0"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "encode_plus"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "find_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "input_strings"
-      },
-      "value" : "#Trigger:43:taid!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "starts_with_start"
-      },
-      "value" : "0"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "replace_count"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_not_found"
-      },
-      "value" : "false"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "replace_new"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "append_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "count_stop"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "starts_with_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "slice_step"
-      },
-      "value" : "1"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "slice_start"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "starts_with_stop"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "count_start"
-      },
-      "value" : "0"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "slice_stop"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "find_stop"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "replace_old"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "strip_chars"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "ends_with_stop"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "tc_action"
-      },
-      "value" : "Is Empty"
-    } ],
-    "locationLeft" : 234.0,
-    "locationTop" : 0.0,
-    "outputVariables" : "[{\"name\":\"string.outputs.0\",\"type\":\"String\",\"loopVariables\":false}]",
-    "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\"]",
-    "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\",\"fail_on_false\"]"
   }, {
     "id" : 306,
     "appCatalogItem" : {
@@ -469,6 +267,42 @@
     "layoutRequiredInputParams" : "[\"tc_action\",\"indent\",\"json_data_build\"]",
     "layoutDisplayedInputParams" : "[\"tc_action\",\"indent\",\"json_data_build\",\"sort_keys\"]"
   }, {
+    "id" : 300,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "? No Match",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:293:string.outputs.0!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 2490.0,
+    "locationTop" : 290.0
+  }, {
     "id" : 291,
     "appCatalogItem" : {
       "programName" : "TCPB - DataStore v3.0",
@@ -529,6 +363,23 @@
     "layoutRequiredInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"rid_required\"]",
     "layoutDisplayedInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"rid_required\",\"fail_on_not_found\"]"
   }, {
+    "id" : 299,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Results",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"tag\",\"value\":\"#App:296:tag!String #App:290:datastore.data.string!String\"}]"
+    } ],
+    "locationLeft" : 3060.0,
+    "locationTop" : -90.0,
+    "outputVariables" : "[{\"name\":\"tag\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
     "id" : 298,
     "appCatalogItem" : {
       "programName" : "TCPB - SetVariable v1.0",
@@ -545,67 +396,6 @@
     "locationLeft" : 600.0,
     "locationTop" : -60.0,
     "outputVariables" : "[{\"name\":\"taid\",\"type\":\"String\",\"loopVariables\":false}]"
-  }, {
-    "id" : 290,
-    "appCatalogItem" : {
-      "programName" : "TCPB - DataStore v3.0",
-      "displayName" : "DataStore",
-      "programVersion" : "3.0.1"
-    },
-    "name" : "Retrieve Tag",
-    "jobParameterList" : [ {
-      "appCatalogItemParameter" : {
-        "paramName" : "data_type"
-      },
-      "value" : "tag"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "mapping"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "tc_action"
-      },
-      "value" : "GET"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "domain"
-      },
-      "value" : "Organization"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "output_type"
-      },
-      "value" : "String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "fail_on_not_found"
-      },
-      "value" : "true"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "rid_optional"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "rid_required"
-      },
-      "value" : "1"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "data_required"
-      }
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "data_optional"
-      }
-    } ],
-    "locationLeft" : 2560.0,
-    "locationTop" : 80.0,
-    "outputVariables" : "[{\"name\":\"datastore.data.string\",\"type\":\"String\",\"loopVariables\":false}]",
-    "layoutDisplayOutputVariables" : "[{\"name\":\"datastore.found\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.version\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.id\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.success\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.action\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.data.string\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.total\",\"type\":\"String\",\"loopVariables\":false}]",
-    "layoutRequiredInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\"]",
-    "layoutDisplayedInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\",\"fail_on_not_found\"]"
   }, {
     "id" : 293,
     "appCatalogItem" : {
@@ -740,6 +530,138 @@
     "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\",\"in_chars\"]",
     "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\",\"in_chars\",\"fail_on_false\"]"
   }, {
+    "id" : 303,
+    "appCatalogItem" : {
+      "programName" : "TCPB - String Operations v1.0",
+      "displayName" : "String Operations",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Contains Tactic Name",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "in_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "prepend_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "encode_plus"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_strings"
+      },
+      "value" : "#Trigger:43:taid!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_count"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_new"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "append_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "starts_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_start"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "find_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "replace_old"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_chars"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ends_with_stop"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "Is Empty"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"name\":\"string.outputs.0\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"input_strings\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"input_strings\",\"fail_on_false\"]"
+  }, {
     "id" : 292,
     "appCatalogItem" : {
       "programName" : "TCPB - DataStore v3.0",
@@ -800,92 +722,105 @@
     "layoutDisplayOutputVariables" : "[{\"name\":\"datastore.response.version\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.id\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.success\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.result\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.action\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.total\",\"type\":\"String\",\"loopVariables\":false}]",
     "layoutRequiredInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"data_required\"]",
     "layoutDisplayedInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"rid_optional\",\"data_required\"]"
+  }, {
+    "id" : 304,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge 2",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"tactic\",\"value\":\"#App:298:taid!String #Trigger:43:taid!String\"}]"
+    } ],
+    "locationLeft" : 940.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"name\":\"tactic\",\"type\":\"String\",\"loopVariables\":false}]"
+  }, {
+    "id" : 290,
+    "appCatalogItem" : {
+      "programName" : "TCPB - DataStore v3.0",
+      "displayName" : "DataStore",
+      "programVersion" : "3.0.1"
+    },
+    "name" : "Retrieve Tag",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_type"
+      },
+      "value" : "tag"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "mapping"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "domain"
+      },
+      "value" : "Organization"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_type"
+      },
+      "value" : "String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_optional"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_required"
+      },
+      "value" : "1"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_required"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_optional"
+      }
+    } ],
+    "locationLeft" : 2560.0,
+    "locationTop" : 80.0,
+    "outputVariables" : "[{\"name\":\"datastore.data.string\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutDisplayOutputVariables" : "[{\"name\":\"datastore.found\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.version\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.type\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.id\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.success\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.action\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.json\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.data.string\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.failed\",\"type\":\"String\",\"loopVariables\":false},{\"name\":\"datastore.response.shard.total\",\"type\":\"String\",\"loopVariables\":false}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"output_type\",\"domain\",\"data_type\",\"rid_required\",\"fail_on_not_found\"]"
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 294,
-    "targetJobId" : 307
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 301,
-    "targetJobId" : 294
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 302,
-    "targetJobId" : 299
-  }, {
-    "type" : "Fail",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 302,
-    "targetJobId" : 301
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 295,
-    "targetJobId" : 302
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 296,
-    "targetJobId" : 295
-  }, {
-    "type" : "EndLoop",
     "isCircularOnTarget" : true,
-    "sourceJobId" : 300,
-    "targetJobId" : 307
+    "sourceJobId" : 299,
+    "targetTriggerId" : 43
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 304,
+    "targetJobId" : 297
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 300,
-    "targetJobId" : 292
+    "sourceJobId" : 305,
+    "targetJobId" : 304
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 293,
-    "targetJobId" : 300
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 291,
-    "targetJobId" : 299
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 290,
-    "targetJobId" : 291
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 307,
-    "targetJobId" : 290
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 292,
-    "targetJobId" : 306
-  }, {
-    "type" : "StartLoop",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 307,
-    "targetJobId" : 293
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 297,
-    "targetJobId" : 296
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "targetJobId" : 303,
-    "sourceTriggerId" : 43
-  }, {
-    "type" : "Pass",
-    "isCircularOnTarget" : false,
-    "sourceJobId" : 303,
-    "targetJobId" : 305
+    "sourceJobId" : 298,
+    "targetJobId" : 304
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
@@ -894,23 +829,88 @@
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 298,
-    "targetJobId" : 304
+    "sourceJobId" : 303,
+    "targetJobId" : 305
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 303,
+    "sourceTriggerId" : 43
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 297,
+    "targetJobId" : 296
+  }, {
+    "type" : "StartLoop",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 307,
+    "targetJobId" : 293
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 292,
+    "targetJobId" : 306
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 307,
+    "targetJobId" : 290
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 290,
+    "targetJobId" : 291
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 291,
+    "targetJobId" : 299
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 293,
+    "targetJobId" : 300
   }, {
     "type" : "Fail",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 305,
-    "targetJobId" : 304
+    "sourceJobId" : 300,
+    "targetJobId" : 292
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 300,
+    "targetJobId" : 307
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 304,
-    "targetJobId" : 297
+    "sourceJobId" : 296,
+    "targetJobId" : 295
   }, {
     "type" : "Pass",
-    "isCircularOnTarget" : true,
-    "sourceJobId" : 299,
-    "targetTriggerId" : 43
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 295,
+    "targetJobId" : 302
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 302,
+    "targetJobId" : 301
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 302,
+    "targetJobId" : 299
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 301,
+    "targetJobId" : 294
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 294,
+    "targetJobId" : 307
   } ],
   "playbookTriggerList" : [ {
     "id" : 43,
