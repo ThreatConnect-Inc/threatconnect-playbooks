@@ -1,4 +1,4 @@
-Version 1.0.1
+Version 1.1.2
 
 For user documentation please refer to the link below
 
