@@ -1,4 +1,7 @@
-# Getting the app
+# NOTE: This is not a ThreatConnect supported app
+
+# Getting Started
+
 ## Importing the app project
 Download the provided .abx file into [AppBuilder](https://training.threatconnect.com/learn/article/app-builder-kb-article#2.3).
 
