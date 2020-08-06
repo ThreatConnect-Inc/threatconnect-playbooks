@@ -1,0 +1,920 @@
+{
+  "name" : "IntelFinder - Receive Alerts",
+  "type" : "Standard",
+  "panX" : 27.0,
+  "panY" : 96.0,
+  "logLevel" : "DEBUG",
+  "description" : "",
+  "priority" : 6,
+  "version" : "1.30",
+  "comment" : "Auto-Saved on Wed Aug 05 20:42:52 UTC 2020",
+  "jobList" : [ {
+    "id" : 159848,
+    "appCatalogItem" : {
+      "programName" : "TCAB - 269d0167-cd80-4be6-b0c0-e0d155f7f618 v1",
+      "displayName" : "IntelFinder Alert Processing",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "IntelFinder Alert Processing",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#Trigger:15619:trg.http.body!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sort_keys"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indent"
+      },
+      "value" : "4"
+    } ],
+    "locationLeft" : -100.0,
+    "locationTop" : -90.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.titles\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.sources\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.filenames\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.victim_assets\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.reports\",\"type\":\"BinaryArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.descriptions\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.indicators\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"if.results.additional_contexts\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 132382,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "Extract Victim Assets",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"Host\",\"value\":\"Host\"},{\"key\":\"EmailAddress\",\"value\":\"EmailAddress\"},{\"key\":\"Address\",\"value\":\"Address\"},{\"key\":\"URL\",\"value\":\"URL\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:132379:victimAsset!String"
+    } ],
+    "locationLeft" : 240.0,
+    "locationTop" : 190.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Host\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Address\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"URL\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 132390,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Merge Addresses to Results",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_length"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:132382:Address!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "reverse_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_end"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "Union"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_value"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_length"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_data"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_string"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:132389:array.string.results!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_array"
+      }
+    } ],
+    "locationLeft" : 1640.0,
+    "locationTop" : 610.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.length\",\"type\":\"String\"}]",
+    "layoutDisplayOutputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.operation\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.binary.results\",\"type\":\"BinaryArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.keyvalue.results\",\"type\":\"KeyValueArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.length\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.tcentity.results\",\"type\":\"TCEntityArray\"}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"set_a\",\"set_b\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"set_a\",\"set_b\"]"
+  }, {
+    "id" : 132385,
+    "appCatalogItem" : {
+      "programName" : "TCPB - EmailAddressCreate v1.1",
+      "displayName" : "Create ThreatConnect Email Address",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Add E-mail Indicator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:132381:EmailAddress!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:132379:entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "EmailAddress"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "confidence"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      }
+    } ],
+    "locationLeft" : 940.0,
+    "locationTop" : 390.0
+  }, {
+    "id" : 132381,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "Extract Indicators",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"Host\",\"value\":\"Host\"},{\"key\":\"EmailAddress\",\"value\":\"EmailAddress\"},{\"key\":\"Address\",\"value\":\"Address\"},{\"key\":\"URL\",\"value\":\"URL\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:132379:indicator!String"
+    } ],
+    "locationLeft" : 0.0,
+    "locationTop" : 139.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Address\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"URL\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"EmailAddress\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Host\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 139819,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "If Victim Assets are Found",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:132390:array.length!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "not equals"
+    } ],
+    "locationLeft" : 1850.0,
+    "locationTop" : 520.0
+  }, {
+    "id" : 132384,
+    "appCatalogItem" : {
+      "programName" : "TCPB - AddressCreate v1.1",
+      "displayName" : "Create ThreatConnect Address",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Add Address Indicator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Address"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:132381:Address!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "confidence"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:132379:entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 1170.0,
+    "locationTop" : 450.0
+  }, {
+    "id" : 132389,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Merge Hosts and URLs",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "reverse_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_length"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      },
+      "value" : "#App:132382:Host!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_length"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_data"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_end"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_string"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_value"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      },
+      "value" : "#App:132382:URL!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "Union"
+    } ],
+    "locationLeft" : 1410.0,
+    "locationTop" : 530.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"}]",
+    "layoutDisplayOutputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.operation\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.binary.results\",\"type\":\"BinaryArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.keyvalue.results\",\"type\":\"KeyValueArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.length\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.tcentity.results\",\"type\":\"TCEntityArray\"}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"set_a\",\"set_b\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"set_a\",\"set_b\"]"
+  }, {
+    "id" : 139820,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge Paths",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 2090.0,
+    "locationTop" : 460.0
+  }, {
+    "id" : 132379,
+    "appCatalogItem" : {
+      "programName" : "Iterator",
+      "displayName" : "Iterator",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Iterate Indicators and Assets",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_outputs"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_inputs"
+      },
+      "value" : "[{\"key\":\"entity\",\"value\":\"#App:132380:tc.report!TCEntityArray\"},{\"key\":\"victimAsset\",\"value\":\"#App:159848:if.results.victim_assets!StringArray\"},{\"key\":\"indicator\",\"value\":\"#App:159848:if.results.indicators!StringArray\"}]"
+    } ],
+    "locationLeft" : 2010.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"victimAsset\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"entity\",\"type\":\"TCEntity\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"indicator\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"array_inputs\"]",
+    "layoutDisplayedInputParams" : "[\"array_inputs\",\"array_outputs\"]"
+  }, {
+    "id" : 132386,
+    "appCatalogItem" : {
+      "programName" : "TCPB - HostCreate v1.1",
+      "displayName" : "Create ThreatConnect Host",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Add Host Indicator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:132381:Host!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Host"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:132379:entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "dns_active"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "confidence"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "whois_active"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 470.0,
+    "locationTop" : 250.0
+  }, {
+    "id" : 141704,
+    "appCatalogItem" : {
+      "programName" : "TCPB - VictimAssetWebsiteCreate v1.0",
+      "displayName" : "Create ThreatConnect Victim Asset Website",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Add Victim Asset",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "asset_value1"
+      },
+      "value" : "#App:132388:tc.victim.name!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:132379:entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "asset_type"
+      },
+      "value" : "webSites"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "victim_entity"
+      },
+      "value" : "#App:132388:tc.victim!TCEntity"
+    } ],
+    "locationLeft" : 2190.0,
+    "locationTop" : 620.0
+  }, {
+    "id" : 132388,
+    "appCatalogItem" : {
+      "programName" : "TCPB - VictimCreate v1.0",
+      "displayName" : "Create ThreatConnect Victim",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Add Victim",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "nationality"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sub_org"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:132390:array.string.results!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "org"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "work_location"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    } ],
+    "locationLeft" : 1890.0,
+    "locationTop" : 700.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.victim\",\"type\":\"TCEntity\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.victim.name\",\"type\":\"String\"}]"
+  }, {
+    "id" : 132383,
+    "appCatalogItem" : {
+      "programName" : "TCPB - UrlCreate v1.1",
+      "displayName" : "Create ThreatConnect URL",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Add URL Indicator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "confidence"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:132379:entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "URL"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:132381:URL!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 710.0,
+    "locationTop" : 320.0
+  }, {
+    "id" : 132380,
+    "appCatalogItem" : {
+      "programName" : "TCPB - ReportCreate v1.0",
+      "displayName" : "Create ThreatConnect Report",
+      "programVersion" : "1.0.26"
+    },
+    "name" : "Create ThreatConnect Report",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[{\"key\":\"source\",\"value\":\"#App:159848:if.results.sources!StringArray\"},{\"key\":\"description\",\"value\":\"#App:159848:if.results.descriptions!StringArray\"},{\"key\":\"additional analysis and context\",\"value\":\"#App:159848:if.results.additional_contexts!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Report"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_data"
+      },
+      "value" : "#App:159848:if.results.reports!BinaryArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "IntelFinder"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "#App:159848:if.results.titles!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "report_file_name"
+      },
+      "value" : "#App:159848:if.results.filenames!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "publish_date"
+      }
+    } ],
+    "locationLeft" : 470.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.report\",\"type\":\"TCEntityArray\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 159848,
+    "targetJobId" : 132380
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 159848,
+    "sourceTriggerId" : 15619
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 141704,
+    "targetJobId" : 139820
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132388,
+    "targetJobId" : 141704
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 139820,
+    "targetJobId" : 132379
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 139819,
+    "targetJobId" : 139820
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 139819,
+    "targetJobId" : 132388
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132390,
+    "targetJobId" : 139819
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132389,
+    "targetJobId" : 132390
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132384,
+    "targetJobId" : 132389
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132385,
+    "targetJobId" : 132384
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132383,
+    "targetJobId" : 132385
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132386,
+    "targetJobId" : 132383
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132382,
+    "targetJobId" : 132386
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132381,
+    "targetJobId" : 132382
+  }, {
+    "type" : "StartLoop",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132379,
+    "targetJobId" : 132381
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 132380,
+    "targetJobId" : 132379
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 15619,
+    "name" : "HttpLink Trigger 1",
+    "type" : "HttpLink",
+    "eventType" : "External",
+    "locationLeft" : -170.0,
+    "locationTop" : -230.0,
+    "httpResponseCode" : "200",
+    "httpResponseHeader" : "[]",
+    "anyOrg" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.http.body\",\"type\":\"String\"}]",
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
