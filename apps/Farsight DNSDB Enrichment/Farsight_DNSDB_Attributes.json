@@ -1,0 +1,39 @@
+{
+    "types": [
+        {
+            "name": "Farsight DNSDB Start Date", 
+            "description": "Farsight DNSDB Start Date", 
+            "maxLength": 10, 
+            "indicators": ["Host", "Address"],
+            "allowMarkdown": false, 
+            "errorMessage": "Invalid Date Format, Please Enter Farsight DNSDB Start Date in YYYY-MM-DD format",
+            "system": false,
+            "version": 1,
+            "validationRule": {
+                "name": "FarsightDateValidation"
+            }
+        },
+        {
+            "name": "Farsight DNSDB End Date", 
+            "description": "Farsight DNSDB End Date", 
+            "maxLength": 10, 
+            "indicators": ["Host", "Address"],
+            "allowMarkdown": false, 
+            "errorMessage": "Invalid Date Format, Please Enter Farsight DNSDB End Date in YYYY-MM-DD format", 
+            "system": false,
+            "version": 1,
+            "validationRule": {
+                "name": "FarsightDateValidation"
+            }
+        }
+    ],
+    "validationRules": [
+        {
+            "name": "FarsightDateValidation", 
+            "data": "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$", 
+            "type": "REGEX", 
+            "description": "Date should be in YYYY-MM-DD", 
+            "version": 1
+        }
+    ]
+}
