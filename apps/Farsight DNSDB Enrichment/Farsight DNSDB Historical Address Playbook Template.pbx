@@ -1,0 +1,613 @@
+{
+  "name" : "Farsight DNSDB Historical Address Playbook Template",
+  "type" : "Standard",
+  "panX" : -1224.0,
+  "panY" : 227.0,
+  "logLevel" : "WARN",
+  "description" : "",
+  "version" : "1.174",
+  "comment" : "Auto-Saved on Fri Aug 21 14:54:03 UTC 2020",
+  "jobList" : [ {
+    "id" : 161870,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Success Message",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"success\",\"value\":\"Success- \\u003ca href\\u003d\\u0027https://sandbox.threatconnect.com/auth/report/report.xhtml?report\\u003d#App:161862:tc.group.id!String\\u0026owner\\u003d#Trigger:18373:trg.action.owner!String\\u0027\\u003elink to group\\u003c/a\\u003e\"}]"
+    } ],
+    "locationLeft" : 2627.0,
+    "locationTop" : -139.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"success\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161869,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Datetime Format v2.0",
+      "displayName" : "Datetime Formatter",
+      "programVersion" : "2.0.2"
+    },
+    "name" : "Get Current Time",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_format"
+      },
+      "value" : "%Y-%m-%dT%H:%M:%SZ"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_offset"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_timezone"
+      },
+      "value" : "UTC"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "date_input"
+      },
+      "value" : "now"
+    } ],
+    "locationLeft" : 1925.0,
+    "locationTop" : -139.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datetime.format.date\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161868,
+    "appCatalogItem" : {
+      "programName" : "TCPB - Array Operations v1.0",
+      "displayName" : "Array Operations",
+      "programVersion" : "1.0.1"
+    },
+    "name" : "Get unique elements from parsed data",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_length"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "Unique"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_step"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_false"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_start"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_string"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_b"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array"
+      },
+      "value" : "#App:161861:rdata!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_value"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "is_in_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "reverse_array"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "slice_end"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_data"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "set_a"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fill_length"
+      }
+    } ],
+    "locationLeft" : 1313.0,
+    "locationTop" : -69.5,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"}]",
+    "layoutDisplayOutputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.operation\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.string.results\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.binary.results\",\"type\":\"BinaryArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.keyvalue.results\",\"type\":\"KeyValueArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.length\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"array.tcentity.results\",\"type\":\"TCEntityArray\"}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"string_array\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"string_array\"]"
+  }, {
+    "id" : 161867,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Response Merge",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"message\",\"value\":\"#App:161864:logger.content!String #App:161870:success!String\"}]"
+    } ],
+    "locationLeft" : -90.0,
+    "locationTop" : 230.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"message\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161866,
+    "appCatalogItem" : {
+      "programName" : "TCPB - IndicatorCreate v1.1",
+      "displayName" : "Create ThreatConnect Indicator",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Create ThreatConnect Indicators",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "#Trigger:18373:trg.action.owner!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_values"
+      },
+      "value" : "#App:161868:array.string.results!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "confidence"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "use_batch"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Address"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "labels"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "additional_fields"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "batch_halt_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#App:161862:tc.group!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    } ],
+    "locationLeft" : 2393.0,
+    "locationTop" : -139.0
+  }, {
+    "id" : 161865,
+    "appCatalogItem" : {
+      "programName" : "TCPB - IndicatorRetrieveByValue v1.1",
+      "displayName" : "Get ThreatConnect Indicator by Value",
+      "programVersion" : "1.1.24"
+    },
+    "name" : "Get ThreatConnect Indicator by Value",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "values"
+      },
+      "value" : "#Trigger:18373:trg.action.item!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "#Trigger:18373:trg.action.owner!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "#Trigger:18373:trg.action.type!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_variable"
+      },
+      "value" : "indicator"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.indicator.attributes\",\"type\":\"KeyValueArray\"}]"
+  }, {
+    "id" : 161864,
+    "appCatalogItem" : {
+      "programName" : "Logger",
+      "displayName" : "Logger",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "No Records Found",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "logging"
+      },
+      "value" : "DEBUG"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "log_message"
+      },
+      "value" : "No Results Found"
+    } ],
+    "locationLeft" : 1691.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"logger.content\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161863,
+    "appCatalogItem" : {
+      "programName" : "TCPB - ValueLookup v1.0",
+      "displayName" : "Value Lookup",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Get Farsight Dates",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "input_array"
+      },
+      "value" : "#App:161865:tc.indicator.attributes!KeyValueArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "column_mapping"
+      },
+      "value" : "[{\"key\":\"StartDate\",\"value\":\"Farsight DNSDB Start Date\"},{\"key\":\"EndDate\",\"value\":\"Farsight DNSDB End Date\"}]"
+    } ],
+    "locationLeft" : 467.0,
+    "locationTop" : 0.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"EndDate\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"StartDate\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161862,
+    "appCatalogItem" : {
+      "programName" : "TCPB - GroupCreate v1.0",
+      "displayName" : "Create ThreatConnect Group",
+      "programVersion" : "1.0.26"
+    },
+    "name" : "Create ThreatConnect Group",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "additional_fields"
+      },
+      "value" : "[{\"key\":\"fileName\",\"value\":\"None\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_name"
+      },
+      "value" : "Farsight Results-Historical-Address-#App:161869:datetime.format.date!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "halt_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "associations"
+      },
+      "value" : "#Trigger:18373:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "#Trigger:18373:trg.action.owner!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Report"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tags_all"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attributes"
+      },
+      "value" : "[{\"key\":\"Source\",\"value\":\"#Trigger:18373:trg.action.item!String\"},{\"key\":\"Description\",\"value\":\"Farsight Start Date:\\n#App:161859:fs.start_date!String \\n\\nFarsight End Date:\\n#App:161859:fs.end_date!String\"}]"
+    } ],
+    "locationLeft" : 2160.0,
+    "locationTop" : -140.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.group\",\"type\":\"TCEntity\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.group.id\",\"type\":\"String\"}]"
+  }, {
+    "id" : 161861,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "RRset parser",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:161859:fs.historical_address.rrset.results.data!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"rdata\",\"value\":\"[].rdata[]\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1079.0,
+    "locationTop" : -69.5,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"rdata\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 161860,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Check Records Retunred",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:161859:fs.historical_address.rrset.json.raw.count!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "greater than"
+    } ],
+    "locationLeft" : 1550.0,
+    "locationTop" : -190.0
+  }, {
+    "id" : 161859,
+    "appCatalogItem" : {
+      "programName" : "TCAB - 6e469ec7-eb6d-49d8-8eb8-98dd3b41f18c v1",
+      "displayName" : "Farsight DNSDB Enrichment",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Farsight DNSDB Enrichment 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "farsight_dnsdb_end_date"
+      },
+      "value" : "#App:161863:EndDate!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "indicator"
+      },
+      "value" : "#Trigger:18373:trg.action.item!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "farsight_dnsdb_start_date"
+      },
+      "value" : "#App:161863:StartDate!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "results_limit"
+      },
+      "value" : "100"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_no_results"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "farsight_dnsdb_api_key"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:Farsight DNSDB API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "farsight_dnsdb_server"
+      },
+      "value" : "https://api.dnsdb.info/"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "max_pivots"
+      },
+      "value" : "10"
+    } ],
+    "locationLeft" : 750.0,
+    "locationTop" : -10.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"fs.start_date\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"fs.historical_address.rrset.json.raw.count\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"fs.historical_address.rrset.results.data\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"fs.end_date\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"farsight_dnsdb_api_key\",\"farsight_dnsdb_server\",\"max_pivots\",\"results_limit\",\"indicator\"]",
+    "layoutDisplayedInputParams" : "[\"farsight_dnsdb_api_key\",\"farsight_dnsdb_server\",\"max_pivots\",\"results_limit\",\"indicator\",\"farsight_dnsdb_start_date\",\"farsight_dnsdb_end_date\",\"fail_on_no_results\",\"fail_on_error\"]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161870,
+    "targetJobId" : 161867
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161866,
+    "targetJobId" : 161870
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161869,
+    "targetJobId" : 161862
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161861,
+    "targetJobId" : 161868
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161864,
+    "targetJobId" : 161867
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161860,
+    "targetJobId" : 161864
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161862,
+    "targetJobId" : 161866
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 161867,
+    "targetTriggerId" : 18373
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161865,
+    "targetJobId" : 161863
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 161865,
+    "sourceTriggerId" : 18373
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161868,
+    "targetJobId" : 161860
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161860,
+    "targetJobId" : 161869
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161863,
+    "targetJobId" : 161859
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 161859,
+    "targetJobId" : 161861
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 18373,
+    "name" : "Farsight DNSDB Historical Address",
+    "type" : "UserAction",
+    "eventType" : "External",
+    "locationLeft" : 60.0,
+    "locationTop" : 230.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:161867:message!String",
+    "anyOrg" : true,
+    "userActionTypes" : "Host",
+    "overrideRunAsUser" : true,
+    "renderBodyAsTip" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.type\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.owner\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.entity\",\"type\":\"TCEntity\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.item\",\"type\":\"String\"}]",
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
