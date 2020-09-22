@@ -1,52 +1,52 @@
 {
   "name" : "Generate Intelligence Report",
   "type" : "Standard",
-  "panX" : -41.0,
-  "panY" : 11.0,
+  "panX" : -259.0,
+  "panY" : -32.0,
   "logLevel" : "WARN",
   "description" : "",
-  "version" : "1.8",
-  "comment" : "Auto-Saved on Thu Oct 03 18:55:18 UTC 2019",
+  "version" : "1.2",
+  "comment" : "Auto-Saved on Tue Sep 22 16:20:04 UTC 2020",
   "jobList" : [ {
-    "id" : 21075,
+    "id" : 77952,
     "appCatalogItem" : {
-      "programName" : "TCAB - 8ee60bb3-b2cf-404a-bd62-dddfec414914 v1",
+      "programName" : "TCAB - 786d8521-e895-4823-8ab1-5bc2a42a10bf v1",
       "displayName" : "Generate Intelligence Report",
-      "programVersion" : "1.0.3"
+      "programVersion" : "1.1.0"
     },
     "name" : "Generate Intelligence Report",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
         "paramName" : "report_id"
       },
-      "value" : "#Trigger:1809:trg.action.item!String"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "owner"
-      },
-      "value" : "reportingOrg"
+      "value" : "#Trigger:5143:trg.action.entity!TCEntity"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "header_logo"
       },
       "value" : "https://threatconnect.com/wp-content/uploads/ThreatConnect-Featured-2019.jpg"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "owner"
+      },
+      "value" : "pbdev"
     } ],
-    "locationLeft" : 520.0,
-    "locationTop" : 310.0,
-    "outputVariables" : "[{\"name\":\"report_html\",\"type\":\"Binary\",\"loopVariables\":false}]"
+    "locationLeft" : 390.0,
+    "locationTop" : 330.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"report_html\",\"type\":\"Binary\"}]"
   }, {
-    "id" : 21088,
+    "id" : 77953,
     "appCatalogItem" : {
       "programName" : "TCPB - ReportUpload v1.0",
       "displayName" : "Upload a file to a Report",
-      "programVersion" : "1.0.23"
+      "programVersion" : "1.0.26"
     },
     "name" : "Upload a file to a Report",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "resource_data"
+        "paramName" : "resource_id"
       },
-      "value" : "#App:21075:report_html!Binary"
+      "value" : "#App:77957:tc.report!TCEntity"
     }, {
       "appCatalogItemParameter" : {
         "paramName" : "resource_type"
@@ -56,47 +56,146 @@
       "appCatalogItemParameter" : {
         "paramName" : "filename"
       },
-      "value" : "#Trigger:1809:trg.action.item!String.html"
+      "value" : "#App:77957:tc.report.name!String.html"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "resource_id"
+        "paramName" : "resource_data"
       },
-      "value" : "#Trigger:1809:trg.action.item!String"
+      "value" : "#App:77952:report_html!Binary"
     } ],
-    "locationLeft" : 760.0,
-    "locationTop" : 310.0
+    "locationLeft" : 830.0,
+    "locationTop" : 330.0
+  }, {
+    "id" : 77957,
+    "appCatalogItem" : {
+      "programName" : "TCPB - ReportRetrieveById v1.0",
+      "displayName" : "Get ThreatConnect Report by ID",
+      "programVersion" : "1.0.26"
+    },
+    "name" : "Get Report by ID",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Report"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#Trigger:5143:trg.action.entity!TCEntity"
+    } ],
+    "locationLeft" : 600.0,
+    "locationTop" : 330.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.report\",\"type\":\"TCEntity\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.report.name\",\"type\":\"String\"}]",
+    "playbookRetryDelayMinutes" : 5,
+    "playbookRetryMaxRetries" : 12
+  }, {
+    "id" : 77958,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Failure",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.Fail\",\"value\":\"Error occurred, check the logs\"}]"
+    } ],
+    "locationLeft" : 600.0,
+    "locationTop" : 430.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.Fail\",\"type\":\"String\"}]"
+  }, {
+    "id" : 77959,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Success",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.Success\",\"value\":\"Successfully updated report. Refresh the page to see the result.\"}]"
+    } ],
+    "locationLeft" : 1050.0,
+    "locationTop" : 330.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.Success\",\"type\":\"String\"}]"
+  }, {
+    "id" : 77960,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge Results",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.result\",\"value\":\"#App:77958:v.Fail!String #App:77959:v.Success!String\"}]"
+    } ],
+    "locationLeft" : 1280.0,
+    "locationTop" : 370.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"m.result\",\"type\":\"String\"}]"
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 21075,
-    "sourceTriggerId" : 1809
+    "targetJobId" : 77952,
+    "sourceTriggerId" : 5143
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "sourceJobId" : 21075,
-    "targetJobId" : 21088
+    "sourceJobId" : 77952,
+    "targetJobId" : 77957
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 77957,
+    "targetJobId" : 77953
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 77952,
+    "targetJobId" : 77958
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 77953,
+    "targetJobId" : 77959
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 77959,
+    "targetJobId" : 77960
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 77958,
+    "targetJobId" : 77960
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : true,
-    "sourceJobId" : 21088,
-    "targetTriggerId" : 1809
+    "sourceJobId" : 77960,
+    "targetTriggerId" : 5143
   } ],
   "playbookTriggerList" : [ {
-    "id" : 1809,
+    "id" : 5143,
     "name" : "Generate Report",
     "type" : "UserAction",
     "eventType" : "External",
-    "locationLeft" : 200.0,
-    "locationTop" : 170.0,
+    "locationLeft" : 780.0,
+    "locationTop" : 130.0,
     "httpResponseHeader" : "[]",
-    "httpResponseBody" : "Report was successfully uploaded. Please refresh the page to see the results.",
+    "httpResponseBody" : "#App:77960:m.result!String",
     "anyOrg" : true,
     "userActionTypes" : "Report",
-    "overrideRunAsUser" : true,
     "renderBodyAsTip" : true,
     "playbookTriggerFilterList" : [ ],
-    "outputVariables" : "[{\"name\":\"trg.action.item\",\"type\":\"String\",\"loopVariables\":false}]",
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.entity\",\"type\":\"TCEntity\"}]",
     "cacheMinutes" : 120,
     "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
   } ],
