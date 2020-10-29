@@ -1,81 +1,126 @@
 {
-  "definitionVersion" : "1.0.0",
   "name" : "Verify DataStore Data",
   "type" : "Standard",
-  "panX" : 197.0,
+  "panX" : 41.0,
   "panY" : 20.0,
-  "logLevel" : "WARN",
+  "logLevel" : "TRACE",
   "description" : "This will only need to be ran to verify the first playbook created the data that is expected from the \"Populate DataStore with Keywords\" playbook.",
+  "version" : "1.7",
+  "comment" : "Auto-Saved on Wed Oct 07 21:17:49 UTC 2020",
   "jobList" : [ {
-    "id" : 8360,
+    "id" : 80683,
     "appCatalogItem" : {
-      "programName" : "DataStore",
+      "programName" : "TCPB - DataStore v3.0",
       "displayName" : "DataStore",
-      "programVersion" : "1.0.0"
+      "programVersion" : "3.0.1"
     },
-    "name" : "Data Store 1",
-    "enableNotifications" : false,
+    "name" : "Get Keywords DataStore",
     "jobParameterList" : [ {
       "appCatalogItemParameter" : {
-        "paramName" : "domain_type"
+        "paramName" : "output_type"
+      },
+      "value" : "String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "domain"
       },
       "value" : "Organization"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "type_name"
+        "paramName" : "fail_on_not_found"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "mapping"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tc_action"
+      },
+      "value" : "SEARCH"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rid_required"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_required"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "data_type"
       },
       "value" : "keywords"
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "organization_name"
-      },
-      "value" : "DOITNC"
-    }, {
-      "appCatalogItemParameter" : {
-        "paramName" : "path"
+        "paramName" : "data_optional"
       },
       "value" : ""
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "request_entity"
+        "paramName" : "rid_optional"
+      }
+    } ],
+    "locationLeft" : 390.0,
+    "locationTop" : 350.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.search.hits.data\",\"type\":\"StringArray\"}]",
+    "layoutDisplayOutputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.search.hits.data\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.search.hits\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.response.shard.failed\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.response.shard.success\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.action\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.search.hits.ids\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.response.json\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.search.hits.source\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"datastore.response.shard.total\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"tc_action\",\"domain\",\"data_type\"]",
+    "layoutDisplayedInputParams" : "[\"tc_action\",\"domain\",\"data_type\",\"data_optional\",\"fail_on_not_found\"]"
+  }, {
+    "id" : 80696,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JoinArray v1.0",
+      "displayName" : "Join Array",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Join Output",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
       },
-      "value" : "{ \"from\" : 0, \"size\": 5000}"
+      "value" : ","
     }, {
       "appCatalogItemParameter" : {
-        "paramName" : "db_method"
+        "paramName" : "array_mapping"
       },
-      "value" : "GET"
+      "value" : "[{\"key\":\"join.Response\",\"value\":\"#App:80683:datastore.search.hits.data!StringArray\"}]"
     } ],
-    "locationLeft" : 490.0,
-    "locationTop" : 310.0,
-    "playbookRetryEnabled" : false
+    "locationLeft" : 600.0,
+    "locationTop" : 350.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"join.Response\",\"type\":\"String\"}]"
   } ],
   "playbookConnectionList" : [ {
     "type" : "Pass",
     "isCircularOnTarget" : false,
-    "targetJobId" : 8360,
-    "sourceTriggerId" : 1045
+    "targetJobId" : 80683,
+    "sourceTriggerId" : 5318
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 80683,
+    "targetJobId" : 80696
   }, {
     "type" : "Pass",
     "isCircularOnTarget" : true,
-    "sourceJobId" : 8360,
-    "targetTriggerId" : 1045
+    "sourceJobId" : 80696,
+    "targetTriggerId" : 5318
   } ],
   "playbookTriggerList" : [ {
-    "id" : 1045,
+    "id" : 5318,
     "name" : "HttpLink Trigger 1",
     "type" : "HttpLink",
     "eventType" : "External",
-    "locationLeft" : 210.0,
-    "locationTop" : 190.0,
-    "httpBasicAuthEnable" : false,
+    "locationLeft" : 140.0,
+    "locationTop" : 170.0,
     "httpResponseHeader" : "[]",
-    "httpResponseBody" : "#App:8360:datastore.response!String",
+    "httpResponseBody" : "#App:80696:join.Response!String",
     "anyOrg" : true,
-    "orFilters" : false,
-    "fireOnDuplicate" : false,
-    "renderBodyAsTip" : false
+    "playbookTriggerFilterList" : [ ],
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
   } ],
-  "exportablePipes" : [ ],
-  "dateExported" : "8/16/18 3:57 PM"
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
 }
