@@ -5,7 +5,7 @@
   "panY" : 327.0,
   "logLevel" : "WARN",
   "description" : "",
-  "version" : "1.207",
+  "version" : "1.208",
   "comment" : "Auto-Saved on Fri Aug 21 14:53:45 UTC 2020",
   "jobList" : [ {
     "id" : 161887,
@@ -298,7 +298,7 @@
       "appCatalogItemParameter" : {
         "paramName" : "variable_mapping"
       },
-      "value" : "[{\"key\":\"success\",\"value\":\"Success- \\u003ca href\\u003d\\u0027https://sandbox.threatconnect.com/auth/report/report.xhtml?report\\u003d#App:161887:tc.group.id!String\\u0026owner\\u003d#Trigger:18375:trg.action.owner!String\\u0027\\u003elink to group\\u003c/a\\u003e\"}]"
+      "value" : "[{\"key\":\"success\",\"value\":\"Success- \\u003ca href\\u003d\\u0027/auth/report/report.xhtml?report\\u003d#App:161887:tc.group.id!String\\u0026owner\\u003d#Trigger:18375:trg.action.owner!String\\u0027\\u003elink to group\\u003c/a\\u003e\"}]"
     } ],
     "locationLeft" : 2750.0,
     "locationTop" : 150.0,
