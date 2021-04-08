@@ -1,0 +1,97 @@
+{
+  "stage": {
+    "kvstore": {
+      "#App:1234:a!String": "(1,2,3,4)",
+      "#App:1234:b!String": "(1,2,3,4)",
+      "#App:1234:c!String": "(1,2,3)",
+      "#App:1234:d!String": "zomg",
+      "#App:1234:loop_expressions!KeyValueArray": [
+        {
+          "key": "fmtlist",
+          "value": "format('{a} + {b} + {c} = {sum} ({d})', sum=a+b+c)"
+        }
+      ],
+      "#App:1234:loop_variables!KeyValueArray": [
+        {
+          "key": "a",
+          "value": "#App:1234:a!String"
+        },
+        {
+          "key": "b",
+          "value": "#App:1234:b!String"
+        },
+        {
+          "key": "c",
+          "value": "#App:1234:c!String"
+        },
+        {
+          "key": "d",
+          "value": "#App:1234:d!String"
+        }
+      ],
+      "#App:1234:outputs!KeyValueArray": [
+        {
+          "key": "fmtlist.0",
+          "value": "fmtlist"
+        }
+      ]
+    }
+  },
+  "inputs": {
+    "optional": {},
+    "required": {
+      "additional_outputs": "#App:1234:outputs!KeyValueArray",
+      "loop_expressions": "#App:1234:loop_expressions!KeyValueArray",
+      "loop_variables": "#App:1234:loop_variables!KeyValueArray",
+      "tc_action": "Evaluate Many With Loop"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate Many With Loop",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:fmtlist!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "1 + 1 + 1 = 3 (zomg)",
+        "1 + 1 + 2 = 4 (zomg)",
+        "1 + 1 + 3 = 5 (zomg)",
+        "2 + 2 + 1 = 5 (zomg)",
+        "2 + 2 + 2 = 6 (zomg)",
+        "2 + 2 + 3 = 7 (zomg)",
+        "3 + 3 + 1 = 7 (zomg)",
+        "3 + 3 + 2 = 8 (zomg)",
+        "3 + 3 + 3 = 9 (zomg)",
+        "4 + 4 + 1 = 9 (zomg)",
+        "4 + 4 + 2 = 10 (zomg)",
+        "4 + 4 + 3 = 11 (zomg)"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    },
+    "#App:9876:fmtlist.0!String": {
+      "exclude_paths": [],
+      "expected_output": "[\"1 + 1 + 1 = 3 (zomg)\", \"1 + 1 + 2 = 4 (zomg)\", \"1 + 1 + 3 = 5 (zomg)\", \"2 + 2 + 1 = 5 (zomg)\", \"2 + 2 + 2 = 6 (zomg)\", \"2 + 2 + 3 = 7 (zomg)\", \"3 + 3 + 1 = 7 (zomg)\", \"3 + 3 + 2 = 8 (zomg)\", \"3 + 3 + 3 = 9 (zomg)\", \"4 + 4 + 1 = 9 (zomg)\", \"4 + 4 + 2 = 10 (zomg)\", \"4 + 4 + 3 = 11 (zomg)\"]",
+      "ignore_order": false,
+      "op": "jeq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}
