@@ -1,0 +1,273 @@
+{
+  "name" : "Silobreaker - Add Adversary Context",
+  "type" : "Standard",
+  "panX" : 498.0,
+  "panY" : 119.0,
+  "logLevel" : "DEBUG",
+  "description" : "Pulls documents about a threatactor",
+  "version" : "2.24",
+  "comment" : "Auto-Saved on Tue Apr 06 13:30:24 UTC 2021",
+  "jobList" : [ {
+    "id" : 11886,
+    "appCatalogItem" : {
+      "programName" : "TCAB - 876707ab-c8b6-4f0d-aeaf-5459712e0af1 v1",
+      "displayName" : "Silobreaker Platform",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Silobreaker Platform 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "method"
+      },
+      "value" : "GET"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "count_per_type"
+      },
+      "value" : "10"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "sort_by"
+      },
+      "value" : "Publication Date"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "silobreaker_endpoint"
+      },
+      "value" : "Documents"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "maximum_number_of_results"
+      },
+      "value" : "10"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_no_results"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "query"
+      },
+      "value" : "INTITLE \"#App:11861:tc.adversary.name!String  \" AND doctype:news OR doctype:blog AND doclang:english"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "api_key"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "entity_types"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "hide_empty_results"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "body"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "include_document_teasers"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "custom_url"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "size"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "shared_key"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "term_query"
+      }
+    } ],
+    "locationLeft" : 270.0,
+    "locationTop" : -20.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"sl.response.json\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"api_key\",\"shared_key\",\"silobreaker_endpoint\",\"query\",\"maximum_number_of_results\"]",
+    "layoutDisplayedInputParams" : "[\"api_key\",\"shared_key\",\"silobreaker_endpoint\",\"query\",\"sort_by\",\"maximum_number_of_results\",\"include_document_teasers\",\"fail_on_no_results\",\"fail_on_error\"]"
+  }, {
+    "id" : 11864,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v2.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "2.0.8"
+    },
+    "name" : "Parse Response Data",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[{\"key\":\"Documents\",\"value\":\"Items[*].Description\"},{\"key\":\"SourceNames\",\"value\":\"Items[*].Publisher\"},{\"key\":\"SourceURLs\",\"value\":\"Items[*].SourceUrl\"},{\"key\":\"PublicationDates\",\"value\":\"Items[*].PublicationDate\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:11886:sl.response.json!String"
+    } ],
+    "locationLeft" : 540.0,
+    "locationTop" : -20.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"SourceURLs\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Documents\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"SourceNames\",\"type\":\"StringArray\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"PublicationDates\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 11863,
+    "appCatalogItem" : {
+      "programName" : "Iterator",
+      "displayName" : "Iterator",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Iterator 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_outputs"
+      },
+      "value" : "[{\"key\":\"A\",\"value\":\"#App:11862:tc.add_attribute.success_count!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_inputs"
+      },
+      "value" : "[{\"key\":\"Document\",\"value\":\"#App:11864:Documents!StringArray\"},{\"key\":\"SourceName\",\"value\":\"#App:11864:SourceNames!StringArray\"},{\"key\":\"SourceURL\",\"value\":\"#App:11864:SourceURLs!StringArray\"},{\"key\":\"PublicationDate\",\"value\":\"#App:11864:PublicationDates!StringArray\"}]"
+    } ],
+    "locationLeft" : 580.0,
+    "locationTop" : 190.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"SourceName\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"PublicationDate\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"Document\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"SourceURL\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"array_inputs\"]",
+    "layoutDisplayedInputParams" : "[\"array_inputs\",\"array_outputs\"]"
+  }, {
+    "id" : 11862,
+    "appCatalogItem" : {
+      "programName" : "TCPB - AddAttribute v1.0",
+      "displayName" : "Add ThreatConnect Attribute",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Add New Attribute",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "apply_to_all"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_types"
+      },
+      "value" : "[{\"key\":\"Additional Analysis and Context\",\"value\":\"#App:11863:Document!String \\n\\n#App:11863:SourceName!String \\n#App:11863:SourceURL!String \\n#App:11863:PublicationDate!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "source_entities"
+      },
+      "value" : "#Trigger:1555:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update_type"
+      },
+      "value" : "Add Unique"
+    } ],
+    "locationLeft" : 560.0,
+    "locationTop" : 390.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.add_attribute.success_count\",\"type\":\"String\"}]"
+  }, {
+    "id" : 11861,
+    "appCatalogItem" : {
+      "programName" : "TCPB - AdversaryRetrieveById v1.0",
+      "displayName" : "Get ThreatConnect Adversary by ID",
+      "programVersion" : "1.0.26"
+    },
+    "name" : "Get Adversary",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "resource_type"
+      },
+      "value" : "Adversary"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ids"
+      },
+      "value" : "#Trigger:1555:trg.action.entity!TCEntity"
+    } ],
+    "locationLeft" : 20.0,
+    "locationTop" : -20.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"tc.adversary.name\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 11886,
+    "targetJobId" : 11864
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 11861,
+    "targetJobId" : 11886
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 11863,
+    "targetTriggerId" : 1555
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 11862,
+    "targetJobId" : 11863
+  }, {
+    "type" : "StartLoop",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 11863,
+    "targetJobId" : 11862
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 11864,
+    "targetJobId" : 11863
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 11861,
+    "sourceTriggerId" : 1555
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 1555,
+    "name" : "Silobreaker Recent Reporting",
+    "type" : "UserAction",
+    "eventType" : "External",
+    "locationLeft" : -250.0,
+    "locationTop" : -20.0,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "Adversary updated. Refresh to view.",
+    "anyOrg" : true,
+    "userActionTypes" : "Adversary",
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.entity\",\"type\":\"TCEntity\"}]",
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
