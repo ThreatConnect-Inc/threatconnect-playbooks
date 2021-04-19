@@ -437,7 +437,9 @@ class Expression(ExpressionMethods):
         try:
             result = self.parser.parse(expression)
         except lark.exceptions.UnexpectedToken as e:
-            raise SyntaxError(str(e).split('\n')[0]) from None
+            raise SyntaxError(
+                f'Unexpected token {e.token} at line {e.line}, column {e.column}.'
+            ) from e
 
         result = self.deencapsulate(result)
 
@@ -489,7 +491,7 @@ def interactive(record=False):
         except Exception as e:
             print(traceback.format_exc(limit=0).rstrip().split('\n')[-1])
             if record:
-                args = tuple([str(x) for x in e.args])
+                args = tuple([str(x) for x in e.args])  # pylint: disable=consider-using-generator
                 fh.write(f'    ({expr!r}, {e.__class__.__name__}{args!r}),\n')
 
 

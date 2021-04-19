@@ -1,25 +1,19 @@
 # Expressions
 
-## Release Notes
+# Release Notes
 
-### 1.0.0 (2020-06-15)
+### 1.0.6 (2021-04-09)
 
-* Initial Release
+* Allow additional input types
+* Add transform output types
+* Add prune, structure, update, functions
+* Add _ + iter_outputs to be the prior iteration result
+* Allow tuple list outputs to nest
 
-### 1.0.1 (2020-09-23)
+### 1.0.5 (2020-10-01)
 
-* Add csvread, csvwrite, md5, sha1, sha256, spamsum, spamdist
-
-### 1.0.2 (2020-09-23)
-
-* Add urlre, refindall, urlparse, urlparse_qs
-
-### 1.0.3 (2020-09-24)
-
-* Add spammatch function
-* Add Return None on failure option
-* Add ensure_ascii=False to json.dump to allow UTF-8 in values
-* Add unique function
+* Converted to app.yaml
+* added unnest function
 
 ### 1.0.4 (2020-09-25)
 
@@ -28,10 +22,25 @@
 * Renamed spamdist to fuzzydist
 * Renamed spamsum to fuzzyhash
 
-### 1.0.5 (2020-10-01)
+### 1.0.3 (2020-09-24)
 
-* Converted to app.yaml
-* added unnest function
+* Add spammatch function
+* Add Return None on failure option
+* Add ensure_ascii=False to json.dump to allow UTF-8 in values
+* Add unique function
+
+### 1.0.2 (2020-09-23)
+
+* Add urlre, refindall, urlparse, urlparse_qs
+
+### 1.0.1 (2020-09-23)
+
+* Add csvread, csvwrite, md5, sha1, sha256, spamsum, spamdist
+
+### 1.0.0 (2020-06-15)
+
+* Initial Release
+
 
 # Description
 
@@ -52,181 +61,216 @@ data is expression grammar compatible, so an expression like
 dictionary.
 
 
+The following actions are included:
+- **Evaluate** - A direct evaluation of an expression with either single or multiple results.
+
+- **Evaluate Many** - Perform multiple evaluations, one set to define variables, another to define outputs.
+
+- **Evaluate in Loop** - Loop evaluation of the same expression while looping over the inputs. Inputs with the same length are incremented in parallel.  The order of loop increments is shortest to longest.  A Loop expression which results in a list i.e [1, 2, 3] is used to extend the output rather than create nested output.  Tuple outputs will create nested output.
+
+- **Evaluate Many With Loop** - Perform multiple evaluations, one set to define variables, another to define outputs. Loop variables with the same number of elements will be incremented concurrently, otherwise variables are incremented from shortest number of elements to largest.
+Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop expression `(a,b,c)` will yield `[(1,1,1), (1,1,2), (2,2,1), (2,2,2), (3,3,1), (3,3,2)]`.
+Loop expressions which result in lists i.e. [1, 2, 3] are used to extend the output, rather than create
+nested outputs.  Tuple outputs will create nested outputs.
+
+
+
 # Actions
 
+___
 ## Evaluate
-
 A direct evaluation of an expression with either single or multiple results.
 
 ### Inputs
 
+### *Configure*
 
-
-#### Configure
-
-- `Expression`
-
+  **Expression** *(String)*
   The expression to evaluate.  If the expression is a list,
   e.g. ("foo", 1, 5.0) the output will be a StringArray.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
+### *Advanced*
 
-
-
-#### Advanced
-
-- `Return None on failure` - Boolean
-
+  **Return None on failure** *(Boolean, Default: Selected)*
   When an expression fails to evaluate, assign it the value None, and continue
   execution.
 
-  **Default:** Checked
-
 ### Outputs
 
-  - expression.expression - String
-  - expression.result.0 - String
-  - expression.result.array - StringArray
-  - expression.action - String
-  - expression.errors - StringArray
-## Evaluate Many
+  - expression.expression *(String)*
+  - expression.result.0 *(String)*
+  - expression.result.array *(StringArray)*
+  - expression.action *(String)*
+  - expression.errors *(StringArray)*
 
+___
+## Evaluate Many
 Perform multiple evaluations, one set to define variables, another to define outputs.
 
 ### Inputs
 
+### *Configure*
 
-
-#### Configure
-
-- `Variables` (Optional) - KeyValueList
-
+  _**Variables**_ *(KeyValueList, Optional)*
   Variables to be defined for the expressions to reference.  Defined variables are
   not output.  Variables are evaluated in the order they are entered.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
-
-- `Outputs` - KeyValueList
-
+  **Outputs** *(KeyValueList)*
   Outputs and output expressions for each output.  These may reference defined variables
   but may not refer to outputs not yet evaluated.  Outputs will be generated as a
   single output only, with list outputs being converted to JSON strings.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
+### *Advanced*
 
+  _**Binary Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as Binary
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-#### Advanced
+  _**Binary Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as BinaryArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-- `Return None on failure` - Boolean
+  _**KeyValue Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as KeyValue
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
+  _**KeyValue Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as KeyValueArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  _**TCEntity Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEntity.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  _**TCEntity Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEntityArray.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  _**TCEnhancedEntity Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEnhancedEntity.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  **Return None on failure** *(Boolean, Default: Selected)*
   When an expression fails to evaluate, assign it the value None, and continue
   execution.
 
-  **Default:** Checked
-
 ### Outputs
 
-  - expression.action - String
-  - expression.errors - StringArray
-## Evaluate in Loop
+  - expression.action *(String)*
+  - expression.errors *(StringArray)*
 
-Loop evaluation of the same expression while looping over the inputs. Inputs with the same length are incremented in parallel.  The order of loop increments is shortest to longest.
+___
+## Evaluate in Loop
+Loop evaluation of the same expression while looping over the inputs. Inputs with the same length are incremented in parallel.  The order of loop increments is shortest to longest.  A Loop expression which results in a list i.e [1, 2, 3] is used to extend the output rather than create nested output.  Tuple outputs will create nested output.
 
 ### Inputs
 
+### *Configure*
 
-
-#### Configure
-
-- `Loop Variables` - KeyValueList
-
+  **Loop Variables** *(KeyValueList)*
   Add a name and a value for each variable to loop over.   Loop variables with
   the same number of elements will be incremented concurrently, variables with
   different number of elements will be nested from longest to shortest.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
-
-- `Expression`
-
+  **Expression** *(String)*
   The expression to evaluate.  If the expression generates a list result,
   each element of the step-wise evaluation will be appended to the final result.
+  The prior iteration may be referred to using the name `_output` and will be
+  None on the first iteration.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
+### *Advanced*
 
-
-
-#### Advanced
-
-- `Return None on failure` - Boolean
-
+  **Return None on failure** *(Boolean, Default: Selected)*
   When an expression fails to evaluate, assign it the value None, and continue
   execution.
 
-  **Default:** Checked
-
 ### Outputs
 
-  - expression.expression - String
-  - expression.result.0 - String
-  - expression.result.array - StringArray
-  - expression.action - String
-  - expression.errors - StringArray
-## Evaluate Many With Loop
+  - expression.expression *(String)*
+  - expression.result.0 *(String)*
+  - expression.result.array *(StringArray)*
+  - expression.action *(String)*
+  - expression.errors *(StringArray)*
 
+___
+## Evaluate Many With Loop
 Perform multiple evaluations, one set to define variables, another to define outputs. Loop variables with the same number of elements will be incremented concurrently, otherwise variables are incremented from shortest number of elements to largest.
-Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop expression `(a,b,c)` will yield `[(1,1,1), (1,1,2), (2,2,1), (2,2,2), (3,3,1), (3,3,2)]`
+Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop expression `(a,b,c)` will yield `[(1,1,1), (1,1,2), (2,2,1), (2,2,2), (3,3,1), (3,3,2)]`.
+Loop expressions which result in lists i.e. [1, 2, 3] are used to extend the output, rather than create
+nested outputs.  Tuple outputs will create nested outputs.
 
 ### Inputs
 
+### *Configure*
 
-
-#### Configure
-
-- `Variables` (Optional) - KeyValueList
-
+  _**Variables**_ *(KeyValueList, Optional)*
   Variables to be defined for the expressions to reference.  Defined variables are
   not output.  Variables are evaluated in the order they are entered.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
-
-- `Loop Variables` - KeyValueList
-
+  **Loop Variables** *(KeyValueList)*
   Add a name and a value for each variable to loop over.   Loop variables with
   the same number of elements will be incremented concurrently, variables with
   different number of elements will be nested from longest to shortest.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
-
-- `Loop Expressions` - KeyValueList
-
+  **Loop Expressions** *(KeyValueList)*
   Loop outputs and loop output expressions for each output.  These may reference defined variables
-  but may not refer to other loop variables or outputs.
+  but may not refer to other loop variables or outputs, with the exception that
+  the prior loop iteration variables are available with a leading underscore,
+  and are None on the first iteration.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
-
-- `Additional Outputs` (Optional) - KeyValueList
-
+  _**Additional Outputs**_ *(KeyValueList, Optional)*
   Outputs and output expressions for each output.  These may reference defined
   variables and loop outputs, but may not refer to outputs not yet evaluated.
   Outputs will be generated as a single output only, with list outputs being converted to
   JSON strings.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Allows:** String, StringArray
+### *Advanced*
 
+  _**Binary Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as Binary
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
+  _**Binary Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as BinaryArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-#### Advanced
+  _**KeyValue Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as KeyValue
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-- `Return None on failure` - Boolean
+  _**KeyValue Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as KeyValueArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
+  _**TCEntity Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEntity.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  _**TCEntity Array Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEntityArray.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  _**TCEnhancedEntity Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as TCEnhancedEntity.
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
+
+  **Return None on failure** *(Boolean, Default: Selected)*
   When an expression fails to evaluate, assign it the value None, and continue
   execution.
 
-  **Default:** Checked
-
 ### Outputs
 
-  - expression.action - String
-  - expression.errors - StringArray
+  - expression.action *(String)*
+  - expression.errors *(StringArray)*
 
 # Builtins
 
@@ -297,6 +341,14 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Base 64 encode of string
 
+  * `bin(n, sign=True)`
+
+    Return the binary value of int
+
+  * `binary(s, encoding='utf-8', errors=None)`
+
+    Convert object to binary string (bytes)
+
   * `bytes(s, encoding='utf-8', errors=None)`
 
     Convert object to binary string (bytes)
@@ -316,6 +368,12 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
   * `chr(x)`
 
     Return character value of x
+
+  * `conform(object_list, missing_value=None)`
+
+    Conform objects in a list to have the same structure,
+    using missing_value as the value of any missing key
+
 
   * `copysign(x, y)`
 
@@ -383,8 +441,9 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
   * `format(s, *args, **kwargs)`
 
-    Format string S according to Python string formatting rules.  Compound structure elements are
-    access with bracket notation and without quotes around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
+    Format string S according to Python string formatting rules.  Compound
+    structure elements are access with bracket notation and without quotes
+    around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
 
   * `fuzzydist(hash1, hash2)`
 
@@ -407,6 +466,10 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Greatest Common Denominator of A and B
 
+  * `hex(n, sign=True)`
+
+    Return the hexadecimal value of int
+
   * `hypot(x, y)`
 
     Hypotenuse of X,Y
@@ -415,7 +478,7 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Index of value in ob
 
-  * `int(s)`
+  * `int(s, radix=None)`
 
     Return integer value of object
 
@@ -519,6 +582,12 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Format arguments according to format
 
+  * `prune(ob, depth=None, prune=(None, '', [], {}))`
+
+    Recursively Prunes entries from the object,
+    with an optional depth limit
+
+
   * `radians(x)`
 
     Convert X to radians
@@ -575,13 +644,17 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Square root of X
 
-  * `str(s)`
+  * `str(s, encoding='utf-8')`
 
     Return string representation of object
 
   * `strip(s, chars=None)`
 
     Strip chars from ends of string
+
+  * `structure(ob)`
+
+    Return a reduced structure of the object, useful for comparisons
 
   * `sum(*elements)`
 
@@ -607,6 +680,10 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Math Truncate X
 
+  * `twoscompliment(n, bits=32)`
+
+    Return the twos compliment of N with the desired word width
+
   * `unique(*args)`
 
     Return the list of unique elements of arguments, which may be a list of arguments, or a
@@ -618,6 +695,10 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
 
     Reduces nested list to a single flattened list.  [A, B, [C, D, [E, F]]
     turns into [A, B, C, D, E, F].
+
+  * `update(target, source)`
+
+    Updates one dictionary with keys from the other
 
   * `upper(s)`
 
@@ -634,7 +715,6 @@ Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop exp
   * `values(ob)`
 
     Values of dictionary
-
 
 # EBNF-Syntax
 

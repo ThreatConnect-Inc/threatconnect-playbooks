@@ -41,7 +41,7 @@ def trap(handler='handle_exception', classes=None):
                 if not callable(handle):
                     raise  # pragma: no cover
                 # N.B. This wont work right on class methods
-                handle(e)
+                return handle(e)
 
         return wrapper
 

@@ -68,6 +68,14 @@
 
     Base 64 encode of string
 
+  * `bin(n, sign=True)`
+
+    Return the binary value of int
+
+  * `binary(s, encoding='utf-8', errors=None)`
+
+    Convert object to binary string (bytes)
+
   * `bytes(s, encoding='utf-8', errors=None)`
 
     Convert object to binary string (bytes)
@@ -87,6 +95,12 @@
   * `chr(x)`
 
     Return character value of x
+
+  * `conform(object_list, missing_value=None)`
+
+    Conform objects in a list to have the same structure,
+    using missing_value as the value of any missing key
+
 
   * `copysign(x, y)`
 
@@ -154,8 +168,9 @@
 
   * `format(s, *args, **kwargs)`
 
-    Format string S according to Python string formatting rules.  Compound structure elements are
-    access with bracket notation and without quotes around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
+    Format string S according to Python string formatting rules.  Compound
+    structure elements are access with bracket notation and without quotes
+    around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
 
   * `fuzzydist(hash1, hash2)`
 
@@ -178,6 +193,10 @@
 
     Greatest Common Denominator of A and B
 
+  * `hex(n, sign=True)`
+
+    Return the hexadecimal value of int
+
   * `hypot(x, y)`
 
     Hypotenuse of X,Y
@@ -186,7 +205,7 @@
 
     Index of value in ob
 
-  * `int(s)`
+  * `int(s, radix=None)`
 
     Return integer value of object
 
@@ -290,6 +309,12 @@
 
     Format arguments according to format
 
+  * `prune(ob, depth=None, prune=(None, '', [], {}))`
+
+    Recursively Prunes entries from the object,
+    with an optional depth limit
+
+
   * `radians(x)`
 
     Convert X to radians
@@ -346,13 +371,17 @@
 
     Square root of X
 
-  * `str(s)`
+  * `str(s, encoding='utf-8')`
 
     Return string representation of object
 
   * `strip(s, chars=None)`
 
     Strip chars from ends of string
+
+  * `structure(ob)`
+
+    Return a reduced structure of the object, useful for comparisons
 
   * `sum(*elements)`
 
@@ -378,6 +407,10 @@
 
     Math Truncate X
 
+  * `twoscompliment(n, bits=32)`
+
+    Return the twos compliment of N with the desired word width
+
   * `unique(*args)`
 
     Return the list of unique elements of arguments, which may be a list of arguments, or a
@@ -389,6 +422,10 @@
 
     Reduces nested list to a single flattened list.  [A, B, [C, D, [E, F]]
     turns into [A, B, C, D, E, F].
+
+  * `update(target, source)`
+
+    Updates one dictionary with keys from the other
 
   * `upper(s)`
 

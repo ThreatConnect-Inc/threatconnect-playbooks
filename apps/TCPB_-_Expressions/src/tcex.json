@@ -1,4 +1,14 @@
 {
+  "lib_versions": [
+    {
+      "lib_dir": "lib_${env:PY36}",
+      "python_executable": "~/.pyenv/versions/${env:PY36}/bin/python"
+    },
+    {
+      "lib_dir": "lib_${env:PY39}",
+      "python_executable": "~/.pyenv/versions/${env:PY39}/bin/python"
+    }
+  ],
   "package": {
     "app_name": "TCPB_-_Expressions",
     "excludes": [
@@ -9,7 +19,8 @@
       "pyproject.toml",
       "setup.cfg",
       "tcex.d",
-      "tcex.json"
+      "tcex.json",
+      "app.yaml"
     ],
     "outdir": "target"
   },

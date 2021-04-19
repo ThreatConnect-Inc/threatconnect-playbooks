@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test Argcheck"""
 
-from argcheck import argcheck, tc_argcheck
 import pytest
+from argcheck import argcheck, tc_argcheck
 
 
 class tcex_dummy:

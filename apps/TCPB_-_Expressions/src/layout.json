@@ -46,6 +46,34 @@
     {
       "parameters": [
         {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "binary_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "binary_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "kv_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "kv_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tce_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tce_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tcee_outputs"
+        },
+        {
           "name": "return_none_on_failure"
         }
       ],

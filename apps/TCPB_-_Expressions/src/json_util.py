@@ -1,30 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Read a JSON document and kick out the equivalent output section of install.json """
+"""Read a JSON document and kick out the equivalent output section of install.json"""
 
-import json
-import sys
+# standard library
 from warnings import warn
 
 
 def camel2snake(s):
-    """ Convert a MS Graph camelCase name to snake_case """
+    """Convert a camelCase name to snake_case"""
     o = ''
-    if s.upper() == s:
-        s = s.lower()
+    lastcap = False
     for letter in s:
         lc = letter.lower()
-        if lc != letter:
-            o += '_'
+        if not lc.isalpha():
+            lastcap = True
+        if lc == '-':
+            lc = '_'
+            lastcap = True
+        elif not lc.isalpha():
+            lastcap = True
+        elif lc != letter:
+            if not lastcap:
+                o += '_'
+            lastcap = True
+        else:
+            lastcap = False
         o += lc
-    if o.startswith('_'):
-        o = o[1:]
     return o
 
 
-def identify(v, prefix, depth=0):
-    """ Identify all output variables, assigning them a given prefix """
+def identify(v, prefix, depth=0, strikeout=False):
+    """Identify all output variables, assigning them a given prefix"""
 
     outputVariables = []
 
@@ -33,27 +40,34 @@ def identify(v, prefix, depth=0):
     else:
         out = {'name': camel2snake(prefix), 'type': 'StringArray'}
     if depth > 1:
-        warn('List depth exceeds 1, Arrays of Arrays detected with {}'.format(prefix))
-        return []
+        warn(f'List depth exceeds 1, Arrays of Arrays detected with {prefix}')
+        if strikeout:
+            out = {'name': '~' + camel2snake(prefix), 'type': 'StringArray'}
+        else:
+            return []
 
-    if isinstance(v, (str, int, float)):
+    if isinstance(v, (str, int)) or v is None:
         outputVariables.append(out)
     elif isinstance(v, list):
-        v = v[0]
-        outputVariables.extend(identify(v, prefix, depth + 1))
+        if v:
+            v = v[0]
+            outputVariables.extend(identify(v, prefix, depth + 1, strikeout=strikeout))
+        else:
+            v = ''
+            outputVariables.extend(identify(v, prefix, depth + 1, strikeout=strikeout))
     elif isinstance(v, dict):
         keys = list(v.keys())
         keys.sort()
         for key in keys:
             s = v[key]
-            outputVariables.extend(identify(s, '{}.{}'.format(prefix, key), depth))
+            outputVariables.extend(identify(s, f'{prefix}.{key}', depth, strikeout=strikeout))
 
     return outputVariables
 
 
 def refold(v, prefix, depth=0, collection=None):
-    """ Refold a dictionary-ish object into a new dictionary, prefixing key
-        names with a prefix """
+    """Refold a dictionary-ish object into a new dictionary, prefixing key
+    names with a prefix"""
 
     if collection is None:
         collection = {}
@@ -63,8 +77,17 @@ def refold(v, prefix, depth=0, collection=None):
     if depth > 1:
         return collection
 
+    # if the key already exists, and isn't a list, promote it to a list
+    if prefix in collection:
+        data = collection.get(prefix)
+        if not isinstance(data, list):
+            collection[prefix] = [data]
+
     if v is None:
-        collection[prefix] = None
+        if prefix not in collection:
+            collection[prefix] = None
+        else:
+            collection[prefix].append(None)
     elif isinstance(v, (str, int, float)):
         if isinstance(v, bool):
             v = str(v).lower()
@@ -75,51 +98,93 @@ def refold(v, prefix, depth=0, collection=None):
             ls.append(str(v))
             collection[prefix] = ls
     elif isinstance(v, list):
-        collection[prefix] = []
         for s in v:
             refold(s, prefix, depth + 1, collection)
     elif isinstance(v, dict) or hasattr(v, 'keys'):
         keys = list(v.keys())
         keys.sort()
+        if prefix:
+            prefix = prefix + '.'
         for key in keys:
             s = v[key]
-            if prefix:
-                newprefix = f'{prefix}.{key}'
-            else:
-                newprefix = key
-            refold(s, newprefix, depth, collection)
+            refold(s, f'{prefix}{key}', depth, collection)
 
     return collection
 
 
-if __name__ == '__main__':
+def conform_objects(object_list, _path=None, _mapping=None, add_missing=False, missing_value=None):
+    """Conform objects to a common structure.
 
-    def cmdline():
-        """ Put all the variables into a local function so pylint
-            doesn't complain """
-        args = sys.argv[1:]
-        filename = args[0]
-        prefix = args[1]
+    Any simple field which is discovered is remembered, then a second pass through
+    the objects will add any *missing* fields.
 
-        f = open(filename, 'r')
-        data = json.load(f)
+    Returns the conformed object list.
+    """
 
-        keys = list(data.keys())
-        keys.sort()
+    if _mapping is None:
+        mapping = set()
+    else:
+        mapping = _mapping
 
-        outputVariables = []
+    if _path is None:
+        path = []
+    else:
+        path = _path
 
-        collection = {}
-        # for key in keys:
-        #    v = data[key]
-        #    outputVariables.extend(identify(v, '{}.{}'.format(prefix, key)))
-        #    refold(v, '{}.{}'.format(prefix, key), 0, collection)
+    path = path.copy()
 
-        outputVariables = identify(data, prefix)
-        collection = refold(data, prefix)
+    if isinstance(object_list, list):
+        result = []
+        for obj in object_list:
+            result.append(
+                conform_objects(
+                    obj, path, mapping, add_missing=add_missing, missing_value=missing_value
+                )
+            )
 
-        print(json.dumps(outputVariables, indent=3, ensure_ascii=False))
+        if _mapping is None:
+            result = conform_objects(
+                result, path, mapping, add_missing=True, missing_value=missing_value
+            )
 
-        print(json.dumps(collection, sort_keys=True, indent=3, ensure_ascii=False))
+        return result
 
-    cmdline()
+    if isinstance(object_list, dict):
+        for key, value in object_list.items():
+            path.append(key)
+            if not isinstance(value, (list, dict)):
+                mk = ':'.join(path)
+                if mk not in mapping:
+                    mapping.add(mk)
+            else:
+                object_list[key] = conform_objects(
+                    value, path, mapping, add_missing=add_missing, missing_value=missing_value
+                )
+
+            path.pop()
+
+        if add_missing:
+            add_missing_keys(object_list, path, mapping, missing_value)
+
+        if _mapping is None:
+            object_list = conform_objects(
+                object_list, path, mapping, add_missing=True, missing_value=missing_value
+            )
+
+    return object_list
+
+
+def add_missing_keys(obj: dict, path: list, mapping: set, missing_value=None):
+    """Add missing keys to a dictionary-like obj"""
+
+    lp = len(path) + 1
+
+    for key in mapping:
+        key_parts = key.split(':')
+
+        if len(key_parts) == lp and key_parts[:-1] == path:
+            mk = key_parts[-1]
+            value = obj.get(mk, None)
+            if value is None:
+                value = missing_value
+                obj[mk] = value

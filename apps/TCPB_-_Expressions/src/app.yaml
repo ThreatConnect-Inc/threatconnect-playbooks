@@ -51,10 +51,16 @@ app:
       otherwise variables are incremented from shortest number of elements to largest.
 
       Example: If `a` is `(1,2,3)` and `b` is `(1,2,3)` and `c` is `(1,2)`, a loop expression
-      `(a,b,c)` will yield `[(1,1,1), (1,1,2), (2,2,1), (2,2,2), (3,3,1), (3,3,2)]`"
+      `(a,b,c)` will yield `[(1,1,1), (1,1,2), (2,2,1), (2,2,2), (3,3,1), (3,3,2)]`.
+
+      Loop expressions which result in lists i.e. [1, 2, 3] are used to extend the output, rather than create
+
+      nested outputs.  Tuple outputs will create nested outputs.
+      "
     Evaluate in Loop: "Loop evaluation of the same expression while looping over the inputs. Inputs with
       the same length are incremented in parallel.  The order of loop increments is shortest
-      to longest."
+      to longest.  A Loop expression which results in a list i.e [1, 2, 3] is used to extend the output
+      rather than create nested output.  Tuple outputs will create nested output."
     Evaluate Many: Perform multiple evaluations, one set to define variables, another to define outputs.
     _TRAILER_:
       -
@@ -64,7 +70,7 @@ app:
   playbookType: Utility
   programLanguage: PYTHON
   programMain: run
-  programVersion: 1.0.5
+  programVersion: 1.0.6
   releaseNotes:
     1.0.0 (2020-06-15):
     - Initial Release
@@ -85,6 +91,12 @@ app:
     1.0.5 (2020-10-01):
     - Converted to app.yaml
     - added unnest function
+    1.0.6 (2021-04-09):
+    - Allow additional input types
+    - Add transform output types
+    - Add prune, structure, update, functions
+    - Add _ + iter_outputs to be the prior iteration result
+    - Allow tuple list outputs to nest
   retry:
     allowed: false
     defaultDelayMinutes: 1
@@ -115,6 +127,14 @@ inputGroups:
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     required: true
   - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
     label: Variables
@@ -125,6 +145,14 @@ inputGroups:
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     type: KeyValueList
   - display: tc_action in ('Evaluate Many With Loop', 'Evaluate in Loop')
     label: Loop Variables
@@ -137,6 +165,14 @@ inputGroups:
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     required: true
     type: KeyValueList
   - display: tc_action in ('Evaluate Many With Loop')
@@ -145,10 +181,22 @@ inputGroups:
     note: 'Loop outputs and loop output expressions for each output.  These may reference
       defined variables
 
-      but may not refer to other loop variables or outputs.'
+      but may not refer to other loop variables or outputs, with the exception that
+
+      the prior loop iteration variables are available with a leading underscore,
+
+      and are None on the first iteration.'
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     required: true
     type: KeyValueList
   - display: tc_action in ('Evaluate Many With Loop')
@@ -165,16 +213,36 @@ inputGroups:
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     type: KeyValueList
   - display: tc_action in ('Evaluate in Loop')
     label: Expression
     name: loop_expression
     note: 'The expression to evaluate.  If the expression generates a list result,
 
-      each element of the step-wise evaluation will be appended to the final result.'
+      each element of the step-wise evaluation will be appended to the final result.
+
+      The prior iteration may be referred to using the name `_output` and will be
+
+      None on the first iteration.'
     playbookDataType:
     - String
     - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
     required: true
   - display: tc_action in ('Evaluate Many')
     exposePlaybookKeyAs: String
@@ -188,8 +256,162 @@ inputGroups:
       single output only, with list outputs being converted to JSON strings.'
     required: true
     type: KeyValueList
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
 - group: Advanced
   inputs:
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: Binary Outputs
+    type: KeyValueList
+    note: Outputs to be delivered as Binary
+    exposePlaybookKeyAs: Binary
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: Binary Array Outputs
+    type: KeyValueList
+    note: Outputs to be delivered as BinaryArray
+    exposePlaybookKeyAs: BinaryArray
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: KeyValue Outputs
+    name: kv_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as KeyValue
+    exposePlaybookKeyAs: KeyValue
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: KeyValue Array Outputs
+    name: kv_array_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as KeyValueArray
+    exposePlaybookKeyAs: KeyValueArray
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: TCEntity Outputs
+    name: tce_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as TCEntity.
+    exposePlaybookKeyAs: TCEntity
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: TCEntity Array Outputs
+    name: tce_array_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as TCEntityArray.
+    exposePlaybookKeyAs: TCEntityArray
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: TCEnhancedEntity Outputs
+    name: tcee_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as TCEnhancedEntity.
+    exposePlaybookKeyAs: TCEnhancedEntity
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    disabled: true
+    label: TCEnhancedEntity Array Outputs
+    name: tcee_array_outputs
+    type: KeyValueList
+    note: Outputs to be delivered as TCEnhancedEntityArray.
+    exposePlaybookKeyAs: TCEnhancedEntityArray
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
+    - TCEnhancedEntityArray
+
   - default: true
     display: null
     label: Return None on failure

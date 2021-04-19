@@ -13,7 +13,7 @@ from .validate_feature import ValidateFeature  # pylint: disable=relative-beyond
 class TestProfiles(TestCasePlaybook):
     """TcEx App Testing Template."""
 
-    def setup_class(self):
+    def setup_class(self) -> None:
         """Run setup logic before all test cases in this module."""
         super(TestProfiles, self).setup_class()
         self.custom = CustomFeature()  # pylint: disable=attribute-defined-outside-init
@@ -22,13 +22,13 @@ class TestProfiles(TestCasePlaybook):
         # enable auto-update of profile data
         self.enable_update_profile = True  # pylint: disable=attribute-defined-outside-init
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Run setup logic before test method runs."""
         super(TestProfiles, self).setup_method()
         if os.getenv('SETUP_METHOD') is None:
             self.custom.setup_method(self)
 
-    def teardown_class(self):
+    def teardown_class(self) -> None:
         """Run setup logic after all test cases in this module."""
         if os.getenv('TEARDOWN_CLASS') is None:
             self.custom.teardown_class(self)
@@ -36,15 +36,15 @@ class TestProfiles(TestCasePlaybook):
         # disable auto-update of profile data
         self.enable_update_profile = False  # pylint: disable=attribute-defined-outside-init
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Run teardown logic after test method completes."""
         if os.getenv('TEARDOWN_METHOD') is None:
             self.custom.teardown_method(self)
         super(TestProfiles, self).teardown_method()
 
     def test_profiles(
-        self, profile_name, pytestconfig, monkeypatch, options
-    ):  # pylint: disable=unused-argument
+        self, profile_name: str, pytestconfig: object, monkeypatch: object, options: object
+    ) -> None:  # pylint: disable=unused-argument
         """Run pre-created testing profiles."""
 
         # initialize profile
@@ -54,7 +54,9 @@ class TestProfiles(TestCasePlaybook):
         assert valid, message
 
         # run custom test method before run method
-        self.custom.test_pre_run(self, self.profile.data, monkeypatch)
+        self.custom.test_pre_run(
+            self, self.profile.data, monkeypatch if self.run_method == 'inline' else None
+        )
 
         assert self.run_profile() in self.profile.exit_codes
 

@@ -21,8 +21,6 @@ Attributes defined on the ExpressionMethod class are available
 as constants to the expression handler, *without* the f_ prefix.
 """
 
-# pylint: disable=bad-whitespace
-
 import base64
 from collections import OrderedDict, deque
 import csv
@@ -37,15 +35,17 @@ from pprint import pformat
 import re
 from string import Formatter
 import urllib.parse
-
 import jmespath
+
+from tcex.utils.date_utils import DatetimeUtils
+
 import json_util
+import structure
 from literal import literal
 
 from spamspy.spamsum import spamsum
 from spamspy.edit_dist import edit_dist
 
-from tcex.utils.date_utils import DatetimeUtils
 
 tzutil = DatetimeUtils()
 
@@ -89,6 +89,9 @@ def coerce(f):
                 result = []
                 for v in value:
                     # print(f'>?>{v} -> {annotation}')
+                    # special case to deal with bytes inputs with no bytes but str in annotations
+                    if isinstance(v, bytes) and bytes not in annotation and str in annotation:
+                        v = v.decode('utf-8')
                     if not isinstance(v, annotation):
                         for constructor in annotation:
                             try:
@@ -102,6 +105,9 @@ def coerce(f):
             elif kind is inspect.Parameter.VAR_KEYWORD:
                 # **kwargs
                 for k, v in value.items():
+                    # special case to deal with bytes inputs with no bytes but str in annotations
+                    if isinstance(v, bytes) and bytes not in annotation and str in annotation:
+                        v = v.decode('utf-8')
                     if not isinstance(v, annotation):
                         for constructor in annotation:
                             try:
@@ -111,6 +117,9 @@ def coerce(f):
                                 pass
                         value[k] = v
             else:
+                # special case to deal with bytes inputs with no bytes but str in annotations
+                if isinstance(value, bytes) and bytes not in annotation and str in annotation:
+                    value = value.decode('utf-8')
                 if not isinstance(value, annotation):
                     for constructor in annotation:
                         try:
@@ -192,143 +201,12 @@ class ExpressionMethods:
         re.VERBOSE,
     )
 
-    @staticmethod
-    def f_join(separator, *elements):
-        """Join a list with separator"""
-
-        if len(elements) == 1 and isinstance(elements[0], (list, tuple)):
-            elements = elements[0]
-
-        return separator.join(elements)
-
-    @staticmethod
-    def f_len(container):
-        """Length of an iterable"""
-
-        return len(container)
-
-    @staticmethod
-    def f_printf(fmt, *args):
-        """Format arguments according to format"""
-
-        return fmt % args
-
-    @staticmethod
-    def f_split(string, separator=None, maxsplit=-1):
-        """Split a string into elements"""
-
-        return string.split(separator, maxsplit)
-
-    @coerce
-    @staticmethod
-    def f_ceil(x: (int, float)):
-        """Ceiling of X"""
-
-        return math.ceil(x)
-
-    @coerce
-    @staticmethod
-    def f_copysign(x: float, y: float):
-        """Copy sign of X to Y"""
-
-        return math.copysign(x, y)
-
     @coerce
     @staticmethod
     def f_abs(x: float):
         """Absolute value of X"""
 
         return math.fabs(x)
-
-    @coerce
-    @staticmethod
-    def f_factorial(x: float):
-        """Factorial of X"""
-
-        return math.factorial(x)
-
-    @coerce
-    @staticmethod
-    def f_sum(*elements: (int, float)):
-        """Sum a list of elements"""
-
-        if len(elements) == 1 and isinstance(elements, (tuple, list)):
-            elements = elements[0]
-
-        return math.fsum(elements)
-
-    @coerce
-    @staticmethod
-    def f_gcd(a: (int, float), b: (int, float)):
-        """Greatest Common Denominator of A and B"""
-        return math.gcd(a, b)
-
-    @coerce
-    @staticmethod
-    def f_trunc(x: (int, float)):
-        """Math Truncate X"""
-
-        return math.trunc(x)
-
-    @coerce
-    @staticmethod
-    def f_exp(x: (int, float)):
-        """Math Exp of X """
-
-        return math.exp(x)
-
-    @coerce
-    @staticmethod
-    def f_expm1(x: (int, float)):
-        """Math Expm1 of X"""
-
-        return math.expm1(x)
-
-    @coerce
-    @staticmethod
-    def f_log(x: (int, float), base: (int, float, NoneType) = None):
-        """Math Logarithm of X to base"""
-
-        args = [x]
-        if base:
-            args.append(base)
-
-        return math.log(*args)
-
-    @coerce
-    @staticmethod
-    def f_log1p(x: (int, float)):
-        """Math log1p of x"""
-
-        return math.log1p(x)
-
-    @coerce
-    @staticmethod
-    def f_log2(x: (int, float)):
-        """Math log base 2 of X"""
-
-        return math.log2(x)
-
-    @coerce
-    @staticmethod
-    def f_log10(x: (int, float)):
-        """Math log base 10 of X"""
-
-        return math.log10(x)
-
-    @coerce
-    @staticmethod
-    def f_pow(x: (int, float), y: (int, float)):
-        """Math X ** Y"""
-
-        return math.pow(x, y)
-
-    @coerce
-    @staticmethod
-    def f_sqrt(x: (int, float)):
-        """Square root of X"""
-
-        return math.sqrt(x)
 
     @coerce
     @staticmethod
@@ -339,66 +217,17 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_asin(x: (int, float)):
-        """Arc Sine of X"""
-
-        return math.asin(x)
-
-    @coerce
-    @staticmethod
-    def f_atan(x: (int, float)):
-        """Arc Tangent of X"""
-
-        return math.atan(x)
-
-    @coerce
-    @staticmethod
-    def f_cos(x: (int, float)):
-        """Cosine of X"""
-
-        return math.cos(x)
-
-    @coerce
-    @staticmethod
-    def f_hypot(x: (int, float), y: (int, float)):
-        """Hypotenuse of X,Y"""
-
-        return math.hypot(x, y)
-
-    @coerce
-    @staticmethod
-    def f_sin(x: (int, float)):
-        """Sine of X"""
-
-        return math.sin(x)
-
-    @coerce
-    @staticmethod
-    def f_tan(x: (int, float)):
-        """Tangent of X"""
-
-        return math.tan(x)
-
-    @coerce
-    @staticmethod
-    def f_degrees(x: (int, float)):
-        """Convert X to degrees"""
-
-        return math.degrees(x)
-
-    @coerce
-    @staticmethod
-    def f_radians(x: (int, float)):
-        """Convert X to radians"""
-
-        return math.radians(x)
-
-    @coerce
-    @staticmethod
     def f_acosh(x: (int, float)):
         """Inverse Hyperbolic Cosine"""
 
         return math.acosh(x)
+
+    @coerce
+    @staticmethod
+    def f_asin(x: (int, float)):
+        """Arc Sine of X"""
+
+        return math.asin(x)
 
     @coerce
     @staticmethod
@@ -409,212 +238,26 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
+    def f_atan(x: (int, float)):
+        """Arc Tangent of X"""
+
+        return math.atan(x)
+
+    @coerce
+    @staticmethod
     def f_atanh(x: (int, float)):
         """Inverse Hyperbolic Tangent"""
 
         return math.atanh(x)
 
-    @coerce
     @staticmethod
-    def f_cosh(x: (int, float)):
-        """Hyperbolic Cosine"""
+    def f_b64decode(s: str, altchars=None, validate=False, encoding='utf-8'):
+        """Base 64 decode of string"""
 
-        return math.cosh(x)
-
-    @coerce
-    @staticmethod
-    def f_sinh(x: (int, float)):
-        """Hyperbolic Sine"""
-
-        return math.sinh(x)
-
-    @coerce
-    @staticmethod
-    def f_tanh(x: (int, float)):
-        """Hyperbolic Tangent"""
-
-        return math.tanh(x)
-
-    @coerce
-    @staticmethod
-    def f_erf(x: (int, float)):
-        """Error Function of X"""
-
-        return math.erf(x)
-
-    @coerce
-    @staticmethod
-    def f_erfc(x: (int, float)):
-        """Complimentary Error Function of X"""
-
-        return math.erfc(x)
-
-    @coerce
-    @staticmethod
-    def f_gamma(x: (int, float)):
-        """Return the gamma function at X"""
-
-        return math.gamma(x)
-
-    @coerce
-    @staticmethod
-    def f_lgamma(x: (int, float)):
-        """Return the natural logarithm of the absolute value of the gamma function at X"""
-
-        return math.lgamma(x)
-
-    #  JSON Methods
-
-    @staticmethod
-    def f_json(ob, sort_keys=True, indent=2):
-        """Dump an object to a JSON string"""
-
-        return json.dumps(ob, sort_keys=sort_keys, indent=indent, ensure_ascii=False)
-
-    f_json_dump = f_json
-
-    @staticmethod
-    def f_json_load(ob):
-        """Load an object from a JSON string"""
-
-        return json.loads(ob)
-
-    # Locale methods
-    @coerce
-    @staticmethod
-    def f_locale_format(fmt, val: (int, float), grouping=False, monetary=False, locale='EN_us'):
-        """Format a nubmer according to locale settings"""
-        if locale:
-            locale_.setlocale(locale_.LC_ALL, locale)
-        else:
-            locale_.setlocale(locale_.LC_ALL, '')
-
-        return locale_.format(fmt, val, grouping=grouping, monetary=monetary)
-
-    @coerce
-    @staticmethod
-    def f_locale_currency(
-        val: (int, float), symbol=True, grouping=False, international=False, locale='EN_us'
-    ):
-        """Format a currency value according to locale settings"""
-        if locale:
-            locale_.setlocale(locale_.LC_ALL, locale)
-        else:
-            locale_.setlocale(locale_.LC_ALL, '')
-
-        return locale_.currency(val, symbol=symbol, grouping=grouping, international=international)
-
-    # JMESPATH
-
-    @staticmethod
-    def f_jmespath(path, ob):
-        """JMESPath search"""
-
-        if isinstance(ob, str):
-            ob = json.loads(ob)
-
-        return jmespath.search(path, ob)
-
-    # Logic help
-
-    @staticmethod
-    def f_choice(condition, true_result=None, false_result=None):
-        """Choice of true_result or false_result based on condition"""
-
-        if condition:
-            return true_result
-        return false_result
-
-    # String/Array help
-
-    @staticmethod
-    def f_sort(*elements):
-        """Sort array"""
-
-        elements = list(elements)
-
-        if len(elements) == 1 and isinstance(elements[0], (tuple, list)):
-            elements = list(elements[0])
-
-        elements.sort()
-        return elements
-
-    @coerce
-    @staticmethod
-    def f_title(s: str):
-        """Title of string"""
-
-        return s.title()
-
-    @coerce
-    @staticmethod
-    def f_upper(s: str):
-        """Uppercase string"""
-
-        return s.upper()
-
-    @coerce
-    @staticmethod
-    def f_lower(s: str):
-        """Lowercase string"""
-
-        return s.lower()
-
-    @coerce
-    @staticmethod
-    def f_replace(s: str, source: str, target: str):
-        """Replace chars on S"""
-
-        return s.replace(source, target)
-
-    @coerce
-    @staticmethod
-    def f_strip(s: str, chars=None):
-        """Strip chars from ends of string"""
-
-        return s.strip(chars)
-
-    @coerce
-    @staticmethod
-    def f_lstrip(s: str, chars=None):
-        """Strip chars from left of string"""
-
-        return s.lstrip(chars)
-
-    @coerce
-    @staticmethod
-    def f_rstrip(s: str, chars=None):
-        """Strip chars from right of string"""
-
-        return s.rstrip(chars)
-
-    @coerce
-    @staticmethod
-    def f_center(s: str, width: int, fillchar=' '):
-        """Center string in width columns"""
-
-        return s.center(width, fillchar)
-
-    @staticmethod
-    def f_str(s):
-        """Return string representation of object"""
-
-        # return a literal so it wont generally be re-decoded
-        return literal(s)
-
-    @staticmethod
-    def f_int(s):
-        """Return integer value of object"""
-
-        return int(s)
-
-    @staticmethod
-    def f_float(s):
-        """Return floating point value of object"""
-
-        return float(s)
-
-    # Base64 methods
+        result = base64.b64decode(s, altchars=altchars, validate=validate)
+        if encoding:
+            result = result.decode(encoding=encoding)
+        return result
 
     @staticmethod
     def f_b64encode(s: str, altchars=None, encoding='utf-8'):
@@ -628,13 +271,18 @@ class ExpressionMethods:
             result = result.decode('utf-8')
         return result
 
+    @coerce
     @staticmethod
-    def f_b64decode(s: str, altchars=None, validate=False, encoding='utf-8'):
-        """Base 64 decode of string"""
-
-        result = base64.b64decode(s, altchars=altchars, validate=validate)
-        if encoding:
-            result = result.decode(encoding=encoding)
+    def f_bin(n: int, sign=True):
+        """Return the binary value of int"""
+        result = bin(n)
+        if result.startswith('-'):
+            if sign:
+                result = '-' + result[3:]
+            else:
+                result = result[3:]
+        else:
+            result = result[2:]
         return result
 
     @staticmethod
@@ -648,86 +296,27 @@ class ExpressionMethods:
 
         return bytes(*arg)
 
+    @coerce
     @staticmethod
-    def f_index(ob, value, start=None, stop=None):
-        """Index of value in ob"""
+    def f_ceil(x: (int, float)):
+        """Ceiling of X"""
 
-        args = [value]
-        if start:
-            args.append(start)
-            if stop:
-                args.append(stop)
+        return math.ceil(x)
 
-        return ob.index(*args)
+    @coerce
+    @staticmethod
+    def f_center(s: str, width: int, fillchar=' '):
+        """Center string in width columns"""
 
-    def f_find(self, ob, value, start=None, stop=None):
-        """Find index value in ob or return -1"""
-
-        try:
-            return self.f_index(ob, value, start, stop)
-        except ValueError:
-            return -1
+        return s.center(width, fillchar)
 
     @staticmethod
-    def f_flatten(ob, prefix=''):
-        """Flatten a possibly nested list of dictionaries to a list, prefixing keys with prefix"""
+    def f_choice(condition, true_result=None, false_result=None):
+        """Choice of true_result or false_result based on condition"""
 
-        return json_util.refold(ob, prefix)
-
-    @staticmethod
-    def f_keys(ob: dict):
-        """Keys of dictionary"""
-
-        return list(ob.keys())
-
-    @staticmethod
-    def f_values(ob: dict):
-        """Values of dictionary"""
-
-        return list(ob.values())
-
-    @staticmethod
-    def f_items(ob: dict):
-        """Items (key, value pairs) of dictionary"""
-
-        return list(ob.items())
-
-    @staticmethod
-    def f_namevallist(ob: dict, namekey='name', valuekey='value'):
-        """Return a dictionary formatted as a list of name=name, value=value dictionaries"""
-
-        result = []
-        for key, value in ob.items():
-            result.append({namekey: key, valuekey: value})
-        return result
-
-    def f_format(self, s: str, *args, **kwargs):
-        """Format string S according to Python string formatting rules.  Compound
-        structure elements are access with bracket notation and without quotes
-        around key names, e.g. `blob[0][events][0][source][device][ipAddress]`"""
-
-        kws = SmartDict(self, kwargs)
-        fmt = Formatter()
-
-        return fmt.vformat(s, args, kws)
-
-    @staticmethod
-    def f_range(start_or_stop, stop=None, step=None):
-        """Return range of values"""
-
-        args = [start_or_stop]
-        if stop is not None:
-            args.append(stop)
-            if step is not None:
-                args.append(step)
-
-        return list(range(*args))
-
-    @staticmethod
-    def f_ord(char):
-        """Return ordinal value of char"""
-
-        return ord(char)
+        if condition:
+            return true_result
+        return false_result
 
     @coerce
     @staticmethod
@@ -737,122 +326,33 @@ class ExpressionMethods:
         return chr(x)
 
     @staticmethod
-    def f_datetime(datetime, date_format=None, tz=None):
-        """Format a datetime object according to a format string"""
+    def f_conform(object_list, missing_value=None):
+        """Conform objects in a list to have the same structure,
+        using missing_value as the value of any missing key
+        """
 
-        return tzutil.format_datetime(datetime, tz=tz, date_format=date_format)
-
-    @staticmethod
-    def f_timedelta(datetime_1, datetime_2):
-        """Return the delta between time 1 and time 2"""
-
-        return tzutil.timedelta(datetime_1, datetime_2)
+        return json_util.conform_objects(object_list, missing_value=missing_value)
 
     @coerce
     @staticmethod
-    def f_min(*items):
-        """Return the least value of the list"""
+    def f_copysign(x: float, y: float):
+        """Copy sign of X to Y"""
 
-        return min(*items)
-
-    @coerce
-    @staticmethod
-    def f_max(*items):
-        """Return the greatest value of the list"""
-
-        return max(*items)
+        return math.copysign(x, y)
 
     @coerce
     @staticmethod
-    def f_pad(iterable, length: (int, literal), padvalue=None):
-        """Pad iterable to length"""
+    def f_cos(x: (int, float)):
+        """Cosine of X"""
 
-        if not isinstance(length, int):
-            raise TypeError('length must be integer')
+        return math.cos(x)
 
-        if len(iterable) >= length:
-            return iterable
-
-        if isinstance(iterable, str):
-            if padvalue is None:
-                padvalue = ' '
-            if not isinstance(padvalue, str) or len(padvalue) != 1:
-                raise ValueError('pad value must be string of length one')
-            return iterable + padvalue * (length - len(iterable))
-
-        result = list(iterable)
-        while len(result) < length:
-            result.append(padvalue)
-
-        return result
-
+    @coerce
     @staticmethod
-    def f_rematch(pattern, string, flags=''):
-        """Regular expression match pattern to source"""
+    def f_cosh(x: (int, float)):
+        """Hyperbolic Cosine"""
 
-        f = 0
-        if isinstance(flags, int):
-            f = flags
-        elif isinstance(flags, str):
-            for c in flags:
-                c = c.upper()
-                i = getattr(re, c, None)
-                if i:
-                    f += i
-
-        m = re.match(pattern, string, flags=f)
-        if m:
-            return m.group()
-        return None
-
-    @staticmethod
-    def f_research(pattern, string, flags=''):
-        """Regular expression search pattern to source"""
-
-        f = 0
-        if isinstance(flags, int):
-            f = flags
-        elif isinstance(flags, str):
-            for c in flags:
-                c = c.upper()
-                i = getattr(re, c, None)
-                if i:
-                    f += i
-
-        m = re.search(pattern, string, flags=f)
-        if m:
-            return m.group()
-        return None
-
-    @staticmethod
-    def f_refindall(pattern, string, flags=''):
-        """Find all instances of the regular expression in source"""
-
-        f = 0
-        if isinstance(flags, int):
-            f = flags
-        elif isinstance(flags, str):
-            for c in flags:
-                c = c.upper()
-                i = getattr(re, c, None)
-                if i:
-                    f += i
-
-        result = []
-        match_iter = re.finditer(pattern, string, flags=f)
-        for m in match_iter:
-            result.append(m.group())
-
-        if result:
-            return result
-
-        return None
-
-    @staticmethod
-    def f_pformat(ob, indent: int = 1, width: int = 80, *, compact: bool = False):
-        """Pretty formatter for displaying hierarchial data"""
-
-        return pformat(ob, indent=indent, width=width, compact=compact)
+        return math.cosh(x)
 
     @staticmethod
     def f_csvread(data, header=False, convert=True, delimiter=',', quote='"', rows=0, columns=0):
@@ -861,6 +361,9 @@ class ExpressionMethods:
         is discarded.  If rows or columns is nonzero, the row or column count will
         be truncated to that number of rows or columns. If convert is True, numeric
         values will be returned as numbers, not strings"""
+
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
 
         buffer = StringIO(data)
 
@@ -915,6 +418,298 @@ class ExpressionMethods:
         return buffer.getvalue()
 
     @staticmethod
+    def f_datetime(datetime, date_format=None, tz=None):
+        """Format a datetime object according to a format string"""
+
+        return tzutil.format_datetime(datetime, tz=tz, date_format=date_format)
+
+    @coerce
+    @staticmethod
+    def f_degrees(x: (int, float)):
+        """Convert X to degrees"""
+
+        return math.degrees(x)
+
+    @coerce
+    @staticmethod
+    def f_erf(x: (int, float)):
+        """Error Function of X"""
+
+        return math.erf(x)
+
+    @coerce
+    @staticmethod
+    def f_erfc(x: (int, float)):
+        """Complimentary Error Function of X"""
+
+        return math.erfc(x)
+
+    @coerce
+    @staticmethod
+    def f_exp(x: (int, float)):
+        """Math Exp of X """
+
+        return math.exp(x)
+
+    @coerce
+    @staticmethod
+    def f_expm1(x: (int, float)):
+        """Math Expm1 of X"""
+
+        return math.expm1(x)
+
+    @coerce
+    @staticmethod
+    def f_factorial(x: float):
+        """Factorial of X"""
+
+        return math.factorial(x)
+
+    def f_find(self, ob, value, start=None, stop=None):
+        """Find index value in ob or return -1"""
+
+        try:
+            return self.f_index(ob, value, start, stop)
+        except ValueError:
+            return -1
+
+    @staticmethod
+    def f_flatten(ob, prefix=''):
+        """Flatten a possibly nested list of dictionaries to a list, prefixing keys with prefix"""
+
+        return json_util.refold(ob, prefix)
+
+    @staticmethod
+    def f_float(s):
+        """Return floating point value of object"""
+
+        return float(s)
+
+    def f_format(self, s: str, *args, **kwargs):
+        """Format string S according to Python string formatting rules.  Compound
+        structure elements are access with bracket notation and without quotes
+        around key names, e.g. `blob[0][events][0][source][device][ipAddress]`"""
+
+        kws = SmartDict(self, kwargs)
+        fmt = Formatter()
+
+        return fmt.vformat(s, args, kws)
+
+    @staticmethod
+    def f_fuzzydist(hash1, hash2):
+        """Return the edit distance between two fuzzy hashes"""
+
+        return edit_dist(hash1, hash2)
+
+    @staticmethod
+    def f_fuzzyhash(data):
+        """Return the fuzzy hash of data"""
+
+        return spamsum(data)
+
+    @staticmethod
+    def f_fuzzymatch(input1, input2):
+        """Return a score from 0..100 representing a poor match (0) or
+        a strong match(100) between the two inputs"""
+
+        sum1 = spamsum(input1)
+        sum2 = spamsum(input2)
+
+        score = edit_dist(sum1, sum2) * 64 / (len(input1) + len(input2))
+
+        score = (score * 100.0) / 64
+        if score >= 100:
+            return 0
+
+        return 100.0 - score
+
+    @coerce
+    @staticmethod
+    def f_gamma(x: (int, float)):
+        """Return the gamma function at X"""
+
+        return math.gamma(x)
+
+    @coerce
+    @staticmethod
+    def f_gcd(a: (int, float), b: (int, float)):
+        """Greatest Common Denominator of A and B"""
+        return math.gcd(a, b)
+
+    @coerce
+    @staticmethod
+    def f_hex(n: int, sign=True):
+        """Return the hexadecimal value of int"""
+        result = hex(n)
+        if result.startswith('-'):
+            if sign:
+                result = '-' + result[3:]
+            else:
+                result = result[3:]
+        else:
+            result = result[2:]
+        return result
+
+    @coerce
+    @staticmethod
+    def f_hypot(x: (int, float), y: (int, float)):
+        """Hypotenuse of X,Y"""
+
+        return math.hypot(x, y)
+
+    @staticmethod
+    def f_index(ob, value, start=None, stop=None):
+        """Index of value in ob"""
+
+        args = [value]
+        if start:
+            args.append(start)
+            if stop:
+                args.append(stop)
+
+        return ob.index(*args)
+
+    @staticmethod
+    def f_int(s, radix=None):
+        """Return integer value of object"""
+
+        if radix:
+            return int(s, radix)
+        return int(s)
+
+    @staticmethod
+    def f_items(ob: dict):
+        """Items (key, value pairs) of dictionary"""
+
+        return list(ob.items())
+
+    @staticmethod
+    def f_jmespath(path, ob):
+        """JMESPath search"""
+
+        if isinstance(ob, str):
+            ob = json.loads(ob)
+
+        return jmespath.search(path, ob)
+
+    @staticmethod
+    def f_join(separator, *elements):
+        """Join a list with separator"""
+
+        if len(elements) == 1 and isinstance(elements[0], (list, tuple)):
+            elements = elements[0]
+
+        return separator.join(elements)
+
+    @staticmethod
+    def f_json(ob, sort_keys=True, indent=2):
+        """Dump an object to a JSON string"""
+
+        return json.dumps(ob, sort_keys=sort_keys, indent=indent, ensure_ascii=False)
+
+    @staticmethod
+    def f_json_load(ob):
+        """Load an object from a JSON string"""
+
+        return json.loads(ob)
+
+    @staticmethod
+    def f_keys(ob: dict):
+        """Keys of dictionary"""
+
+        return list(ob.keys())
+
+    @staticmethod
+    def f_len(container):
+        """Length of an iterable"""
+
+        return len(container)
+
+    @coerce
+    @staticmethod
+    def f_lgamma(x: (int, float)):
+        """Return the natural logarithm of the absolute value of the gamma function at X"""
+
+        return math.lgamma(x)
+
+    @coerce
+    @staticmethod
+    def f_locale_currency(
+        val: (int, float), symbol=True, grouping=False, international=False, locale='EN_us'
+    ):
+        """Format a currency value according to locale settings"""
+        if locale:
+            locale_.setlocale(locale_.LC_ALL, locale)
+        else:
+            locale_.setlocale(locale_.LC_ALL, '')
+
+        return locale_.currency(val, symbol=symbol, grouping=grouping, international=international)
+
+    @coerce
+    @staticmethod
+    def f_locale_format(fmt, val: (int, float), grouping=False, monetary=False, locale='EN_us'):
+        """Format a nubmer according to locale settings"""
+        if locale:
+            locale_.setlocale(locale_.LC_ALL, locale)
+        else:
+            locale_.setlocale(locale_.LC_ALL, '')
+
+        return locale_.format(fmt, val, grouping=grouping, monetary=monetary)
+
+    @coerce
+    @staticmethod
+    def f_log(x: (int, float), base: (int, float, NoneType) = None):
+        """Math Logarithm of X to base"""
+
+        args = [x]
+        if base:
+            args.append(base)
+
+        return math.log(*args)
+
+    @coerce
+    @staticmethod
+    def f_log10(x: (int, float)):
+        """Math log base 10 of X"""
+
+        return math.log10(x)
+
+    @coerce
+    @staticmethod
+    def f_log1p(x: (int, float)):
+        """Math log1p of x"""
+
+        return math.log1p(x)
+
+    @coerce
+    @staticmethod
+    def f_log2(x: (int, float)):
+        """Math log base 2 of X"""
+
+        return math.log2(x)
+
+    @coerce
+    @staticmethod
+    def f_lower(s: str):
+        """Lowercase string"""
+
+        return s.lower()
+
+    @coerce
+    @staticmethod
+    def f_lstrip(s: str, chars=None):
+        """Strip chars from left of string"""
+
+        return s.lstrip(chars)
+
+    @coerce
+    @staticmethod
+    def f_max(*items):
+        """Return the greatest value of the list"""
+
+        return max(*items)
+
+    @staticmethod
     def f_md5(data):
         """Return MD5 hash of data"""
 
@@ -923,6 +718,194 @@ class ExpressionMethods:
             data = bytes(str(data), 'utf-8')
         h.update(data)
         return h.hexdigest()
+
+    @coerce
+    @staticmethod
+    def f_min(*items):
+        """Return the least value of the list"""
+
+        return min(*items)
+
+    @staticmethod
+    def f_namevallist(ob: dict, namekey='name', valuekey='value'):
+        """Return a dictionary formatted as a list of name=name, value=value dictionaries"""
+
+        result = []
+        for key, value in ob.items():
+            result.append({namekey: key, valuekey: value})
+        return result
+
+    @staticmethod
+    def f_ord(char):
+        """Return ordinal value of char"""
+
+        return ord(char)
+
+    @coerce
+    @staticmethod
+    def f_pad(iterable, length: (int, literal), padvalue=None):
+        """Pad iterable to length"""
+
+        if not isinstance(length, int):
+            raise TypeError('length must be integer')
+
+        if len(iterable) >= length:
+            return iterable
+
+        if isinstance(iterable, str):
+            if padvalue is None:
+                padvalue = ' '
+            if not isinstance(padvalue, str) or len(padvalue) != 1:
+                raise ValueError('pad value must be string of length one')
+            return iterable + padvalue * (length - len(iterable))
+
+        result = list(iterable)
+        while len(result) < length:
+            result.append(padvalue)
+
+        return result
+
+    @staticmethod
+    def f_pformat(ob, indent: int = 1, width: int = 80, *, compact: bool = False):
+        """Pretty formatter for displaying hierarchial data"""
+
+        return pformat(ob, indent=indent, width=width, compact=compact)
+
+    @coerce
+    @staticmethod
+    def f_pow(x: (int, float), y: (int, float)):
+        """Math X ** Y"""
+
+        return math.pow(x, y)
+
+    @staticmethod
+    def f_printf(fmt, *args):
+        """Format arguments according to format"""
+
+        return fmt % args
+
+    def f_prune(self, ob, depth=None, prune=(None, '', [], {})):
+        """Recursively Prunes entries from the object,
+        with an optional depth limit
+        """
+
+        if depth is not None:
+            if depth <= 0:
+                return ob
+            depth -= 1
+
+        if not isinstance(ob, (list, tuple, dict)):
+            return ob
+
+        if isinstance(ob, (list, tuple)):
+            result = []
+            for value in ob:
+                value = self.f_prune(value, depth, prune=prune)
+                if value not in prune:
+                    result.append(value)
+            return result
+
+        result = {}
+        for key, value in ob.items():
+            value = self.f_prune(value, depth, prune=prune)
+            if value not in prune:
+                result[key] = value
+        return result
+
+    @coerce
+    @staticmethod
+    def f_radians(x: (int, float)):
+        """Convert X to radians"""
+
+        return math.radians(x)
+
+    @staticmethod
+    def f_range(start_or_stop, stop=None, step=None):
+        """Return range of values"""
+
+        args = [start_or_stop]
+        if stop is not None:
+            args.append(stop)
+            if step is not None:
+                args.append(step)
+
+        return list(range(*args))
+
+    @staticmethod
+    def f_refindall(pattern, string, flags=''):
+        """Find all instances of the regular expression in source"""
+
+        f = 0
+        if isinstance(flags, int):
+            f = flags
+        elif isinstance(flags, str):
+            for c in flags:
+                c = c.upper()
+                i = getattr(re, c, None)
+                if i:
+                    f += i
+
+        result = []
+        match_iter = re.finditer(pattern, string, flags=f)
+        for m in match_iter:
+            result.append(m.group())
+
+        if result:
+            return result
+
+        return None
+
+    @staticmethod
+    def f_rematch(pattern, string, flags=''):
+        """Regular expression match pattern to source"""
+
+        f = 0
+        if isinstance(flags, int):
+            f = flags
+        elif isinstance(flags, str):
+            for c in flags:
+                c = c.upper()
+                i = getattr(re, c, None)
+                if i:
+                    f += i
+
+        m = re.match(pattern, string, flags=f)
+        if m:
+            return m.group()
+        return None
+
+    @coerce
+    @staticmethod
+    def f_replace(s: str, source: str, target: str):
+        """Replace chars on S"""
+
+        return s.replace(source, target)
+
+    @staticmethod
+    def f_research(pattern, string, flags=''):
+        """Regular expression search pattern to source"""
+
+        f = 0
+        if isinstance(flags, int):
+            f = flags
+        elif isinstance(flags, str):
+            for c in flags:
+                c = c.upper()
+                i = getattr(re, c, None)
+                if i:
+                    f += i
+
+        m = re.search(pattern, string, flags=f)
+        if m:
+            return m.group()
+        return None
+
+    @coerce
+    @staticmethod
+    def f_rstrip(s: str, chars=None):
+        """Strip chars from right of string"""
+
+        return s.rstrip(chars)
 
     @staticmethod
     def f_sha1(data):
@@ -944,39 +927,189 @@ class ExpressionMethods:
         h.update(data)
         return h.hexdigest()
 
+    @coerce
     @staticmethod
-    def f_fuzzyhash(data):
-        """Return the fuzzy hash of data"""
+    def f_sin(x: (int, float)):
+        """Sine of X"""
 
-        return spamsum(data)
+        return math.sin(x)
 
-    f_spamsum = f_fuzzyhash
-
+    @coerce
     @staticmethod
-    def f_fuzzydist(hash1, hash2):
-        """Return the edit distance between two fuzzy hashes"""
+    def f_sinh(x: (int, float)):
+        """Hyperbolic Sine"""
 
-        return edit_dist(hash1, hash2)
-
-    f_spamdist = f_fuzzydist
+        return math.sinh(x)
 
     @staticmethod
-    def f_fuzzymatch(input1, input2):
-        """Return a score from 0..100 representing a poor match (0) or
-           a strong match(100) between the two inputs"""
+    def f_sort(*elements):
+        """Sort array"""
 
-        sum1 = spamsum(input1)
-        sum2 = spamsum(input2)
+        elements = list(elements)
 
-        score = edit_dist(sum1, sum2) * 64 / (len(input1) + len(input2))
+        if len(elements) == 1 and isinstance(elements[0], (tuple, list)):
+            elements = list(elements[0])
 
-        score = (score * 100.0) / 64
-        if score >= 100:
-            return 0
+        elements.sort()
+        return elements
 
-        return 100.0 - score
+    @staticmethod
+    def f_split(string, separator=None, maxsplit=-1):
+        """Split a string into elements"""
+
+        return string.split(separator, maxsplit)
+
+    @coerce
+    @staticmethod
+    def f_sqrt(x: (int, float)):
+        """Square root of X"""
+
+        return math.sqrt(x)
+
+    @staticmethod
+    def f_str(s, encoding='utf-8'):
+        """Return string representation of object"""
+
+        if hasattr(s, 'decode'):
+            s = s.decode(encoding)
+
+        # return a literal so it wont generally be re-decoded
+        return literal(s)
+
+    @coerce
+    @staticmethod
+    def f_strip(s: str, chars=None):
+        """Strip chars from ends of string"""
+
+        return s.strip(chars)
+
+    @staticmethod
+    def f_structure(ob):
+        """Return a reduced structure of the object, useful for comparisons"""
+
+        return structure.reduce_structure(ob)
+
+    @coerce
+    @staticmethod
+    def f_sum(*elements: (int, float)):
+        """Sum a list of elements"""
+
+        if len(elements) == 1 and isinstance(elements, (tuple, list)):
+            elements = elements[0]
+
+        return math.fsum(elements)
+
+    @coerce
+    @staticmethod
+    def f_tan(x: (int, float)):
+        """Tangent of X"""
+
+        return math.tan(x)
+
+    @coerce
+    @staticmethod
+    def f_tanh(x: (int, float)):
+        """Hyperbolic Tangent"""
+
+        return math.tanh(x)
+
+    @staticmethod
+    def f_timedelta(datetime_1, datetime_2):
+        """Return the delta between time 1 and time 2"""
+
+        return tzutil.timedelta(datetime_1, datetime_2)
+
+    @coerce
+    @staticmethod
+    def f_title(s: str):
+        """Title of string"""
+
+        return s.title()
+
+    @coerce
+    @staticmethod
+    def f_trunc(x: (int, float)):
+        """Math Truncate X"""
+
+        return math.trunc(x)
+
+    @coerce
+    @staticmethod
+    def f_twoscompliment(n: int, bits=32):
+        """Return the twos compliment of N with the desired word width"""
+        if (n & (1 << (bits - 1))) != 0:
+            n = n - (1 << bits)
+        return n
+
+    @coerce
+    @staticmethod
+    def f_update(target: dict, source: dict):
+        """Updates one dictionary with keys from the other"""
+
+        target = target.copy()
+        target.update(source)
+        return target
+
+    @coerce
+    @staticmethod
+    def f_upper(s: str):
+        """Uppercase string"""
+
+        return s.upper()
+
+    @staticmethod
+    def f_values(ob: dict):
+        """Values of dictionary"""
+
+        return list(ob.values())
 
     f_spammatch = f_fuzzymatch
+
+    @staticmethod
+    def f_unique(*args):
+        """Return the list of unique elements of arguments, which may be a list of arguments, or a
+        single argument that is a list.  Inputs are compared by converting them to
+        sorted JSON objects, so dictionaries with the same keys and values but different
+        order will count as duplicates."""
+
+        if len(args) == 1 and isinstance(args[0], (list, tuple)):
+            args = args[0]
+
+        seen = set()
+        result = []
+        for element in args:
+            key = json.dumps(element, sort_keys=True, ensure_ascii=False)
+            if key in seen:
+                continue
+            result.append(element)
+            seen.add(key)
+
+        return result
+
+    @staticmethod
+    def f_unnest(iterable):
+        """Reduces nested list to a single flattened list.  [A, B, [C, D, [E, F]]
+        turns into [A, B, C, D, E, F]."""
+
+        result = []
+        if isinstance(iterable, (str, literal)):
+            return iterable
+
+        try:
+            queue = deque(iterable)
+        except TypeError:
+            return iterable
+
+        while queue:
+            item = queue.popleft()
+            if isinstance(item, (list, tuple)):
+                insertions = deque(item)
+                insertions.reverse()
+                queue.extendleft(insertions)
+            else:
+                result.append(item)
+
+        return result
 
     @staticmethod
     def f_urlparse(urlstring, scheme='', allow_fragments=True):
@@ -1004,51 +1137,10 @@ class ExpressionMethods:
             max_num_fields=max_num_fields,
         )
 
-    @staticmethod
-    def f_unique(*args):
-        """Return the list of unique elements of arguments, which may be a list of arguments, or a
-        single argument that is a list.  Inputs are compared by converting them to
-        sorted JSON objects, so dictionaries with the same keys and values but different
-        order will count as duplicates."""
-
-        if len(args) == 1 and isinstance(args[0], (list, tuple)):
-            args = args[0]
-
-        seen = set()
-        result = []
-        for element in args:
-            key = json.dumps(element, sort_keys=True, ensure_ascii=False)
-            if key in seen:
-                continue
-            result.append(element)
-            seen.add(key)
-
-        return result
-
-    @staticmethod
-    def f_unnest(iterable):
-        """Reduces nested list to a single flattened list.  [A, B, [C, D, [E, F]]
-           turns into [A, B, C, D, E, F]."""
-
-        result = []
-        if isinstance(iterable, (str, literal)):
-            return iterable
-
-        try:
-            queue = deque(iterable)
-        except TypeError:
-            return iterable
-
-        while queue:
-            item = queue.popleft()
-            if isinstance(item, (list, tuple)):
-                insertions = deque(item)
-                insertions.reverse()
-                queue.extendleft(insertions)
-            else:
-                result.append(item)
-
-        return result
+    f_binary = f_bytes
+    f_json_dump = f_json
+    f_spamsum = f_fuzzyhash
+    f_spamdist = f_fuzzydist
 
 
 def list_methods():

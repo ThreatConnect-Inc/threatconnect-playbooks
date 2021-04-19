@@ -171,7 +171,7 @@ class App(PlaybookApp):
 
         return iter_control
 
-    def setup_outputs(self, varname, required=True):
+    def setup_outputs(self, varname, required=True, output_type='String'):
         """ Setup output varables from expressions """
         out_list = tc_argcheck(self.tcex.args, varname, required=required, tcex=self.tcex)
         out_list = self.tcex.playbook.read(out_list, array=True, embedded=False)
@@ -193,12 +193,16 @@ class App(PlaybookApp):
 
             self.engine.set(name, value)  # allow outputs to see prior outputs
 
-            if isinstance(value, (list, tuple, dict)):
+            if isinstance(value, (list, tuple, dict)) and output_type in ('String', 'Binary'):
                 value = json.dumps(value, sort_keys=True, ensure_ascii=False)
+
+            if output_type.endswith('Array') and not isinstance(value, (list, tuple)):
+                self.tcex.log.debug('... promoting to array')
+                value = [value]
 
             self.tcex.log.debug(f'... {name} = {value!r}')
 
-            self.outlist.append((name, value))
+            self.outlist.append((name, value, output_type))
 
     def setup_vars(self, varname):
         """Setup initial variables"""
@@ -249,6 +253,10 @@ class App(PlaybookApp):
         loopcount = 0
         get_next = False
 
+        # 1.0.6 -- set individual loop values with leading underscore to None
+        for key in exprs:
+            self.engine.set('_' + key, None)
+
         while looping:
             # t  Trackers are ordered from shortest to longest
             # inner trackers need to wrap around until the longest tracker
@@ -288,8 +296,14 @@ class App(PlaybookApp):
                     except Exception as e:
                         result = self.handle_exception(f'Evaluation of "{expr_key}" failed: {e}')
                     self.tcex.log.trace(f'... = {result!r}')
+
+                    # 1.0.6 -- add individual loop result with leading underscore
+                    self.engine.set('_' + expr_key, result)
+
                     out = outdict.get(expr_key, [])
-                    if isinstance(result, (list, tuple)):
+
+                    # 1.0.6 - Don't flatten tuples, just lists
+                    if isinstance(result, list):
                         out.extend(result)
                     else:
                         out.append(result)
@@ -313,7 +327,7 @@ class App(PlaybookApp):
         except Exception as e:
             result = self.handle_exception(f'Evaluation of "{expr}" failed: {e}')
 
-        if isinstance(result, (list, tuple)):
+        if isinstance(result, list):
             self.output.extend(result)
         else:
             self.output.append(result)
@@ -344,6 +358,16 @@ class App(PlaybookApp):
 
         self.setup_vars('variables')
         self.setup_outputs('outputs')
+        self.setup_outputs('binary_outputs', required=False, output_type='Binary')
+        self.setup_outputs('binary_array_outputs', required=False, output_type='BinaryArray')
+        self.setup_outputs('kv_outputs', required=False, output_type='KeyValue')
+        self.setup_outputs('kv_array_outputs', required=False, output_type='KeyValueArray')
+        self.setup_outputs('tce_outputs', required=False, output_type='TCEntity')
+        self.setup_outputs('tce_array_outputs', required=False, output_type='TCEntityArray')
+        self.setup_outputs('tcee_outputs', required=False, output_type='TCEnhancedEntity')
+        self.setup_outputs(
+            'tcee_array_outputs', required=False, output_type='TCEnhancedEntityArray'
+        )
 
     @trap()
     def evaluate_many_with_loop(self):
@@ -368,6 +392,43 @@ class App(PlaybookApp):
             self.engine.set(key, value)
 
         self.setup_outputs('additional_outputs', required=False)
+        self.setup_outputs('binary_outputs', required=False, output_type='Binary')
+        self.setup_outputs('binary_array_outputs', required=False, output_type='BinaryArray')
+        self.setup_outputs('kv_outputs', required=False, output_type='KeyValue')
+        self.setup_outputs('kv_array_outputs', required=False, output_type='KeyValueArray')
+        self.setup_outputs('tce_outputs', required=False, output_type='TCEntity')
+        self.setup_outputs('tce_array_outputs', required=False, output_type='TCEntityArray')
+        self.setup_outputs('tcee_outputs', required=False, output_type='TCEnhancedEntity')
+        self.setup_outputs(
+            'tcee_array_outputs', required=False, output_type='TCEnhancedEntityArray'
+        )
+
+    def write_one(self, name, value, output_type):
+        """Write one output"""
+
+        # JSON-ify any array outputs that are compound for the text outputs
+        if output_type in ('StringArray', 'BinaryArray'):
+            result = []
+            for entry in value:
+                if isinstance(entry, (list, dict, tuple)):
+                    entry = json.dumps(entry, sort_keys=True)
+                result.append(entry)
+            value = result
+
+        if output_type in ('String', 'Binary') and isinstance(value, (dict, list, tuple)):
+            value = json.dumps(value, sort_keys=True)
+
+        self.tcex.log.debug(f'Write: {name}!{output_type}={value!r}')
+        try:
+            self.tcex.playbook.create_output(name, value, output_type)
+        except Exception as e:
+            return_none_on_failure = tc_argcheck(
+                self.tcex.args, 'return_none_on_failure', tcex=self.tcex
+            )
+            self.tcex.log.error(f'Error creating output {name}: {e}')
+            self.errors.append(f'Error creating output {name}: {e}')
+            if not return_none_on_failure:
+                self.tcex.playbook.exit(1, f'Unable to create output {name}: {e}')
 
     def write_output(self):
         """Write the Playbook output variables.
@@ -380,13 +441,13 @@ class App(PlaybookApp):
         if self.expression:
             self.tcex.playbook.create_output('expression.expression', self.expression, 'String')
         if self.output:
-            self.tcex.playbook.create_output('expression.result.0', self.output[0], 'String')
-            self.tcex.playbook.create_output('expression.result.array', self.output, 'StringArray')
-        if self.errors:
-            self.tcex.playbook.create_output('expression.errors', self.errors, 'StringArray')
+            self.write_one('expression.result.0', self.output[0], 'String')
+            self.write_one('expression.result.array', self.output, 'StringArray')
         if self.outlist:
-            for name, value in self.outlist:
-                self.tcex.playbook.create_output(name, value, 'String')
+            for name, value, output_type in self.outlist:
+                self.write_one(name, value, output_type)
         if self.outloop:
             for name, value in self.outloop.items():
-                self.tcex.playbook.create_output(name, value, 'StringArray')
+                self.write_one(name, value, 'StringArray')
+        if self.errors:
+            self.tcex.playbook.create_output('expression.errors', self.errors, 'StringArray')

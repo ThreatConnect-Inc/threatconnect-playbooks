@@ -108,38 +108,110 @@ FUNCTION_TESTS = [
         'locale_currency(5000.99, grouping=True)',
         SkipIf('$5,000.99', lambda: locale.setlocale(locale.LC_ALL, 'EN_us')),
     ),
-    ('asdf', NameError('asdf',),),
+    (
+        'asdf',
+        NameError(
+            'asdf',
+        ),
+    ),
     ('acos(1)', 0.0),
     ('acos(0)', 1.5707963267948966),
-    ("acox('f')", ValueError('Function acox not found',),),
-    ("acos('f')", TypeError('must be real number, not literal',),),
-    ('acosh(0)', ValueError('math domain error',),),
+    (
+        "acox('f')",
+        ValueError(
+            'Function acox not found',
+        ),
+    ),
+    (
+        "acos('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'acosh(0)',
+        ValueError(
+            'math domain error',
+        ),
+    ),
     ('acosh(1)', 0.0),
     ('acosh(2)', 1.3169578969248166),
-    ("acosh('f')", TypeError('must be real number, not literal',),),
+    (
+        "acosh('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('asin(0)', 0.0),
     ('asin(1)', 1.5707963267948966),
-    ("asin('f')", TypeError('must be real number, not literal',),),
-    ('asinh(0))', SyntaxError("Unexpected token Token(RPAR, ')') at line 1, column 9.",),),
+    (
+        "asin('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'asinh(0))',
+        SyntaxError(
+            "Unexpected token Token(RPAR, ')') at line 1, column 9.",
+        ),
+    ),
     ('asinh(0)', 0.0),
     ('asinh(1)', 0.881373587019543),
     ('asinh(pi/2)', 1.233403117511217),
-    ("asinh('f')", TypeError('must be real number, not literal',),),
+    (
+        "asinh('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('atan(0)', 0.0),
     ('atan(1)', 0.7853981633974483),
     ('atan(pi)', 1.2626272556789115),
-    ("atan('f')", TypeError('must be real number, not literal',),),
+    (
+        "atan('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('atanh(0)', 0.0),
-    ('atanh(1)', ValueError('math domain error',),),
-    ("atanh('f')", TypeError('must be real number, not literal',),),
-    ('atanh(pi)', ValueError('math domain error',),),
-    ('b64encode(1)', TypeError("a bytes-like object is required, not 'int'",),),
+    (
+        'atanh(1)',
+        ValueError(
+            'math domain error',
+        ),
+    ),
+    (
+        "atanh('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'atanh(pi)',
+        ValueError(
+            'math domain error',
+        ),
+    ),
+    (
+        'b64encode(1)',
+        TypeError(
+            "a bytes-like object is required, not 'int'",
+        ),
+    ),
     ("b64encode('foo')", 'Zm9v'),
     ("b64decode('Zm9v')", 'foo'),
-    ('b64decode()', TypeError("f_b64decode() missing 1 required positional argument: 's'",),),
+    (
+        'b64decode()',
+        TypeError(
+            "f_b64decode() missing 1 required positional argument: 's'",
+        ),
+    ),
     (
         'b64decode(1)',
-        TypeError("argument should be a bytes-like object or ASCII string, not 'int'",),
+        TypeError(
+            "argument should be a bytes-like object or ASCII string, not 'int'",
+        ),
     ),
     ("bytes('a')", b'a'),
     ("bytes('a','ascii')", b'a'),
@@ -148,73 +220,210 @@ FUNCTION_TESTS = [
     ("choice(True, 'True Choice', 'False Choice')", 'True Choice'),
     ("choice(True, 'True Choice')", 'True Choice'),
     ('choice(True)', None),
-    ('choice()', TypeError("f_choice() missing 1 required positional argument: 'condition'",),),
+    (
+        'choice()',
+        TypeError(
+            "f_choice() missing 1 required positional argument: 'condition'",
+        ),
+    ),
     ('chr(65)', 'A'),
-    ("chr('x')", TypeError('an integer is required (got type literal)',),),
-    ('chr(-1)', ValueError('chr() arg not in range(0x110000)',),),
+    (
+        "chr('x')",
+        TypeError(
+            'an integer is required (got type literal)',
+        ),
+    ),
+    (
+        'chr(-1)',
+        ValueError(
+            'chr() arg not in range(0x110000)',
+        ),
+    ),
     ('chr(257)', 'ā'),
     ('cos(0)', 1.0),
     ('cos(1)', 0.5403023058681398),
     ('cos(-1)', 0.5403023058681398),
-    ("cos('x')", TypeError('must be real number, not literal',),),
+    (
+        "cos('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('cosh(0)', 1.0),
     ('cosh(1)', 1.5430806348152437),
-    ("cosh('x')", TypeError('must be real number, not literal',),),
+    (
+        "cosh('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ("datetime('July 4, 1776')", '1776-07-04T00:00:00'),
     ('datetime(157900000)', '1975-01-02T13:06:40+00:00'),
-    ("datetime('foo')", RuntimeError('Could not format input (foo) to datetime string.',),),
+    (
+        "datetime('foo')",
+        RuntimeError(
+            'Could not format input (foo) to datetime string.',
+        ),
+    ),
     ('degrees(2*pi)', 360.0),
-    ("degrees('f')", TypeError('must be real number, not literal',),),
+    (
+        "degrees('f')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('erf(1)', 0.842700792949715),
-    ("erf('x')", TypeError('must be real number, not literal',),),
+    (
+        "erf('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('erfc(1)', 0.157299207050285),
-    ("erfc('x')", TypeError('must be real number, not literal',),),
+    (
+        "erfc('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('exp(1)', 2.718281828459045),
     ('exp(2)', 7.38905609893065),
-    ("exp('x')", TypeError('must be real number, not literal',),),
+    (
+        "exp('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('expm1(1)', 1.7182818284590453),
     ('expm1(0)', 0.0),
-    ("expm1('x')", TypeError('must be real number, not literal',),),
-    ('find()', TypeError("f_find() missing 2 required positional arguments: 'ob' and 'value'",),),
+    (
+        "expm1('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'find()',
+        TypeError(
+            "f_find() missing 2 required positional arguments: 'ob' and 'value'",
+        ),
+    ),
     ("find('fool', 'foo')", 0),
     ("find('I pity the foo', 'foo')", 11),
     ("find('I pity the foo', 'Foo')", -1),
-    ("find('I pity the foo', 1)", TypeError('must be str, not int',),),
-    ('find(1, 1)', AttributeError("'int' object has no attribute 'index'",),),
+    (
+        "find('I pity the foo', 1)",
+        TypeError(
+            'must be str, not int',
+        ),
+    ),
+    (
+        'find(1, 1)',
+        AttributeError(
+            "'int' object has no attribute 'index'",
+        ),
+    ),
     ('flatten({})', {}),
     ("flatten({'a': 1'})", lark.exceptions.UnexpectedCharacters),
     ("flatten({'a': 1})", {'a': '1'}),
     ("flatten({'a': 1, 'b': {'erp': 0, 'ulp': 5}})", {'a': '1', 'b.erp': '0', 'b.ulp': '5'}),
     ('float(1)', 1.0),
     ('float(.1)', 0.1),
-    ("float('x')", ValueError("could not convert string to float: 'x'",),),
-    ('format()', TypeError("f_format() missing 1 required positional argument: 's'",),),
+    (
+        "float('x')",
+        ValueError(
+            "could not convert string to float: 'x'",
+        ),
+    ),
+    (
+        'format()',
+        TypeError(
+            "f_format() missing 1 required positional argument: 's'",
+        ),
+    ),
     ("format('a')", 'a'),
     ("format('{pi}')", '3.141592653589793'),
     ("format('{pi} / 2 = {f}', f=pi/2)", '3.141592653589793 / 2 = 1.5707963267948966'),
-    ('gamma(0)', ValueError('math domain error',),),
+    (
+        'gamma(0)',
+        ValueError(
+            'math domain error',
+        ),
+    ),
     ('gamma(1)', 1.0),
     ('gamma(e)', 1.5674682557740531),
-    ("gamma('x')", TypeError('must be real number, not literal',),),
-    ('hypot(0)', TypeError("missing a required argument: 'y'",),),
+    (
+        "gamma('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'hypot(0)',
+        TypeError(
+            "missing a required argument: 'y'",
+        ),
+    ),
     ('hypot(0,1)', 1.0),
     ("index('I pity the foo', 'foo')", 11),
-    ("index('I pity the foo', 'Foo')", ValueError('substring not found',),),
+    (
+        "index('I pity the foo', 'Foo')",
+        ValueError(
+            'substring not found',
+        ),
+    ),
     ('index((1,2,3), 2)', 1),
-    ('index((1,2,3), 2, 4)', ValueError('tuple.index(x): x not in tuple',),),
+    (
+        'index((1,2,3), 2, 4)',
+        ValueError(
+            'tuple.index(x): x not in tuple',
+        ),
+    ),
     ('int(1)', 1),
     ('int(1.1)', 1),
-    ("int('1.1')", ValueError("invalid literal for int() with base 10: '1.1'",),),
+    (
+        "int('1.1')",
+        ValueError(
+            "invalid literal for int() with base 10: '1.1'",
+        ),
+    ),
     ("int('1')", 1),
-    ("int('foo')", ValueError("invalid literal for int() with base 10: 'foo'",),),
-    ('items()', TypeError("f_items() missing 1 required positional argument: 'ob'",),),
-    ("items('1')", AttributeError("'literal' object has no attribute 'items'",),),
-    ('items([1,2,3])', AttributeError("'frozen_list' object has no attribute 'items'",),),
-    ("items({'a'", SyntaxError("Unexpected token Token($END, '') at line 1, column 8.",),),
+    (
+        "int('foo')",
+        ValueError(
+            "invalid literal for int() with base 10: 'foo'",
+        ),
+    ),
+    (
+        'items()',
+        TypeError(
+            "f_items() missing 1 required positional argument: 'ob'",
+        ),
+    ),
+    (
+        "items('1')",
+        AttributeError(
+            "'literal' object has no attribute 'items'",
+        ),
+    ),
+    (
+        'items([1,2,3])',
+        AttributeError(
+            "'frozen_list' object has no attribute 'items'",
+        ),
+    ),
+    (
+        "items({'a'",
+        SyntaxError(
+            "Unexpected token Token($END, '') at line 1, column 8.",
+        ),
+    ),
     ("items({'a': 1, 'b': 1})", [('a', 1), ('b', 1)]),
     (
         "jmespath({ 'a': 1, 'b': [{'i': 0}, {'i': 1}]})",
-        TypeError("f_jmespath() missing 1 required positional argument: 'ob'",),
+        TypeError(
+            "f_jmespath() missing 1 required positional argument: 'ob'",
+        ),
     ),
     ("jmespath('a', { 'a': 1, 'b': [{'i': 0}, {'i': 1}]})", 1),
     ("jmespath('c', { 'a': 1, 'b': [{'i': 0}, {'i': 1}]})", None),
@@ -225,7 +434,12 @@ FUNCTION_TESTS = [
         "json({ 'a': 1, 'b': [{'i': 0}, {'i': 1}]})",
         '{\n  "a": 1,\n  "b": [\n    {\n      "i": 0\n    },\n    {\n      "i": 1\n    }\n  ]\n}',
     ),
-    ('json()', TypeError("f_json() missing 1 required positional argument: 'ob'",),),
+    (
+        'json()',
+        TypeError(
+            "f_json() missing 1 required positional argument: 'ob'",
+        ),
+    ),
     ("json('x')", '"x"'),
     (
         "json_dump({ 'a': 1, 'b': [{'i': 0}, {'i': 1}]})",
@@ -237,7 +451,9 @@ FUNCTION_TESTS = [
     ),
     (
         "json_load({ 'a': 1, 'b': [{'i': 0}, {'i': 1}]})",
-        TypeError("the JSON object must be str, bytes or bytearray, not 'dict'",),
+        TypeError(
+            "the JSON object must be str, bytes or bytearray, not 'dict'",
+        ),
     ),
     ('json_load("{ \'a\': 1, \'b\': [{\'i\': 0}, {\'i\': 1}]}")', JSONDecodeError),
     (
@@ -246,7 +462,12 @@ FUNCTION_TESTS = [
     ),
     ('json_load(\'{ "a": 1, "b": [{"i": 0}, {"i": 1}]}\')', {'a': 1, 'b': [{'i': 0}, {'i': 1}]}),
     ("keys({ 'a': 1, 'b': [{'i': 0}, {'i': 1}]})", ['a', 'b']),
-    ('lgamma(0)', ValueError('math domain error',),),
+    (
+        'lgamma(0)',
+        ValueError(
+            'math domain error',
+        ),
+    ),
     ('lgamma(1)', 0.0),
     ('lgamma(e)', 0.4494617418200675),
     (
@@ -295,7 +516,12 @@ FUNCTION_TESTS = [
     ('log10(100)', 2.0),
     ('log10(1000)', 3.0),
     ('log10(5)', 0.6989700043360189),
-    ("log10('x')", TypeError('must be real number, not literal',),),
+    (
+        "log10('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('log1p(10)', 2.3978952727983707),
     ('log2(16)', 4.0),
     ('log2(10)', 3.321928094887362),
@@ -303,26 +529,71 @@ FUNCTION_TESTS = [
     ("lstrip('foo')", 'foo'),
     ("lstrip('   foo')", 'foo'),
     ("lstrip('   foo   ')", 'foo   '),
-    ('namevallist()', TypeError("f_namevallist() missing 1 required positional argument: 'ob'",),),
-    ('namevallist(pi)', AttributeError("'float' object has no attribute 'items'",),),
+    (
+        'namevallist()',
+        TypeError(
+            "f_namevallist() missing 1 required positional argument: 'ob'",
+        ),
+    ),
+    (
+        'namevallist(pi)',
+        AttributeError(
+            "'float' object has no attribute 'items'",
+        ),
+    ),
     ("namevallist({'a': 1, 'b': 2})", [{'name': 'a', 'value': 1}, {'name': 'b', 'value': 2}]),
     ("ord('A')", 65),
-    ('ord()', TypeError("f_ord() missing 1 required positional argument: 'char'",),),
-    ("ord('')", TypeError('ord() expected a character, but string of length 0 found',),),
-    ("ord('AB')", TypeError('ord() expected a character, but string of length 2 found',),),
-    ('pow(0)', TypeError("missing a required argument: 'y'",),),
+    (
+        'ord()',
+        TypeError(
+            "f_ord() missing 1 required positional argument: 'char'",
+        ),
+    ),
+    (
+        "ord('')",
+        TypeError(
+            'ord() expected a character, but string of length 0 found',
+        ),
+    ),
+    (
+        "ord('AB')",
+        TypeError(
+            'ord() expected a character, but string of length 2 found',
+        ),
+    ),
+    (
+        'pow(0)',
+        TypeError(
+            "missing a required argument: 'y'",
+        ),
+    ),
     ('pow(0,1)', 0.0),
     ('radians(360)', 6.283185307179586),
     ('radians(180)', 3.141592653589793),
-    ("radians('x')", TypeError('must be real number, not literal',),),
+    (
+        "radians('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('range(0)', []),
-    ('range()', TypeError("f_range() missing 1 required positional argument: 'start_or_stop'",),),
+    (
+        'range()',
+        TypeError(
+            "f_range() missing 1 required positional argument: 'start_or_stop'",
+        ),
+    ),
     ('range(5)', [0, 1, 2, 3, 4]),
     ('range(5,1)', []),
     ('range(1, 5)', [1, 2, 3, 4]),
     ('range(5, 0, -1)', [5, 4, 3, 2, 1]),
     ("replace('foo', 'o', 'e')", 'fee'),
-    ("replace('foo')", TypeError("missing a required argument: 'source'",),),
+    (
+        "replace('foo')",
+        TypeError(
+            "missing a required argument: 'source'",
+        ),
+    ),
     ("replace(5, 'o', 'e')", '5'),
     ("rstrip('foo')", 'foo'),
     ("rstrip('   foo   ')", '   foo'),
@@ -332,23 +603,48 @@ FUNCTION_TESTS = [
     ('sin(pi)', 1.2246467991473532e-16),
     ('sinh(0)', 0.0),
     ('sinh(1)', 1.1752011936438014),
-    ("sinh('x')", TypeError('must be real number, not literal',),),
-    ('sinh(1,2)', TypeError('too many positional arguments',),),
+    (
+        "sinh('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
+    (
+        'sinh(1,2)',
+        TypeError(
+            'too many positional arguments',
+        ),
+    ),
     ('sort((1,2,3))', [1, 2, 3]),
     ('sort((3,2,1))', [1, 2, 3]),
     ("sort('abc')", ['abc']),
     ('sort(1,2,3)', [1, 2, 3]),
     ('sort(3,2,1)', [1, 2, 3]),
     ('sqrt(2)', 1.4142135623730951),
-    ("sqrt('')", TypeError('must be real number, not literal',),),
+    (
+        "sqrt('')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('str(pi)', '3.141592653589793'),
     ("strip('  foo    ')", 'foo'),
     ('tan(0)', 0.0),
     ('tan(1)', 1.557407724654902),
-    ("tan('x')", TypeError('must be real number, not literal',),),
+    (
+        "tan('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     ('tanh(0)', 0.0),
     ('tanh(1)', 0.7615941559557649),
-    ("tanh('x')", TypeError('must be real number, not literal',),),
+    (
+        "tanh('x')",
+        TypeError(
+            'must be real number, not literal',
+        ),
+    ),
     (
         "timedelta('July 4, 1776', 'July 4, 2020')",
         {
@@ -376,13 +672,33 @@ FUNCTION_TESTS = [
     ('trunc(1.1)', 1),
     ("upper('foo')", 'FOO'),
     ("values({'a': 1, 'b': 2})", [1, 2]),
-    ("values('a')", AttributeError("'literal' object has no attribute 'values'",),),
-    ('values(1)', AttributeError("'int' object has no attribute 'values'",),),
-    ('values([1])', AttributeError("'int' object has no attribute 'values'",),),
+    (
+        "values('a')",
+        AttributeError(
+            "'literal' object has no attribute 'values'",
+        ),
+    ),
+    (
+        'values(1)',
+        AttributeError(
+            "'int' object has no attribute 'values'",
+        ),
+    ),
+    (
+        'values([1])',
+        AttributeError(
+            "'int' object has no attribute 'values'",
+        ),
+    ),
     ('min(1,2,3)', 1),
     ('min(3,2,1)', 1),
     ('min([3,2,1])', 1),
-    ('min()3,2,1))', SyntaxError("Unexpected token Token(INT, '3') at line 1, column 6.",),),
+    (
+        'min()3,2,1))',
+        SyntaxError(
+            "Unexpected token Token(INT, '3') at line 1, column 6.",
+        ),
+    ),
     ('min((3,2,1))', 1),
     ("min('wxyza')", 'a'),
     ("max('wxyza')", 'z'),
@@ -392,14 +708,24 @@ FUNCTION_TESTS = [
     ("max({'a': 'foo', 'b': 'bla'})", 'b'),
     ("pad('foo', 7)", 'foo    '),
     ("pad('foo', 7, '*')", 'foo****'),
-    ("pad('foo', 7, '**')", ValueError('pad value must be string of length one',),),
+    (
+        "pad('foo', 7, '**')",
+        ValueError(
+            'pad value must be string of length one',
+        ),
+    ),
     ("pad('foofoofoo', 7)", 'foofoofoo'),
     ("pad('foofoof', 7)", 'foofoof'),
     ("pad('foofoo', 7)", 'foofoo '),
     ('pad([1,2,3], 7)', [1, 2, 3, None, None, None, None]),
     ('pad([1,2,3,4,5,6,7], 7)', [1, 2, 3, 4, 5, 6, 7]),
     ('pad([1,2,3,4,5,6,7,8], 7)', [1, 2, 3, 4, 5, 6, 7, 8]),
-    ("pad([1,2,3,4,5,6,7,8], 'a')", TypeError('length must be integer',),),
+    (
+        "pad([1,2,3,4,5,6,7,8], 'a')",
+        TypeError(
+            'length must be integer',
+        ),
+    ),
     ("research('\\d{4}-\\d{2}-\\d{2}', '2017-07-01T16:18:19')", '2017-07-01'),
     ("rematch('\\d{4}-\\d{2}-\\d{2}', '2017-07-01T16:18:19')", '2017-07-01'),
     ('pformat(1)', '1'),
@@ -451,7 +777,38 @@ FUNCTION_TESTS = [
     ("unnest((1,2,3,(4,5,6,(7,8,9),{'foo':'bla'})))", [1, 2, 3, 4, 5, 6, 7, 8, 9, {'foo': 'bla'}]),
     ("unnest('abcd')", 'abcd'),
     ('unnest(1)', 1),
-    ('unnest(1,2,3)', TypeError('f_unnest() takes 1 positional argument but 3 were given',)),
+    (
+        'unnest(1,2,3)',
+        TypeError(
+            'f_unnest() takes 1 positional argument but 3 were given',
+        ),
+    ),
+    ('twoscompliment(160)', 160),
+    ('twoscompliment(-160)', -4294967456),
+    ('twoscompliment(-160,64)', -18446744073709551776),
+    ('hex(-4294967456)', '-1000000a0'),
+    ('hex(-4294967456, False)', '1000000a0'),
+    ("int('100000a0', 16)", 268435616),
+    ("int('1000000a0', 16)", 4294967456),
+    ("int('-1000000a0', 16)", -4294967456),
+    ('bin(2)', '10'),
+    ('bin(3)', '11'),
+    ('bin(-3)', '-11'),
+    ('bin(5)', '101'),
+    ('bin(-5)', '-101'),
+    ("binary('foo')", b'foo'),
+    ("bytes('foo')", b'foo'),
+    ("str(bytes('foo'))", 'foo'),
+    ("conform([{'a': 1}, {'b': 2}])", [{'a': 1, 'b': None}, {'b': 2, 'a': None}]),
+    ("conform([{'a': 1}, {'b': 2}], missing_value='')", [{'a': 1, 'b': ''}, {'b': 2, 'a': ''}]),
+    ("prune(conform([{'a': 1}, {'b': 2}], missing_value=''))", [{'a': 1}, {'b': 2}]),
+    ('structure(12345)', 'int'),
+    ("structure('12345')", 'int'),
+    ("structure(datetime('now'))", 'iso8601'),
+    ("structure(md5('now'))", 'md5'),
+    ("structure(sha1('now'))", 'sha1'),
+    ("structure(sha256('now'))", 'sha256'),
+    ("update({'a': 1}, {'b': 2})", {'a': 1, 'b': 2}),
 ]
 
 

@@ -5,15 +5,15 @@
 import inspect
 
 
-class Validate(object):
+class Validate:
     """Validate base class for App output validation."""
 
-    def __init__(self, validator):
+    def __init__(self, validator: object):
         """Initialize class properties."""
         self.validator = validator
 
     @staticmethod
-    def validate_outputs(app_outputs, profile_outputs):
+    def validate_outputs(app_outputs: list, profile_outputs: dict) -> None:
         """Assert outputs match."""
         if not isinstance(app_outputs, list) or not isinstance(profile_outputs, dict):
             assertion_error = (
@@ -33,7 +33,7 @@ class Validate(object):
             )
             assert False, assertion_error
 
-    def validate(self, output_variables):
+    def validate(self, output_variables: dict) -> None:
         """Validate Redis output data."""
         if output_variables is None:
             return
@@ -50,7 +50,7 @@ class Validate(object):
             else:
                 self.dynamic_output_variable(k, dict(v))
 
-    def dynamic_output_variable(self, variable, data):
+    def dynamic_output_variable(self, variable: str, data: dict) -> None:
         """Assert for dynamic output variables."""
         expected_output = data.pop('expected_output')
         op = data.pop('op', '=')
@@ -59,7 +59,7 @@ class Validate(object):
         passed, assert_error = self.validator.redis.data(variable, expected_output, op, **data)
         assert passed, assert_error
 
-    def expression_action_string(self, variable, data):
+    def expression_action_string(self, variable: str, data: dict) -> None:
         """Assert for #App:9876:expression.action!String."""
         expected_output = data.pop('expected_output')
         op = data.pop('op', '=')
@@ -68,7 +68,16 @@ class Validate(object):
         passed, assert_error = self.validator.redis.data(variable, expected_output, op, **data)
         assert passed, assert_error
 
-    def expression_expression_string(self, variable, data):
+    def expression_errors_stringarray(self, variable: str, data: dict) -> None:
+        """Assert for #App:9876:expression.errors!StringArray."""
+        expected_output = data.pop('expected_output')
+        op = data.pop('op', '=')
+
+        # assert variable data
+        passed, assert_error = self.validator.redis.data(variable, expected_output, op, **data)
+        assert passed, assert_error
+
+    def expression_expression_string(self, variable: str, data: dict) -> None:
         """Assert for #App:9876:expression.expression!String."""
         expected_output = data.pop('expected_output')
         op = data.pop('op', '=')
@@ -77,7 +86,7 @@ class Validate(object):
         passed, assert_error = self.validator.redis.data(variable, expected_output, op, **data)
         assert passed, assert_error
 
-    def expression_result_0_string(self, variable, data):
+    def expression_result_0_string(self, variable: str, data: dict) -> None:
         """Assert for #App:9876:expression.result.0!String."""
         expected_output = data.pop('expected_output')
         op = data.pop('op', '=')
@@ -86,7 +95,7 @@ class Validate(object):
         passed, assert_error = self.validator.redis.data(variable, expected_output, op, **data)
         assert passed, assert_error
 
-    def expression_result_array_stringarray(self, variable, data):
+    def expression_result_array_stringarray(self, variable: str, data: dict) -> None:
         """Assert for #App:9876:expression.result.array!StringArray."""
         expected_output = data.pop('expected_output')
         op = data.pop('op', '=')
