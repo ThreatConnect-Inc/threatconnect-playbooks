@@ -169,8 +169,9 @@
   * `format(s, *args, **kwargs)`
 
     Format string S according to Python string formatting rules.  Compound
-    structure elements are access with bracket notation and without quotes
+    structure elements may be accessed with dot or bracket notation and without quotes
     around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
+    or `blob[0].events[0].source.device.ipAddress`
 
   * `fuzzydist(hash1, hash2)`
 
@@ -338,6 +339,13 @@
   * `research(pattern, string, flags='')`
 
     Regular expression search pattern to source
+
+  * `rexxparse(source, template, strip=False, convert=False, **kwargs)`
+
+    REXX parse of source using template.  If strip is True, values are stripped,
+    if convert is True, values are converted to float or int if possible.  Any other
+    keyword arguments are made available for indirect pattern substitution, in
+    addition to the standard variables.
 
   * `rstrip(s, chars=None)`
 

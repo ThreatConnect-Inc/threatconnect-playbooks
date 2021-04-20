@@ -46,6 +46,9 @@ from literal import literal
 from spamspy.spamsum import spamsum
 from spamspy.edit_dist import edit_dist
 
+from attrdict import AttrDict
+from rexxparse import RexxParser
+
 
 tzutil = DatetimeUtils()
 
@@ -165,10 +168,24 @@ class SmartDict:
         if value is __notfound__:
             raise KeyError(name)
 
-        return value
+        return self.encapsulate(value)
 
     get = __getitem__
     __getattr__ = __getitem__
+
+    def encapsulate(self, value):
+        """Encapsulate dicts into AttrDicts"""
+
+        if not isinstance(value, (list, tuple, dict)):
+            return value
+
+        if isinstance(value, (list, tuple)):
+            result = [self.encapsulate(x) for x in value]
+            if isinstance(value, tuple):
+                result = tuple(result)
+            return result
+
+        return AttrDict(value)
 
 
 class ExpressionMethods:
@@ -487,8 +504,9 @@ class ExpressionMethods:
 
     def f_format(self, s: str, *args, **kwargs):
         """Format string S according to Python string formatting rules.  Compound
-        structure elements are access with bracket notation and without quotes
-        around key names, e.g. `blob[0][events][0][source][device][ipAddress]`"""
+        structure elements may be accessed with dot or bracket notation and without quotes
+        around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
+        or `blob[0].events[0].source.device.ipAddress`"""
 
         kws = SmartDict(self, kwargs)
         fmt = Formatter()
@@ -899,6 +917,33 @@ class ExpressionMethods:
         if m:
             return m.group()
         return None
+
+    @coerce
+    def f_rexxparse(self, source: str, template: str, strip=False, convert=False, **kwargs):
+        """REXX parse of source using template.  If strip is True, values are stripped,
+        if convert is True, values are converted to float or int if possible.  Any other
+        keyword arguments are made available for indirect pattern substitution, in
+        addition to the standard variables."""
+
+        rp = RexxParser(template)
+
+        context = SmartDict(self, kwargs)
+        result = rp.parse(source, context=context)
+        if strip or convert:
+            for key, value in result.items():
+                if strip:
+                    value = value.strip()
+                if convert:
+                    try:
+                        ov = value
+                        value = float(value)
+                        if int(value) == value and '.' not in ov:
+                            value = int(value)
+                    except (TypeError, ValueError):
+                        pass
+
+                result[key] = value
+        return result
 
     @coerce
     @staticmethod

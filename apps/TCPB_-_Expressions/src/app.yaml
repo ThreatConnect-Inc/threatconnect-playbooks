@@ -97,6 +97,10 @@ app:
     - Add prune, structure, update, functions
     - Add _ + iter_outputs to be the prior iteration result
     - Allow tuple list outputs to nest
+    1.0.7 (2021-04-20):
+    - Fix list expressions with only one element to return list
+    - Add rexxparse function
+    - Fix format function to allow dot notation
   retry:
     allowed: false
     defaultDelayMinutes: 1
@@ -254,7 +258,7 @@ inputGroups:
       a
 
       single output only, with list outputs being converted to JSON strings.'
-    required: true
+    required: false
     type: KeyValueList
     playbookDataType:
     - String

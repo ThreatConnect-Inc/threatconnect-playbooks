@@ -809,6 +809,53 @@ FUNCTION_TESTS = [
     ("structure(sha1('now'))", 'sha1'),
     ("structure(sha256('now'))", 'sha256'),
     ("update({'a': 1}, {'b': 2})", {'a': 1, 'b': 2}),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'name . "had a" . thing\')',
+        {'name': 'Mary', 'thing': 'lamb'},
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'name . "had a " thing\')',
+        {'name': 'Mary', 'thing': 'little lamb'},
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'name . "had a " size thing\')',
+        {'name': 'Mary', 'size': 'little', 'thing': 'lamb'},
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'name . "had a " size thing 1 phrase\')',
+        {'name': 'Mary', 'size': 'little', 'thing': 'lamb', 'phrase': 'Mary had a little lamb'},
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'name . "had a " size thing 1 phrase 1 name +4\')',
+        {'name': 'Mary', 'size': 'little', 'thing': 'lamb', 'phrase': 'Mary had a little lamb'},
+    ),
+    (
+        (
+            'rexxparse(\'127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] '
+            '"GET /apache_pb.gif '
+            'HTTP/1.0" 200 2326\', "ip id user \' [\' date \'] \\"\'method url '
+            'protocol\'\\" \' status size")'
+        ),
+        {
+            'ip': '127.0.0.1',
+            'id': '-',
+            'user': 'frank',
+            'date': '10/Oct/2000:13:55:36 -0700',
+            'method': 'GET',
+            'url': '/apache_pb.gif',
+            'protocol': 'HTTP/1.0',
+            'status': '200',
+            'size': '2326',
+        },
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'"little " chop +2 -2 animal +3\')',
+        {'chop': 'la', 'animal': 'lam'},
+    ),
+    (
+        'rexxparse(\'Mary had a little lamb\', \'"little " chop +2 -2 animal +3 1 phrase\' )',
+        {'chop': 'la', 'animal': 'lam', 'phrase': 'Mary had a little lamb'},
+    ),
 ]
 
 

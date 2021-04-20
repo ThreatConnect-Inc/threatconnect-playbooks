@@ -2,6 +2,12 @@
 
 # Release Notes
 
+### 1.0.7 (2021-04-20)
+
+* Fix list expressions with only one element to return list
+* Add rexxparse function
+* Fix format function to allow dot notation
+
 ### 1.0.6 (2021-04-09)
 
 * Allow additional input types
@@ -117,7 +123,7 @@ Perform multiple evaluations, one set to define variables, another to define out
   not output.  Variables are evaluated in the order they are entered.
   > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
-  **Outputs** *(KeyValueList)*
+  _**Outputs**_ *(KeyValueList, Optional)*
   Outputs and output expressions for each output.  These may reference defined variables
   but may not refer to outputs not yet evaluated.  Outputs will be generated as a
   single output only, with list outputs being converted to JSON strings.
@@ -442,8 +448,9 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `format(s, *args, **kwargs)`
 
     Format string S according to Python string formatting rules.  Compound
-    structure elements are access with bracket notation and without quotes
+    structure elements may be accessed with dot or bracket notation and without quotes
     around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
+    or `blob[0].events[0].source.device.ipAddress`
 
   * `fuzzydist(hash1, hash2)`
 
@@ -612,6 +619,13 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Regular expression search pattern to source
 
+  * `rexxparse(source, template, strip=False, convert=False, **kwargs)`
+
+    REXX parse of source using template.  If strip is True, values are stripped,
+    if convert is True, values are converted to float or int if possible.  Any other
+    keyword arguments are made available for indirect pattern substitution, in
+    addition to the standard variables.
+
   * `rstrip(s, chars=None)`
 
     Strip chars from right of string
@@ -715,6 +729,7 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `values(ob)`
 
     Values of dictionary
+
 
 # EBNF-Syntax
 

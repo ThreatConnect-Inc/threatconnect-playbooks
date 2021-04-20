@@ -153,9 +153,11 @@ class Evaluate(Transformer):
 
     def list_freeze(self, a):
         """freeze a into a list"""
-        if not isinstance(a, open_list):
-            return a
         # print(f'>>> list_freeze {a!r}')
+        if not isinstance(a, open_list):
+            return [
+                a,
+            ]
         return list(a)
 
     def tuple_freeze(self, a):

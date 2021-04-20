@@ -73,6 +73,14 @@ ATOMIC_TESTS = [
     ('[]', exactly([])),
     ('()', exactly(())),
     ("(json_load('{\"foo\": [1,2,3]}')['foo'], 4)", ([1, 2, 3], 4)),
+    (
+        "[{'events': [{'source': {'device': {'ipAddress': '1.2.3.4'}}}]}]",
+        [{'events': [{'source': {'device': {'ipAddress': '1.2.3.4'}}}]}],
+    ),
+    (
+        "({'events': ({'source': {'device': {'ipAddress': '1.2.3.4'}}},)},)",
+        ({'events': ({'source': {'device': {'ipAddress': '1.2.3.4'}}},)},),
+    ),
 ]
 
 
