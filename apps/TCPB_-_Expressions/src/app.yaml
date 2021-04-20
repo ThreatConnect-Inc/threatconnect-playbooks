@@ -70,7 +70,7 @@ app:
   playbookType: Utility
   programLanguage: PYTHON
   programMain: run
-  programVersion: 1.0.6
+  programVersion: 1.0.7
   releaseNotes:
     1.0.0 (2020-06-15):
     - Initial Release
