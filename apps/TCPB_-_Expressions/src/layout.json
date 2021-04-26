@@ -1,0 +1,106 @@
+{
+  "inputs": [
+    {
+      "parameters": [
+        {
+          "name": "tc_action"
+        }
+      ],
+      "sequence": 1,
+      "title": "Action"
+    },
+    {
+      "parameters": [
+        {
+          "display": "tc_action in ('Evaluate')",
+          "name": "expression"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "variables"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many With Loop', 'Evaluate in Loop')",
+          "name": "loop_variables"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many With Loop')",
+          "name": "loop_expressions"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many With Loop')",
+          "name": "additional_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate in Loop')",
+          "name": "loop_expression"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many')",
+          "name": "outputs"
+        }
+      ],
+      "sequence": 2,
+      "title": "Configure"
+    },
+    {
+      "parameters": [
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "binary_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "binary_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "kv_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "kv_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tce_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tce_array_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "tcee_outputs"
+        },
+        {
+          "name": "return_none_on_failure"
+        }
+      ],
+      "sequence": 3,
+      "title": "Advanced"
+    }
+  ],
+  "outputs": [
+    {
+      "display": "tc_action in ('Evaluate', 'Evaluate in Loop')",
+      "name": "expression.expression"
+    },
+    {
+      "display": "tc_action in ('Evaluate', 'Evaluate in Loop')",
+      "name": "expression.result.0"
+    },
+    {
+      "display": "tc_action in ('Evaluate', 'Evaluate in Loop')",
+      "name": "expression.result.array"
+    },
+    {
+      "display": "tc_action not in ('')",
+      "name": "expression.action"
+    },
+    {
+      "display": "tc_action not in ('')",
+      "name": "expression.errors"
+    }
+  ]
+}

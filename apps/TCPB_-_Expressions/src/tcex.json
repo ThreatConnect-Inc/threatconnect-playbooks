@@ -1,0 +1,28 @@
+{
+  "lib_versions": [
+    {
+      "lib_dir": "lib_${env:PY36}",
+      "python_executable": "~/.pyenv/versions/${env:PY36}/bin/python"
+    },
+    {
+      "lib_dir": "lib_${env:PY39}",
+      "python_executable": "~/.pyenv/versions/${env:PY39}/bin/python"
+    }
+  ],
+  "package": {
+    "app_name": "TCPB_-_Expressions",
+    "excludes": [
+      "*.install.json",
+      ".gitignore",
+      ".pre-commit-config.yaml",
+      "local-*",
+      "pyproject.toml",
+      "setup.cfg",
+      "tcex.d",
+      "tcex.json",
+      "app.yaml"
+    ],
+    "outdir": "target"
+  },
+  "template": "playbook"
+}

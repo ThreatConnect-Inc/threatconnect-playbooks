@@ -1,0 +1,33 @@
+include:
+  - project: "tc-eng/integrations/docker/tci-ci-cd-templates"
+    ref: master
+    file: "build.yml"
+
+  - project: "tc-eng/integrations/docker/tci-ci-cd-templates"
+    ref: master
+    file: "deploy.yml"
+
+  - project: "tc-eng/integrations/docker/tci-ci-cd-templates"
+    ref: master
+    file: "pre-flight.yml"
+
+  - project: "tc-eng/integrations/docker/tci-ci-cd-templates"
+    ref: master
+    file: "prep.yml"
+
+  - project: "tc-eng/integrations/docker/tci-ci-cd-templates"
+    ref: master
+    file: "test.yml"
+
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+
+default:
+  image: $IMAGE
+
+stages:
+  - pre-flight
+  - prep
+  - test
+  - build
+  - deploy

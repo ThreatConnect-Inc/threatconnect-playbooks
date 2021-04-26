@@ -1,0 +1,53 @@
+{
+  "stage": {
+    "kvstore": {
+      "#App:1234:lit!String": "hoopy frood"
+    }
+  },
+  "inputs": {
+    "optional": {},
+    "required": {
+      "expression": "#App:1234:lit!String+' dude'",
+      "tc_action": "Evaluate"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:expression.expression!String": {
+      "expected_output": "hoopy frood+' dude'",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.0!String": {
+      "expected_output": "hoopy frood dude",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.array!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "hoopy frood dude"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}
