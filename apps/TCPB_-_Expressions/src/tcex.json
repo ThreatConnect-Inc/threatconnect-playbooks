@@ -15,12 +15,12 @@
       "*.install.json",
       ".gitignore",
       ".pre-commit-config.yaml",
+      "app.yaml",
       "local-*",
       "pyproject.toml",
       "setup.cfg",
       "tcex.d",
-      "tcex.json",
-      "app.yaml"
+      "tcex.json"
     ],
     "outdir": "target"
   },

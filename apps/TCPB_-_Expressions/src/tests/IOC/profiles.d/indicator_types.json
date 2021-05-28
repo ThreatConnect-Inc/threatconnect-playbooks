@@ -1,0 +1,72 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:expression!String": "indicator_types()"
+    }
+  },
+  "inputs": {
+    "optional": {
+      "return_none_on_failure": true
+    },
+    "required": {
+      "expression": "#App:1234:expression!String",
+      "tc_action": "Evaluate"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:expression.expression!String": {
+      "expected_output": "indicator_types()",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.0!String": {
+      "exclude_paths": [],
+      "expected_output": "{\"apiBranch\": \"addresses\", \"apiEntity\": \"address\", \"custom\": \"false\", \"keys\": {\"key1\": \"ip\"}, \"name\": \"Address\", \"parsable\": \"true\"}",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:expression.result.array!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "{\"apiBranch\": \"addresses\", \"apiEntity\": \"address\", \"custom\": \"false\", \"keys\": {\"key1\": \"ip\"}, \"name\": \"Address\", \"parsable\": \"true\"}",
+        "{\"apiBranch\": \"emailAddresses\", \"apiEntity\": \"emailAddress\", \"custom\": \"false\", \"keys\": {\"key1\": \"address\"}, \"name\": \"EmailAddress\", \"parsable\": \"true\"}",
+        "{\"apiBranch\": \"files\", \"apiEntity\": \"file\", \"custom\": \"false\", \"keys\": {\"key1\": \"md5\", \"key2\": \"sha1\", \"key3\": \"sha256\"}, \"name\": \"File\", \"parsable\": \"true\", \"value1Label\": \"MD5\", \"value1Type\": \"text\", \"value2Label\": \"SHA-1\", \"value2Type\": \"text\", \"value3Label\": \"SHA-256\", \"value3Type\": \"text\"}",
+        "{\"apiBranch\": \"hosts\", \"apiEntity\": \"host\", \"custom\": \"false\", \"keys\": {\"key1\": \"hostName\"}, \"name\": \"Host\", \"parsable\": \"true\"}",
+        "{\"apiBranch\": \"urls\", \"apiEntity\": \"url\", \"custom\": \"false\", \"keys\": {\"key1\": \"text\"}, \"name\": \"URL\", \"parsable\": \"true\"}",
+        "{\"apiBranch\": \"asns\", \"apiEntity\": \"asn\", \"casePreference\": \"upper\", \"custom\": \"true\", \"keys\": {\"key1\": \"AS Number\"}, \"name\": \"ASN\", \"parsable\": \"true\", \"value1Label\": \"AS Number\", \"value1Type\": \"text\"}",
+        "{\"apiBranch\": \"cidrBlocks\", \"apiEntity\": \"cidrBlock\", \"casePreference\": \"lower\", \"custom\": \"true\", \"keys\": {\"key1\": \"Block\"}, \"name\": \"CIDR\", \"parsable\": \"true\", \"value1Label\": \"Block\", \"value1Type\": \"text\"}",
+        "{\"apiBranch\": \"emailSubjects\", \"apiEntity\": \"emailSubject\", \"casePreference\": \"sensitive\", \"custom\": \"true\", \"keys\": {\"key1\": \"Subject\"}, \"name\": \"Email Subject\", \"parsable\": \"false\", \"value1Label\": \"Subject\", \"value1Type\": \"text\"}",
+        "{\"apiBranch\": \"hashtags\", \"apiEntity\": \"hashtag\", \"casePreference\": \"lower\", \"custom\": \"true\", \"keys\": {\"key1\": \"Hashtag\"}, \"name\": \"Hashtag\", \"parsable\": \"false\", \"value1Label\": \"Hashtag\", \"value1Type\": \"text\"}",
+        "{\"apiBranch\": \"mutexes\", \"apiEntity\": \"mutex\", \"casePreference\": \"sensitive\", \"custom\": \"true\", \"keys\": {\"key1\": \"Mutex\"}, \"name\": \"Mutex\", \"parsable\": \"false\", \"value1Label\": \"Mutex\", \"value1Type\": \"text\"}",
+        "{\"apiBranch\": \"registryKeys\", \"apiEntity\": \"registryKey\", \"casePreference\": \"sensitive\", \"custom\": \"true\", \"keys\": {\"key1\": \"Key Name\", \"key2\": \"Value Name\", \"key3\": \"Value Type\"}, \"name\": \"Registry Key\", \"parsable\": \"false\", \"value1Label\": \"Key Name\", \"value1Type\": \"text\", \"value2Label\": \"Value Name\", \"value2Type\": \"text\", \"value3Label\": \"Value Type\", \"value3Option\": \"REG_NONE;REG_BINARY;REG_DWORD;REG_DWORD_LITTLE_ENDIAN;REG_DWORD_BIG_ENDIAN;REG_EXPAND_SZ;REG_LINK;REG_MULTI_SZ;REG_QWORD;REG_QWORD_LITTLE_ENDIAN;REG_SZ\", \"value3Type\": \"selectone\"}",
+        "{\"apiBranch\": \"userAgents\", \"apiEntity\": \"userAgent\", \"casePreference\": \"sensitive\", \"custom\": \"true\", \"keys\": {\"key1\": \"User Agent String\"}, \"name\": \"User Agent\", \"parsable\": \"false\", \"value1Label\": \"User Agent String\", \"value1Type\": \"text\"}"
+      ],
+      "ignore_order": false,
+      "op": "jeq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}

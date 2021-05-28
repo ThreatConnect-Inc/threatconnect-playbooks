@@ -66,6 +66,28 @@ class nearly(object):
         return str(self.value)
 
 
+class sametype(object):
+    """Match any value of same type"""
+
+    def __init__(self, value):
+        """init"""
+        self.value = value
+
+    def __eq__(self, other):
+        """exact comparision"""
+        if type(other) == type(self.value):  # pylint: disable=C0123
+            return True
+        return False
+
+    def __repr__(self):
+        """repr"""
+        return repr(self.value)
+
+    def __str__(self):
+        """str"""
+        return str(self.value)
+
+
 class SkipIf(object):
     """Skip test if subexpression fails"""
 
@@ -850,12 +872,139 @@ FUNCTION_TESTS = [
     ),
     (
         'rexxparse(\'Mary had a little lamb\', \'"little " chop +2 -2 animal +3\')',
-        {'chop': 'la', 'animal': 'lam'},
+        {'chop': 'li', 'animal': 'lit'},
     ),
     (
         'rexxparse(\'Mary had a little lamb\', \'"little " chop +2 -2 animal +3 1 phrase\' )',
-        {'chop': 'la', 'animal': 'lam', 'phrase': 'Mary had a little lamb'},
+        {'chop': 'li', 'animal': 'lit', 'phrase': 'Mary had a little lamb'},
     ),
+    ("uuid3('dns', 'mtu.edu')", '93ea5ad7-ae2d-3509-bbbc-958b90bfe336'),
+    ("uuid5('dns', 'mtu.edu')", 'b796a2f3-fcde-53a1-9123-e11e6c8f3216'),
+    ('uuid4()', sametype('b796a2f3-fcde-53a1-9123-e11e6c8f3216')),
+    ("structure(uuid4()) == 'guid'", True),
+    (
+        "xmlread('<people><person><name>Matt</name><job>Developer</job></person></people>',"
+        'compact=True)',
+        {'people': {'person': {'Matt': 'Developer'}}},
+    ),
+    (
+        "xmlwrite({'people': {'person': {'Matt': 'Developer'}}})",
+        '<people><person><Matt>Developer</Matt></person></people>',
+    ),
+    (
+        "xmlread('<people><person><name>Matt</name><job>Developer</job></person></people>', "
+        'compact=False)',
+        {'people': [{'person': [{'name': 'Matt'}, {'job': 'Developer'}]}]},
+    ),
+    (
+        "xmlwrite({'people': [{'person': [{'name': 'Matt'}, {'job': 'Developer'}]}]})",
+        '<people><person><name>Matt</name><job>Developer</job></person></people>',
+    ),
+    ('chardet(kosme).encoding', 'utf-8'),
+    (
+        'indicator_patterns()',
+        RuntimeError(
+            'TCEX not initialized, cannot retrieve patterns',
+        ),
+    ),
+    ("fang('user@threatconnect.com')", 'user@threatconnect.com'),
+    ("defang('user@threatconnect.com')", 'user(at)threatconnect[.]com'),
+    ("fang('user(at)threatconnect[.]com')", 'user@threatconnect.com'),
+    (
+        "extract_indicators('ASN1721 is whack but ASN1271 is not')",
+        RuntimeError(
+            'TCEX not initialized, cannot retrieve patterns',
+        ),
+    ),
+    (
+        "fetch_indicators('ASN1271', default_type='ASN')",
+        RuntimeError(
+            'TCEX not initialized, cannot retrieve indicators',
+        ),
+    ),
+    (
+        'indicator_types()',
+        RuntimeError(
+            'TCEX not initialized, cannot retrieve types',
+        ),
+    ),
+    (
+        "pivot(('a', 'b', 'c'), (1,2,3), (1.0, 2.0, 3.0))",
+        TypeError(
+            'f_pivot() takes from 1 to 2 positional arguments but 3 were given',
+        ),
+    ),
+    (
+        "pivot((('a', 'b', 'c'), (1,2,3), (1.0, 2.0, 3.0)))",
+        [['a', 1, 1.0], ['b', 2, 2.0], ['c', 3, 3.0]],
+    ),
+    (
+        "pivot((('a', 'b', 'c'), (1,2,3), (1.0, 2.0)))",
+        [['a', 1, 1.0], ['b', 2, 2.0], ['c', 3, None]],
+    ),
+    (
+        "pivot((('a', 'b', 'c'), (1,), (1.0, 2.0)))",
+        [['a', 1, 1.0], ['b', None, 2.0], ['c', None, None]],
+    ),
+    (
+        "pivot((('a', 'b', 'c'), [], (1.0, 2.0)))",
+        [['a', None, 1.0], ['b', None, 2.0], ['c', None, None]],
+    ),
+    (
+        "pivot((('a', 'b', 'c'), [], (1.0, 2.0)), pad='')",
+        [['a', '', 1.0], ['b', '', 2.0], ['c', '', '']],
+    ),
+    (
+        "build((1,2,3), ('a', 'b', 'c'), keys=('number', 'letter'))",
+        [{'number': 1, 'letter': 'a'}, {'number': 2, 'letter': 'b'}, {'number': 3, 'letter': 'c'}],
+    ),
+    (
+        "build((1,2,3), ('a', 'b', 'c'), keys=('number', 'letter', 'extra'))",
+        [{'number': 1, 'letter': 'a'}, {'number': 2, 'letter': 'b'}, {'number': 3, 'letter': 'c'}],
+    ),
+    (
+        "build((1,2,3), ('a', 'b'), keys=('number', 'letter', 'extra'))",
+        [{'number': 1, 'letter': 'a'}, {'number': 2, 'letter': 'b'}],
+    ),
+    (
+        "build((1,2,3), ('a', 'b', 'c'), keys=('number',))",
+        [{'number': 1}, {'number': 2}, {'number': 3}],
+    ),
+    (
+        "update([{'number': 1}, {'number': 2}, {'number': 3}], {'foo': 'bla'})",
+        [{'number': 1, 'foo': 'bla'}, {'number': 2, 'foo': 'bla'}, {'number': 3, 'foo': 'bla'}],
+    ),
+    (
+        "update([{'number': 1}, {'number': 2}, {'number': 3}], {'foo': 'bla', 'number': 0})",
+        [{'number': 0, 'foo': 'bla'}, {'number': 0, 'foo': 'bla'}, {'number': 0, 'foo': 'bla'}],
+    ),
+    (
+        "update([{'number': 1}, {'number': 2}, {'number': 3}], {'foo': 'bla', 'number': 0}, "
+        'replace=False)',
+        [{'number': 1, 'foo': 'bla'}, {'number': 2, 'foo': 'bla'}, {'number': 3, 'foo': 'bla'}],
+    ),
+    (
+        "update([{'number': 1}, {'number': 2}, {'number': 3}, 'foo'], {'foo': 'bla'})",
+        TypeError(
+            'update must work on dictionaries or lists of dictionaries',
+        ),
+    ),
+    ("merge((1,2,3), ('a','b','c'))", [[1, 'a'], [2, 'b'], [3, 'c']]),
+    ("merge((1,2,3), ('a','b','c', 'd'))", [[1, 'a'], [2, 'b'], [3, 'c']]),
+    (
+        "merge(({'a': 1}, {'a': 2}, {'a': 3}), ({'b': 1}, {'b': 2}, {'b': 3}))",
+        [{'a': 1, 'b': 1}, {'a': 2, 'b': 2}, {'a': 3, 'b': 3}],
+    ),
+    (
+        "merge(({'a': 1}, {'a': 2}, {'a': 3}), ({'b': 1}, {'b': 2}, {'b': 3, 'a': 0}))",
+        [{'a': 1, 'b': 1}, {'a': 2, 'b': 2}, {'a': 3, 'b': 3}],
+    ),
+    (
+        "merge(({'a': 1}, {'a': 2}, {'a': 3}), ({'b': 1}, {'b': 2}, {'b': 3, 'a': 0}), "
+        'replace=True)',
+        [{'a': 1, 'b': 1}, {'a': 2, 'b': 2}, {'a': 0, 'b': 3}],
+    ),
+    ("alter({}, 'a', 1)", 1),
 ]
 
 
@@ -870,6 +1019,7 @@ class TestFunctions(object):
         self.expr.set('one', 1)
         self.expr.set('two', 2.0)
         self.expr.set('self', self)
+        self.expr.set('kosme', bytes('κόσμε', 'utf-8'))
 
     true = True
 

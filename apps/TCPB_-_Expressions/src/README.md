@@ -2,6 +2,21 @@
 
 # Release Notes
 
+### 1.0.8 (2021-05-24)
+
+* Add uuid3, uuid4, uuid5, xmlread, xmlwrite
+* add keys argument to prune
+* important rexxparse fix for patterns looking for "."
+* add xmlread and xmlwrite functions
+* add chardet, fang, defang, extract_indicators, indicator_patterns
+* add pivot to pivot a list of lists
+* add build to create lists of dictionaries
+* update function now allows lists of dictionaries, adds replace parameter
+* add merge function
+* add fetch_indicators, indicator_types
+* add default value to format in case of missing values
+* add set to write into a dictionary
+
 ### 1.0.7 (2021-04-20)
 
 * Fix list expressions with only one element to return list
@@ -48,6 +63,10 @@
 * Initial Release
 
 
+# Category
+
+- Utility
+
 # Description
 
 This application parses expressions and returns expression results.  The expression
@@ -65,6 +84,7 @@ on demand by most functions that expect float or integer arguments.  Note that J
 data is expression grammar compatible, so an expression like
 `#App:1234:json_object!String.field` is valid so long as `json_object` is a JSON
 dictionary.
+
 
 
 The following actions are included:
@@ -355,6 +375,14 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Convert object to binary string (bytes)
 
+  * `build(*lists, keys=())`
+
+    Constructs a sequence of dictionaries based on the lists, such
+    that each dictionary contains the corresponding key for each list
+    from the keys value, and value from each list, respectively.
+    Columns without a key are ignored.  Columns that are longer than
+    the shortest column are truncated.
+
   * `bytes(s, encoding='utf-8', errors=None)`
 
     Convert object to binary string (bytes)
@@ -366,6 +394,12 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `center(s, width, fillchar=' ')`
 
     Center string in width columns
+
+  * `chardet(byteseq)`
+
+    Return a dictionary with the guessed character encoding
+    of byteseq, the confidence of the encoding, and the estimated
+    language.
 
   * `choice(condition, true_result=None, false_result=None)`
 
@@ -409,6 +443,11 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Format a datetime object according to a format string
 
+  * `defang(s)`
+
+    Return a defanged representation of string, ie, one with
+    textual indicators of compromise converted to the defanged state
+
   * `degrees(x)`
 
     Convert X to degrees
@@ -429,9 +468,37 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Math Expm1 of X
 
+  * `extract_indicators(data, ignore=None, dedup=True, fang=False, convert=True)`
+
+    Extract IOCs from data, which may be bytes or string.
+    If fang is true, data is re-fanged before processing. This option is
+    ignored if the input is binary.
+    Any entity match on the ignore list will be ignored.
+    If convert is true, bytesmode matches will be converted to utf-8, or
+    the specified conversion e.g. convert='latin-1'.
+    Returns a list of (indicator, value) tuples.  If dedup is True,
+    duplicate results are not returned.
+
   * `factorial(x)`
 
     Factorial of X
+
+  * `fang(s)`
+
+    Return a fanged representation of string, ie, one with
+    textual indicators of compromise reverted from the defanged state
+
+  * `fetch_indicators(*search_values, default_type=None)`
+
+    Fetches available indicators from ThreatConnect based on
+    search_values.  A search value is either an indicator value (which uses
+    the default_type as the indicator type) or a (type, value) pair.  If
+    only one search_value is passed in, it may be a list of search_values.
+
+    Returns a list of [(indicator_type, indicator_value, api_entity, indicator), ...],
+    but the api_entity, result, and owners will be None if that
+    indicator was not found.
+
 
   * `find(ob, value, start=None, stop=None)`
 
@@ -445,12 +512,13 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Return floating point value of object
 
-  * `format(s, *args, **kwargs)`
+  * `format(s, *args, default=<object object at 0x10edaf7a0>, **kwargs)`
 
     Format string S according to Python string formatting rules.  Compound
     structure elements may be accessed with dot or bracket notation and without quotes
     around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
-    or `blob[0].events[0].source.device.ipAddress`
+    or `blob[0].events[0].source.device.ipAddress`.  If default is set,
+    that value will be used for any missing value.
 
   * `fuzzydist(hash1, hash2)`
 
@@ -484,6 +552,15 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `index(ob, value, start=None, stop=None)`
 
     Index of value in ob
+
+  * `indicator_patterns()`
+
+    Returns a dictionary of regular expression patterns for indicators
+    of compromise, based on ThreatConnect Data.
+
+  * `indicator_types()`
+
+    Return the ThreatConnect Indicator Types
 
   * `int(s, radix=None)`
 
@@ -527,7 +604,7 @@ nested outputs.  Tuple outputs will create nested outputs.
 
   * `locale_format(fmt, val, grouping=False, monetary=False, locale='EN_us')`
 
-    Format a nubmer according to locale settings
+    Format a number according to locale settings
 
   * `log(x, base=None)`
 
@@ -561,6 +638,14 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Return MD5 hash of data
 
+  * `merge(*iterables, replace=False)`
+
+    Merges a list of iterables into a single list.
+    If the iterables are dictionaries, they are updated into a
+    single dictionary per row.  If replace is true, subsequent
+    columns overwrite the original values.  The result length
+    is constrained to the shortest column.
+
   * `min(*items)`
 
     Return the least value of the list
@@ -581,6 +666,12 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Pretty formatter for displaying hierarchial data
 
+  * `pivot(list_of_lists, pad=None)`
+
+    Pivots a list of lists, such that item[x][y] becomes item[y][x].
+    If the inner lists are not of even length, they will be padded with
+    the pad value.
+
   * `pow(x, y)`
 
     Math X ** Y
@@ -589,10 +680,12 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Format arguments according to format
 
-  * `prune(ob, depth=None, prune=(None, '', [], {}))`
+  * `prune(ob, depth=None, prune=(None, '', [], {}), keys=())`
 
     Recursively Prunes entries from the object,
-    with an optional depth limit
+    with an optional depth limit.  The pruned values, and
+    optionally prune keys may be specified.  If any dictionary
+    has a key in keys, that dictionary element will be removed.
 
 
   * `radians(x)`
@@ -629,6 +722,10 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `rstrip(s, chars=None)`
 
     Strip chars from right of string
+
+  * `set(dictionary, key, value)`
+
+    Set a specfic key in the dictionary.  Returns the value
 
   * `sha1(data)`
 
@@ -710,9 +807,11 @@ nested outputs.  Tuple outputs will create nested outputs.
     Reduces nested list to a single flattened list.  [A, B, [C, D, [E, F]]
     turns into [A, B, C, D, E, F].
 
-  * `update(target, source)`
+  * `update(target, source, replace=True)`
 
-    Updates one dictionary with keys from the other
+    Updates one dictionary with keys from the other. If the target is
+    a list of dictionaries, each dictionary will be updated.  If replace
+    is false, existing values will not be replaced.
 
   * `upper(s)`
 
@@ -726,9 +825,49 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Parse a URL query string into a dictionary.  Each value is a list.
 
+  * `uuid3(namespace, name)`
+
+    Generate a UUID based on the MD5 hash of a namespace and a name.
+    The namespace may be a UUID or one of 'dns', 'url', 'oid', or 'x500'.
+
+
+  * `uuid4()`
+
+    Generate a random UUID
+
+  * `uuid5(namespace, name)`
+
+    Generate a UUID based on the SHA-1 hash of a namespace and a name.
+    The namespace may be a UUID or one of 'dns', 'url', 'oid', or 'x500'.
+
+
   * `values(ob)`
 
     Values of dictionary
+
+  * `xmlread(xmldata, namespace=False, strip=True, convert=True, compact=False)`
+
+    Constructs an object from XML data.  The XML data should have
+    a single root node.  If namespace is True, the resolved namespace will
+    be prefixed to tag names in braces, i.e. {namespace}tag.  If strip
+    is True, values will be stripped of leading and trailing whitespace.
+    If convert is True, numeric values will be converted to their numeric
+    equivalents.  If compact is true, the object will be compacted to
+    a more condensed form if possible.  Attribute names will be prefixed
+    with @ in the corresponding output.
+
+
+  * `xmlwrite(obj, namespace=False, indent=0)`
+
+    Converts an object to XML.  If namespace is True or a dictionary,
+    namespace prefixed values will be converted to a derived or specified
+    namespace value.  The namespace dictionary should be in the form
+    {key: namespace} and will be used to turn the namespace back into the
+    key. If indent is nonzero, an indented XML tree with newlines will
+    be generated.  If namespaces are used, the caller must add the
+    `xmlns` attributes to an enclosing scope.
+
+
 
 # EBNF-Syntax
 
