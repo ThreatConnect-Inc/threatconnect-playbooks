@@ -1,0 +1,61 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:expression!String": "indicator_patterns()"
+    }
+  },
+  "inputs": {
+    "optional": {
+      "return_none_on_failure": true
+    },
+    "required": {
+      "expression": "#App:1234:expression!String",
+      "tc_action": "Evaluate"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:expression.expression!String": {
+      "expected_output": "indicator_patterns()",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.0!String": {
+      "exclude_paths": [],
+      "expected_output": "{\"ASN\": \"[Aa][Ss][Nn][1-4]?\\\\d{1,8}\", \"Address\": \"\\\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\b\", \"EmailAddress\": \"(?i)[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])\", \"File.md5\": \"\\\\b([a-fA-F\\\\d]{32})\\\\b\", \"File.sha1\": \"\\\\b([a-fA-F\\\\d]{40})\\\\b\", \"File.sha256\": \"\\\\b([a-fA-F\\\\d]{64})\\\\b\", \"Host\": \"\\\\b((?:(?!-)[a-zA-Z0-9-]{1,63}(?<!-)\\\\.)+(?i)(?!apk|apt|arpa|asp|bat|bdoda|bin|bsspx|cer|cfg|cgi|class|close|cpl|cpp|crl|css|dll|doc|docx|dyn|exe|fl|gz|hlp|htm|html|ico|ini|ioc|jar|jpg|js|jxr|lco|lnk|loader|log|lxdns|mdb|mp4|odt|pcap|pdb|pdf|php|plg|plist|png|ppt|pptx|quit|rar|rtf|scr|sleep|ssl|torproject|tmp|txt|vbp|vbs|w32|wav|xls|xlsx|xml|xpi|dat($|\\\\r\\\\n)|gif($|\\\\r\\\\n)|xn$)(?:xn--[a-zA-Z0-9]{2,22}|[a-zA-Z]{2,13}))(?!.*@)\", \"URL\": \"\\\\b(?:(?:https?|s?ftp)://)(?:(?:\\\\b(?=.{4,253})(?:(?:[a-z0-9_-]{1,63}\\\\.){0,124}(?:(?!-)[-a-z0-9]{1,63}(?<!-)\\\\.){0,125}(?![-0-9])[-a-z0-9]{2,24}(?<![-0-9]))\\\\b|\\\\b(?:(?:(?:[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}(?:[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\\\\b)(?::(?:[1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?\\\\b)(?:/[-a-zA-Z0-9_.~%!$&'()*+,;=:@]*)*(?:\\\\?[-a-zA-Z0-9_.~%!$&'()*+,;=:@/?]*#?)?(?:\\\\#[-a-zA-Z0-9_.~%!$&'()*+,;=:@/?]+)?\"}",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:expression.result.array!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "{\"ASN\": \"[Aa][Ss][Nn][1-4]?\\\\d{1,8}\", \"Address\": \"\\\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\b\", \"EmailAddress\": \"(?i)[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])\", \"File.md5\": \"\\\\b([a-fA-F\\\\d]{32})\\\\b\", \"File.sha1\": \"\\\\b([a-fA-F\\\\d]{40})\\\\b\", \"File.sha256\": \"\\\\b([a-fA-F\\\\d]{64})\\\\b\", \"Host\": \"\\\\b((?:(?!-)[a-zA-Z0-9-]{1,63}(?<!-)\\\\.)+(?i)(?!apk|apt|arpa|asp|bat|bdoda|bin|bsspx|cer|cfg|cgi|class|close|cpl|cpp|crl|css|dll|doc|docx|dyn|exe|fl|gz|hlp|htm|html|ico|ini|ioc|jar|jpg|js|jxr|lco|lnk|loader|log|lxdns|mdb|mp4|odt|pcap|pdb|pdf|php|plg|plist|png|ppt|pptx|quit|rar|rtf|scr|sleep|ssl|torproject|tmp|txt|vbp|vbs|w32|wav|xls|xlsx|xml|xpi|dat($|\\\\r\\\\n)|gif($|\\\\r\\\\n)|xn$)(?:xn--[a-zA-Z0-9]{2,22}|[a-zA-Z]{2,13}))(?!.*@)\", \"URL\": \"\\\\b(?:(?:https?|s?ftp)://)(?:(?:\\\\b(?=.{4,253})(?:(?:[a-z0-9_-]{1,63}\\\\.){0,124}(?:(?!-)[-a-z0-9]{1,63}(?<!-)\\\\.){0,125}(?![-0-9])[-a-z0-9]{2,24}(?<![-0-9]))\\\\b|\\\\b(?:(?:(?:[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}(?:[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\\\\b)(?::(?:[1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?\\\\b)(?:/[-a-zA-Z0-9_.~%!$&'()*+,;=:@]*)*(?:\\\\?[-a-zA-Z0-9_.~%!$&'()*+,;=:@/?]*#?)?(?:\\\\#[-a-zA-Z0-9_.~%!$&'()*+,;=:@/?]+)?\"}"
+      ],
+      "ignore_order": false,
+      "op": "jeq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}

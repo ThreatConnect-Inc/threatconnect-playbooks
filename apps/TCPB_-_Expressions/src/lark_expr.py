@@ -14,6 +14,7 @@ import json
 import traceback
 import sys
 import operator
+from typing import Union
 
 from lark import Lark, Transformer, v_args
 import lark.exceptions
@@ -64,56 +65,56 @@ class Evaluate(Transformer):
 
     @coerce
     @staticmethod
-    def mul(a: (int, float, literal), b: (int, float, literal)):
+    def mul(a: Union[int, float, literal], b: Union[int, float, literal]):
         """mul"""
 
         return a * b
 
     @coerce
     @staticmethod
-    def div(a: (int, float, literal), b: (int, float, literal)):
+    def div(a: Union[int, float, literal], b: Union[int, float, literal]):
         """div"""
 
         return a / b
 
     @coerce
     @staticmethod
-    def int_div(a: (int, float, literal), b: (int, float, literal)):
+    def int_div(a: Union[int, float, literal], b: Union[int, float, literal]):
         """int_div"""
 
         return a // b
 
     @coerce
     @staticmethod
-    def add(a: (int, float, literal), b: (int, float, literal)):
+    def add(a: Union[int, float, literal], b: Union[int, float, literal]):
         """add"""
 
         return a + b
 
     @coerce
     @staticmethod
-    def sub(a: (int, float, literal), b: (int, float, literal)):
+    def sub(a: Union[int, float, literal], b: Union[int, float, literal]):
         """sub"""
 
         return a - b
 
     @coerce
     @staticmethod
-    def pow(a: (int, float, literal), b: (int, float, literal)):
+    def pow(a: Union[int, float, literal], b: Union[int, float, literal]):
         """pow"""
 
         return a ** b
 
     @coerce
     @staticmethod
-    def neg(a: (int, float, literal)):
+    def neg(a: Union[int, float, literal]):
         """neg"""
 
         return -a
 
     @coerce
     @staticmethod
-    def mod(a: (int, float, literal), b: (int, float, literal)):
+    def mod(a: Union[int, float, literal], b: Union[int, float, literal]):
         """mod"""
 
         return a % b
@@ -320,7 +321,7 @@ class Expression(ExpressionMethods):
     none = None
 
     def encapsulate(self, ob):
-        """ Enapsulate strings in object as tcvar """
+        """Encapsulate strings in object as tcvar"""
 
         if ob is None:
             return ob

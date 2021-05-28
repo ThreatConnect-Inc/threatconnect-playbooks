@@ -70,7 +70,7 @@ app:
   playbookType: Utility
   programLanguage: PYTHON
   programMain: run
-  programVersion: 1.0.7
+  programVersion: 1.0.8
   releaseNotes:
     1.0.0 (2020-06-15):
     - Initial Release
@@ -101,6 +101,19 @@ app:
     - Fix list expressions with only one element to return list
     - Add rexxparse function
     - Fix format function to allow dot notation
+    1.0.8 (2021-05-24):
+    - Add uuid3, uuid4, uuid5, xmlread, xmlwrite
+    - add keys argument to prune
+    - important rexxparse fix for patterns looking for "."
+    - add xmlread and xmlwrite functions
+    - add chardet, fang, defang, extract_indicators, indicator_patterns
+    - add pivot to pivot a list of lists
+    - add build to create lists of dictionaries
+    - update function now allows lists of dictionaries, adds replace parameter
+    - add merge function
+    - add fetch_indicators, indicator_types
+    - add default value to format in case of missing values
+    - add set to write into a dictionary
   retry:
     allowed: false
     defaultDelayMinutes: 1

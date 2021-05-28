@@ -1,0 +1,62 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:expression!String": "extract_indicators('ASN1721 is whack but asn1271 is not')"
+    }
+  },
+  "inputs": {
+    "optional": {
+      "return_none_on_failure": true
+    },
+    "required": {
+      "expression": "#App:1234:expression!String",
+      "tc_action": "Evaluate"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:expression.expression!String": {
+      "expected_output": "extract_indicators('ASN1721 is whack but asn1271 is not')",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.0!String": {
+      "exclude_paths": [],
+      "expected_output": "[\"ASN\", \"ASN1721\"]",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:expression.result.array!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "[\"ASN\", \"ASN1721\"]",
+        "[\"ASN\", \"asn1271\"]"
+      ],
+      "ignore_order": false,
+      "op": "jeq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}

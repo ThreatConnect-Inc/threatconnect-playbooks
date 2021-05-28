@@ -35,6 +35,12 @@ from pprint import pformat
 import re
 from string import Formatter
 import urllib.parse
+import uuid
+import typing
+from typing import Union, List
+
+import chardet
+import ioc_fanger
 import jmespath
 
 from tcex.utils.date_utils import DatetimeUtils
@@ -48,13 +54,28 @@ from spamspy.edit_dist import edit_dist
 
 from attrdict import AttrDict
 from rexxparse import RexxParser
-
+from xml_util import xml_to_dict, dict_to_xml
 
 tzutil = DatetimeUtils()
 
 NoneType = type(None)
 
 aliases = ('spammatch', 'spamsum', 'spamdist', 'json')
+
+
+def strbytes(value, annotation):
+    """Convert value between str and bytes depending on annotation"""
+
+    if not isinstance(value, (bytes, str)):
+        return value
+
+    if isinstance(value, str) and bytes in annotation and str not in annotation:
+        return bytes(str(value), 'utf-8')
+
+    if isinstance(value, bytes) and str in annotation and bytes not in annotation:
+        return value.decode('utf-8')
+
+    return value
 
 
 def coerce(f):
@@ -84,8 +105,17 @@ def coerce(f):
             if not annotation:
                 continue
 
+            if hasattr(annotation, '_subs_tree'):
+                annotation = annotation._subs_tree()[1:]  # this is a Union
+            elif hasattr(typing, 'get_args'):
+                union_args = typing.get_args(annotation)  # pylint: disable=E1101
+                if union_args:
+                    annotation = union_args
+
             if not isinstance(annotation, tuple):
                 annotation = (annotation,)
+
+            # print(f'Annotation is {annotation!r}')
 
             if kind is inspect.Parameter.VAR_POSITIONAL:
                 # *args
@@ -93,8 +123,7 @@ def coerce(f):
                 for v in value:
                     # print(f'>?>{v} -> {annotation}')
                     # special case to deal with bytes inputs with no bytes but str in annotations
-                    if isinstance(v, bytes) and bytes not in annotation and str in annotation:
-                        v = v.decode('utf-8')
+                    v = strbytes(v, annotation)
                     if not isinstance(v, annotation):
                         for constructor in annotation:
                             try:
@@ -109,8 +138,7 @@ def coerce(f):
                 # **kwargs
                 for k, v in value.items():
                     # special case to deal with bytes inputs with no bytes but str in annotations
-                    if isinstance(v, bytes) and bytes not in annotation and str in annotation:
-                        v = v.decode('utf-8')
+                    v = strbytes(v, annotation)
                     if not isinstance(v, annotation):
                         for constructor in annotation:
                             try:
@@ -121,8 +149,7 @@ def coerce(f):
                         value[k] = v
             else:
                 # special case to deal with bytes inputs with no bytes but str in annotations
-                if isinstance(value, bytes) and bytes not in annotation and str in annotation:
-                    value = value.decode('utf-8')
+                value = strbytes(value, annotation)
                 if not isinstance(value, annotation):
                     for constructor in annotation:
                         try:
@@ -131,7 +158,7 @@ def coerce(f):
                         except Exception:
                             pass
 
-                    bindings.arguments[param] = value
+                bindings.arguments[param] = value
 
         return func(*bindings.args, **bindings.kwargs)
 
@@ -144,15 +171,19 @@ __notfound__ = object()
 class SmartDict:
     """Smart dictionary object"""
 
-    def __init__(self, namespace, d=None):
+    def __init__(self, namespace, d=None, default=__notfound__):
         """init"""
         self.namespace = namespace
         if not d:
             d = {}
         self.values = d
+        self.default = default
 
     def __getitem__(self, name, default=__notfound__):
         """ get item from values *or* namespace """
+
+        if default is __notfound__:
+            default = self.default
 
         if name in self.values:
             value = self.values[name]
@@ -227,42 +258,52 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_acos(x: (int, float)):
+    def f_acos(x: Union[int, float]):
         """Arc Cosine of X"""
 
         return math.acos(x)
 
     @coerce
     @staticmethod
-    def f_acosh(x: (int, float)):
+    def f_acosh(x: Union[int, float]):
         """Inverse Hyperbolic Cosine"""
 
         return math.acosh(x)
 
+    @staticmethod
+    def f_alter(dictionary, key, value):
+        """Set a specific key in a dictionary.  Returns the value."""
+
+        if not isinstance(dictionary, dict):
+            raise TypeError('First argument to alter must be a dictionary')
+
+        dictionary[key] = value
+        return value
+
     @coerce
     @staticmethod
-    def f_asin(x: (int, float)):
+    def f_asin(x: Union[int, float]):
         """Arc Sine of X"""
 
         return math.asin(x)
 
     @coerce
     @staticmethod
-    def f_asinh(x: (int, float)):
+    def f_asinh(x: Union[int, float]):
         """Inverse Hyperbolic Sine"""
 
         return math.asinh(x)
 
     @coerce
     @staticmethod
-    def f_atan(x: (int, float)):
+    def f_atan(x: Union[int, float]):
         """Arc Tangent of X"""
 
         return math.atan(x)
 
     @coerce
     @staticmethod
-    def f_atanh(x: (int, float)):
+    def f_atanh(x: Union[int, float]):
         """Inverse Hyperbolic Tangent"""
 
         return math.atanh(x)
@@ -303,6 +344,29 @@ class ExpressionMethods:
         return result
 
     @staticmethod
+    def f_build(*lists, keys=()):
+        """Constructs a sequence of dictionaries based on the lists, such
+        that each dictionary contains the corresponding key for each list
+        from the keys value, and value from each list, respectively.
+        Columns without a key are ignored.  Columns that are longer than
+        the shortest column are truncated."""
+
+        result = []
+
+        numkeys = len(keys)
+
+        if len(lists) == 1 and isinstance(lists[0], (list, tuple)):
+            lists = lists[0]
+
+        for row in zip(*lists):
+            rowdict = {}
+            for column in range(min(numkeys, len(row))):
+                rowdict[keys[column]] = row[column]
+            result.append(rowdict)
+
+        return result
+
+    @staticmethod
     def f_bytes(s: str, encoding='utf-8', errors=None):
         """Convert object to binary string (bytes)"""
         arg = [s]
@@ -315,7 +379,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_ceil(x: (int, float)):
+    def f_ceil(x: Union[int, float]):
         """Ceiling of X"""
 
         return math.ceil(x)
@@ -326,6 +390,15 @@ class ExpressionMethods:
         """Center string in width columns"""
 
         return s.center(width, fillchar)
+
+    @coerce
+    @staticmethod
+    def f_chardet(byteseq: bytes) -> dict:
+        """Return a dictionary with the guessed character encoding
+        of byteseq, the confidence of the encoding, and the estimated
+        language."""
+
+        return chardet.detect(byteseq)
 
     @staticmethod
     def f_choice(condition, true_result=None, false_result=None):
@@ -359,14 +432,14 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_cos(x: (int, float)):
+    def f_cos(x: Union[int, float]):
         """Cosine of X"""
 
         return math.cos(x)
 
     @coerce
     @staticmethod
-    def f_cosh(x: (int, float)):
+    def f_cosh(x: Union[int, float]):
         """Hyperbolic Cosine"""
 
         return math.cosh(x)
@@ -440,40 +513,108 @@ class ExpressionMethods:
 
         return tzutil.format_datetime(datetime, tz=tz, date_format=date_format)
 
+    @staticmethod
+    def f_defang(s: str):
+        """Return a defanged representation of string, ie, one with
+        textual indicators of compromise converted to the defanged state"""
+
+        return ioc_fanger.defang(s)
+
     @coerce
     @staticmethod
-    def f_degrees(x: (int, float)):
+    def f_degrees(x: Union[int, float]):
         """Convert X to degrees"""
 
         return math.degrees(x)
 
     @coerce
     @staticmethod
-    def f_erf(x: (int, float)):
+    def f_erf(x: Union[int, float]):
         """Error Function of X"""
 
         return math.erf(x)
 
     @coerce
     @staticmethod
-    def f_erfc(x: (int, float)):
+    def f_erfc(x: Union[int, float]):
         """Complimentary Error Function of X"""
 
         return math.erfc(x)
 
     @coerce
     @staticmethod
-    def f_exp(x: (int, float)):
+    def f_exp(x: Union[int, float]):
         """Math Exp of X """
 
         return math.exp(x)
 
     @coerce
     @staticmethod
-    def f_expm1(x: (int, float)):
+    def f_expm1(x: Union[int, float]):
         """Math Expm1 of X"""
 
         return math.expm1(x)
+
+    @coerce
+    def f_extract_indicators(
+        self, data: Union[bytes, str], ignore=None, dedup=True, fang=False, convert=True
+    ):
+        """Extract IOCs from data, which may be bytes or string.
+        If fang is true, data is re-fanged before processing. This option is
+        ignored if the input is binary.
+        Any entity match on the ignore list will be ignored.
+        If convert is true, bytesmode matches will be converted to utf-8, or
+        the specified conversion e.g. convert='latin-1'.
+        Returns a list of (indicator, value) tuples.  If dedup is True,
+        duplicate results are not returned."""
+
+        results = []
+        result_set = set()
+
+        if ignore is None:
+            ignore = []
+
+        if not isinstance(ignore, list):
+            ignore = [ignore]
+
+        regexes = self.f_indicator_patterns()
+
+        bytesmode = isinstance(data, bytes)
+        if bytesmode:
+            flags = re.MULTILINE | re.DOTALL
+        else:
+            flags = re.MULTILINE
+
+        encoding = convert if isinstance(convert, str) else 'utf-8'
+
+        extra_ignore = []
+        for ignorable in ignore:
+            if isinstance(ignorable, bytes):
+                extra_ignore.append(ignorable.decode(encoding))
+
+        ignore.extend(extra_ignore)
+
+        if fang and not bytesmode:
+            data = ioc_fanger.fang(data)
+
+        for key, value in regexes.items():
+            if value in ignore:
+                continue
+            if bytesmode:
+                value = bytes(value, 'utf-8')
+                if value in ignore:
+                    continue
+            all_hits = re.finditer(value, data, flags)
+            for match in all_hits:
+                hit = data[match.start() : match.end()]
+                if bytesmode and convert:
+                    hit = hit.decode(encoding)
+                v = (key, hit)
+                if dedup and v in result_set:
+                    continue
+                results.append(v)
+                result_set.add(v)
+        return results
 
     @coerce
     @staticmethod
@@ -481,6 +622,152 @@ class ExpressionMethods:
         """Factorial of X"""
 
         return math.factorial(x)
+
+    @staticmethod
+    def f_fang(s: str):
+        """Return a fanged representation of string, ie, one with
+        textual indicators of compromise reverted from the defanged state"""
+
+        return ioc_fanger.fang(s)
+
+    @functools.lru_cache(32)
+    def indicator_name_to_branch(self, name):
+        """Convert the indicator name to the API branch"""
+
+        if '.' in name:
+            name = name.split('.', 1)[0]
+
+        indicator_types = self.f_indicator_types()
+
+        for indicator_type in indicator_types:
+            if indicator_type.get('name') == name:
+                return indicator_type.get('apiBranch')
+
+        return None
+
+    def f_fetch_indicators(
+        self, *search_values: Union[list, tuple], default_type=None
+    ) -> List[dict]:
+        """Fetches available indicators from ThreatConnect based on
+        search_values.  A search value is either an indicator value (which uses
+        the default_type as the indicator type) or a (type, value) pair.  If
+        only one search_value is passed in, it may be a list of search_values.
+
+        Returns a list of [(indicator_type, indicator_value, api_entity, indicator), ...],
+        but the api_entity, result, and owners will be None if that
+        indicator was not found.
+        """
+
+        # pylint: disable=no-member
+
+        if not self.tcex:
+            raise RuntimeError('TCEX not initialized, cannot retrieve indicators')
+
+        result = []
+
+        if len(search_values) == 1:  # did we get passed in a nested list?
+            if isinstance(search_values[0], (list, tuple)):
+                if len(search_values[0]) > 0:
+                    if isinstance(search_values[0][0], (list, tuple)):
+                        search_values = search_values[0]  # un-nest
+                    elif not self.indicator_name_to_branch(search_values[0][0]):
+                        # if the first word in the tuple isn't a type, un-nest it
+                        search_values = search_values[0]  # un-nest
+
+        for search_value in search_values:
+            source = search_value
+
+            if not isinstance(source, (list, tuple)):
+                source = [default_type, source]
+
+            self.tcex.log.debug(f'Looking up indicator {source!r}')
+
+            indicator_name = source[0]
+            indicator_value = source[1]
+            api_branch = self.indicator_name_to_branch(indicator_name)
+            if not api_branch:
+                raise ValueError(f'{indicator_name} is not a known indicator type')
+
+            path = (
+                f'/v2/indicators/{urllib.parse.quote_plus(api_branch)}/'
+                f'{urllib.parse.quote_plus(indicator_value)}'
+            )
+            indicator = self.tcex.session.get(path, params={'includeAdditional': 'true'}).json()
+            if indicator['status'] != 'Success':
+                api_entity = None
+                answer = None
+                self.tcex.log.debug(f'Failed fetching {path}: {indicator}')
+            else:
+                answer = indicator.get('data')
+                api_entity = list(answer.keys())[0]
+                answer = answer.get(api_entity)
+
+            if answer:
+                owners = self.tcex.session.get(
+                    path + '/owners',
+                ).json()
+                if owners.get('status') != 'Success':
+                    owners = None
+                else:
+                    owners = owners.get('data', {}).get('owner', None)
+
+                answer['owners'] = owners
+
+                observationCount = self.tcex.session.get(
+                    path + '/observationCount',
+                ).json()
+                if observationCount.get('status') != 'Success':
+                    observationCount = None
+                else:
+                    observationCount = observationCount.get('data', {}).get(
+                        'observationCount', None
+                    )
+
+                answer['observationCount'] = observationCount
+
+                attributes = self.tcex.session.get(
+                    path + '/attributes',
+                ).json()
+                if attributes.get('status') != 'Success':
+                    attributes = None
+                else:
+                    attributes = attributes.get('data', {}).get('attribute', None)
+
+                answer['attribute'] = attributes
+
+                securitylabels = self.tcex.session.get(
+                    path + '/securityLabels',
+                ).json()
+                if securitylabels.get('status') != 'Success':
+                    securitylabels = None
+                else:
+                    securitylabels = securitylabels.get('data', {}).get('securityLabel', None)
+
+                answer['securityLabel'] = securitylabels
+
+                groups = self.tcex.session.get(
+                    path + '/groups',
+                ).json()
+                if groups.get('status') != 'Success':
+                    groups = None
+                else:
+                    groups = groups.get('data', {}).get('group', [])
+
+                answer['associations'] = groups
+
+                tags = self.tcex.session.get(
+                    path + '/tags',
+                ).json()
+                if tags.get('status') != 'Success':
+                    tags = None
+                else:
+                    tags = tags.get('data', {}).get('tag', None)
+
+                answer['tag'] = tags
+
+            result.append((indicator_name, indicator_value, api_entity, answer))
+
+        return result
 
     def f_find(self, ob, value, start=None, stop=None):
         """Find index value in ob or return -1"""
@@ -502,13 +789,14 @@ class ExpressionMethods:
 
         return float(s)
 
-    def f_format(self, s: str, *args, **kwargs):
+    def f_format(self, s: str, *args, default=__notfound__, **kwargs):
         """Format string S according to Python string formatting rules.  Compound
         structure elements may be accessed with dot or bracket notation and without quotes
         around key names, e.g. `blob[0][events][0][source][device][ipAddress]`
-        or `blob[0].events[0].source.device.ipAddress`"""
+        or `blob[0].events[0].source.device.ipAddress`.  If default is set,
+        that value will be used for any missing value."""
 
-        kws = SmartDict(self, kwargs)
+        kws = SmartDict(self, kwargs, default=default)
         fmt = Formatter()
 
         return fmt.vformat(s, args, kws)
@@ -543,14 +831,14 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_gamma(x: (int, float)):
+    def f_gamma(x: Union[int, float]):
         """Return the gamma function at X"""
 
         return math.gamma(x)
 
     @coerce
     @staticmethod
-    def f_gcd(a: (int, float), b: (int, float)):
+    def f_gcd(a: Union[int, float], b: Union[int, float]):
         """Greatest Common Denominator of A and B"""
         return math.gcd(a, b)
 
@@ -570,7 +858,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_hypot(x: (int, float), y: (int, float)):
+    def f_hypot(x: Union[int, float], y: Union[int, float]):
         """Hypotenuse of X,Y"""
 
         return math.hypot(x, y)
@@ -594,6 +882,63 @@ class ExpressionMethods:
         if radix:
             return int(s, radix)
         return int(s)
+
+    @functools.lru_cache(maxsize=1)
+    def f_indicator_patterns(self):
+        """Returns a dictionary of regular expression patterns for indicators
+        of compromise, based on ThreatConnect Data."""
+
+        # pylint: disable=no-member
+
+        if not self.tcex:
+            raise RuntimeError('TCEX not initialized, cannot retrieve patterns')
+
+        result = {}
+
+        types = self.f_indicator_types()
+
+        for ioc_type in types:
+            entityName = ioc_type.get('apiEntity')
+            self.tcex.log.debug(f'IndicatorType {entityName} = {ioc_type}')
+            if ioc_type.get('parsable', 'false') != 'true':
+                continue
+            ioc_data = self.tcex.session.get(
+                f'/v2/types/indicatorTypes/{entityName}', params={'includeAdditional': 'true'}
+            ).json()
+            self.tcex.log.debug(f'Indicator Data: {ioc_data}')
+            if ioc_data['status'] != 'Success':
+                continue
+            type_keys = ioc_type.get('keys', {})
+            ioc_name = ioc_type.get('name')
+            key_names = [ioc_name + '.' + type_keys[x] for x in sorted(type_keys)]
+            if len(key_names) == 1:
+                key_names = [ioc_name]
+            regexes = ioc_data.get('data', {}).get('indicatorType', {}).get('regexes', [])
+            self.tcex.log.debug(f'Key Names: {key_names}, Regexes: {regexes}')
+            pairs = zip(key_names, regexes)
+            for kv in pairs:
+                key, value = kv
+                self.tcex.log.debug(f'regex {key} = {value}')
+                result[key] = value
+        self.tcex.log.debug(f'IOC Regexes: {result}')
+
+        return result
+
+    @functools.lru_cache(maxsize=1)
+    def f_indicator_types(self):
+        """Return the ThreatConnect Indicator Types"""
+        # pylint: disable=no-member
+
+        if not self.tcex:
+            raise RuntimeError('TCEX not initialized, cannot retrieve types')
+
+        types = self.tcex.session.get(
+            '/v2/types/indicatorTypes', params={'includeAdditional': 'true'}
+        ).json()
+        if types['status'] != 'Success':
+            raise RuntimeError('Failed to retrieve indicator types')
+
+        return types.get('data', {}).get('indicatorType', [])
 
     @staticmethod
     def f_items(ob: dict):
@@ -645,7 +990,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_lgamma(x: (int, float)):
+    def f_lgamma(x: Union[int, float]):
         """Return the natural logarithm of the absolute value of the gamma function at X"""
 
         return math.lgamma(x)
@@ -653,7 +998,7 @@ class ExpressionMethods:
     @coerce
     @staticmethod
     def f_locale_currency(
-        val: (int, float), symbol=True, grouping=False, international=False, locale='EN_us'
+        val: Union[int, float], symbol=True, grouping=False, international=False, locale='EN_us'
     ):
         """Format a currency value according to locale settings"""
         if locale:
@@ -665,8 +1010,10 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_locale_format(fmt, val: (int, float), grouping=False, monetary=False, locale='EN_us'):
-        """Format a nubmer according to locale settings"""
+    def f_locale_format(
+        fmt, val: Union[int, float], grouping=False, monetary=False, locale='EN_us'
+    ):
+        """Format a number according to locale settings"""
         if locale:
             locale_.setlocale(locale_.LC_ALL, locale)
         else:
@@ -676,7 +1023,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_log(x: (int, float), base: (int, float, NoneType) = None):
+    def f_log(x: Union[int, float], base: Union[int, float, NoneType] = None):
         """Math Logarithm of X to base"""
 
         args = [x]
@@ -687,21 +1034,21 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_log10(x: (int, float)):
+    def f_log10(x: Union[int, float]):
         """Math log base 10 of X"""
 
         return math.log10(x)
 
     @coerce
     @staticmethod
-    def f_log1p(x: (int, float)):
+    def f_log1p(x: Union[int, float]):
         """Math log1p of x"""
 
         return math.log1p(x)
 
     @coerce
     @staticmethod
-    def f_log2(x: (int, float)):
+    def f_log2(x: Union[int, float]):
         """Math log base 2 of X"""
 
         return math.log2(x)
@@ -726,6 +1073,40 @@ class ExpressionMethods:
         """Return the greatest value of the list"""
 
         return max(*items)
+
+    @staticmethod
+    def f_merge(*iterables, replace=False):
+        """Merges a list of iterables into a single list.
+        If the iterables are dictionaries, they are updated into a
+        single dictionary per row.  If replace is true, subsequent
+        columns overwrite the original values.  The result length
+        is constrained to the shortest column."""
+
+        result = []
+        for row in zip(*iterables):
+            alldicts = True
+            rowdict = {}
+            rowarray = []
+            for column in row:
+                if not isinstance(column, dict):
+                    alldicts = False
+                    break
+            for column in row:
+                if alldicts:
+                    if replace:
+                        rowdict.update(column)
+                    else:
+                        for key, value in column.items():
+                            if key not in rowdict:
+                                rowdict[key] = value
+                else:
+                    rowarray.append(column)
+            if alldicts:
+                result.append(rowdict)
+            else:
+                result.append(rowarray)
+
+        return result
 
     @staticmethod
     def f_md5(data):
@@ -761,7 +1142,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_pad(iterable, length: (int, literal), padvalue=None):
+    def f_pad(iterable, length: Union[int, literal], padvalue=None):
         """Pad iterable to length"""
 
         if not isinstance(length, int):
@@ -784,6 +1165,35 @@ class ExpressionMethods:
         return result
 
     @staticmethod
+    def f_pivot(list_of_lists, pad=None):
+        """Pivots a list of lists, such that item[x][y] becomes item[y][x].
+        If the inner lists are not of even length, they will be padded with
+        the pad value."""
+
+        result = []
+        width = 0
+
+        if not isinstance(list_of_lists, (list, tuple)):
+            raise TypeError('list_of_lists must be a list or a tuple')
+
+        for row in list_of_lists:
+            if not isinstance(row, (list, tuple)):
+                raise TypeError('list_of_lists must contain lists or tuples')
+            rowlen = len(row)
+            if rowlen > width:
+                width = rowlen
+
+        for column in range(width):
+            result.append([])  # initialize the pivot
+
+        for row in list_of_lists:
+            for column in range(width):
+                value = row[column] if column < len(row) else pad
+                result[column].append(value)
+
+        return result
+
+    @staticmethod
     def f_pformat(ob, indent: int = 1, width: int = 80, *, compact: bool = False):
         """Pretty formatter for displaying hierarchial data"""
 
@@ -791,7 +1201,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_pow(x: (int, float), y: (int, float)):
+    def f_pow(x: Union[int, float], y: Union[int, float]):
         """Math X ** Y"""
 
         return math.pow(x, y)
@@ -802,9 +1212,11 @@ class ExpressionMethods:
 
         return fmt % args
 
-    def f_prune(self, ob, depth=None, prune=(None, '', [], {})):
+    def f_prune(self, ob, depth=None, prune=(None, '', [], {}), keys=()):
         """Recursively Prunes entries from the object,
-        with an optional depth limit
+        with an optional depth limit.  The pruned values, and
+        optionally prune keys may be specified.  If any dictionary
+        has a key in keys, that dictionary element will be removed.
         """
 
         if depth is not None:
@@ -814,6 +1226,9 @@ class ExpressionMethods:
 
         if not isinstance(ob, (list, tuple, dict)):
             return ob
+
+        if isinstance(keys, str):
+            keys = (keys,)
 
         if isinstance(ob, (list, tuple)):
             result = []
@@ -825,14 +1240,15 @@ class ExpressionMethods:
 
         result = {}
         for key, value in ob.items():
-            value = self.f_prune(value, depth, prune=prune)
-            if value not in prune:
-                result[key] = value
+            if key not in keys:
+                value = self.f_prune(value, depth, prune=prune)
+                if value not in prune:
+                    result[key] = value
         return result
 
     @coerce
     @staticmethod
-    def f_radians(x: (int, float)):
+    def f_radians(x: Union[int, float]):
         """Convert X to radians"""
 
         return math.radians(x)
@@ -974,14 +1390,14 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_sin(x: (int, float)):
+    def f_sin(x: Union[int, float]):
         """Sine of X"""
 
         return math.sin(x)
 
     @coerce
     @staticmethod
-    def f_sinh(x: (int, float)):
+    def f_sinh(x: Union[int, float]):
         """Hyperbolic Sine"""
 
         return math.sinh(x)
@@ -1006,7 +1422,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_sqrt(x: (int, float)):
+    def f_sqrt(x: Union[int, float]):
         """Square root of X"""
 
         return math.sqrt(x)
@@ -1036,7 +1452,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_sum(*elements: (int, float)):
+    def f_sum(*elements: Union[int, float]):
         """Sum a list of elements"""
 
         if len(elements) == 1 and isinstance(elements, (tuple, list)):
@@ -1046,14 +1462,14 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_tan(x: (int, float)):
+    def f_tan(x: Union[int, float]):
         """Tangent of X"""
 
         return math.tan(x)
 
     @coerce
     @staticmethod
-    def f_tanh(x: (int, float)):
+    def f_tanh(x: Union[int, float]):
         """Hyperbolic Tangent"""
 
         return math.tanh(x)
@@ -1073,7 +1489,7 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_trunc(x: (int, float)):
+    def f_trunc(x: Union[int, float]):
         """Math Truncate X"""
 
         return math.trunc(x)
@@ -1088,12 +1504,34 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
-    def f_update(target: dict, source: dict):
-        """Updates one dictionary with keys from the other"""
+    def f_update(target: Union[dict, list, tuple], source: dict, replace=True):
+        """Updates one dictionary with keys from the other. If the target is
+        a list of dictionaries, each dictionary will be updated.  If replace
+        is false, existing values will not be replaced."""
 
-        target = target.copy()
-        target.update(source)
-        return target
+        if isinstance(target, dict):
+            result = target.copy()
+            if replace:
+                result.update(source)
+            else:
+                for key, value in source.items():
+                    if key not in result:
+                        result[key] = value
+            return result
+
+        result = []
+        for item in target:
+            if not isinstance(item, dict):
+                raise TypeError('update must work on dictionaries or lists of dictionaries')
+            replacement = item.copy()
+            if replace:
+                replacement.update(source)
+            else:
+                for key, value in source.items():
+                    if key not in replacement:
+                        replacement[key] = value
+            result.append(replacement)
+        return result
 
     @coerce
     @staticmethod
@@ -1187,6 +1625,66 @@ class ExpressionMethods:
     f_spamsum = f_fuzzyhash
     f_spamdist = f_fuzzydist
 
+    @staticmethod
+    def f_uuid3(namespace, name):
+        """Generate a UUID based on the MD5 hash of a namespace and a name.
+        The namespace may be a UUID or one of 'dns', 'url', 'oid', or 'x500'.
+        """
+
+        namespace = namespace_to_uuid(namespace)
+
+        return str(uuid.uuid3(namespace, name))
+
+    @staticmethod
+    def f_uuid4():
+        """Generate a random UUID"""
+
+        return str(uuid.uuid4())
+
+    @staticmethod
+    def f_uuid5(namespace, name):
+        """Generate a UUID based on the SHA-1 hash of a namespace and a name.
+        The namespace may be a UUID or one of 'dns', 'url', 'oid', or 'x500'.
+        """
+
+        namespace = namespace_to_uuid(namespace)
+
+        return str(uuid.uuid5(namespace, name))
+
+    @coerce
+    @staticmethod
+    def f_xmlread(xmldata: str, namespace=False, strip=True, convert=True, compact=False):
+        """Constructs an object from XML data.  The XML data should have
+        a single root node.  If namespace is True, the resolved namespace will
+        be prefixed to tag names in braces, i.e. {namespace}tag.  If strip
+        is True, values will be stripped of leading and trailing whitespace.
+        If convert is True, numeric values will be converted to their numeric
+        equivalents.  If compact is true, the object will be compacted to
+        a more condensed form if possible.  Attribute names will be prefixed
+        with @ in the corresponding output.
+        """
+
+        return xml_to_dict(
+            xmldata,
+            namespace=namespace,
+            strip=strip,
+            convert=convert,
+            compact=compact,
+        )
+
+    @staticmethod
+    def f_xmlwrite(obj, namespace=False, indent=0):
+        """Converts an object to XML.  If namespace is True or a dictionary,
+        namespace prefixed values will be converted to a derived or specified
+        namespace value.  The namespace dictionary should be in the form
+        {key: namespace} and will be used to turn the namespace back into the
+        key. If indent is nonzero, an indented XML tree with newlines will
+        be generated.  If namespaces are used, the caller must add the
+        `xmlns` attributes to an enclosing scope.
+        """
+
+        return dict_to_xml(obj, namespace=namespace, indent=indent)
+
 
 def list_methods():
     """List expression methods"""
@@ -1237,7 +1735,7 @@ def list_methods():
                     params.append(f'{name}={param.default!r}')
                 else:
                     params.append(name)
-            if params[0] == 'self':
+            if params and params[0] == 'self':
                 del params[0]
 
             methods[func] = ', '.join(params)
@@ -1256,6 +1754,22 @@ def list_methods():
         result.append('')
 
     return '\n'.join(result)
+
+
+def namespace_to_uuid(namespace):
+    """Convert a namespace into a UUID by lookup"""
+
+    namespace = {
+        'dns': uuid.NAMESPACE_DNS,
+        'url': uuid.NAMESPACE_URL,
+        'oid': uuid.NAMESPACE_OID,
+        'x500': uuid.NAMESPACE_X500,
+    }.get(namespace, namespace)
+
+    if not isinstance(namespace, uuid.UUID):
+        namespace = uuid.UUID(namespace)
+
+    return namespace
 
 
 if __name__ == '__main__':

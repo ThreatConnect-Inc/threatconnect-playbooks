@@ -1,0 +1,62 @@
+{
+  "_comments_": [],
+  "environments": [
+    "local"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:expression!String": "fetch_indicators(('148.66.138.116', '192.168.1.1'), default_type='Address')"
+    }
+  },
+  "inputs": {
+    "optional": {
+      "return_none_on_failure": true
+    },
+    "required": {
+      "expression": "#App:1234:expression!String",
+      "tc_action": "Evaluate"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:expression.action!String": {
+      "expected_output": "Evaluate",
+      "op": "eq"
+    },
+    "#App:9876:expression.errors!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:expression.expression!String": {
+      "expected_output": "fetch_indicators(('148.66.138.116', '192.168.1.1'), default_type='Address')",
+      "op": "eq"
+    },
+    "#App:9876:expression.result.0!String": {
+      "exclude_paths": [],
+      "expected_output": "[\"Address\", \"148.66.138.116\", \"address\", {\"active\": true, \"activeLocked\": false, \"attribute\": [{\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": true, \"id\": 60989730, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"Source\", \"value\": \"Object ID: indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912\\nCollection ID: 1a2a689d-9010-4033-8330-320728df40cd\\nCollection Name: system.cybercrime_tracker.net\\nCollection Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/\\nObject Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/objects/indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912/\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989729, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"External Date Created\", \"value\": \"2021-05-07T11:53:54Z\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989728, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"STIX Indicator Type\", \"value\": \"malicious-activity\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989727, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"STIX Title\", \"value\": \"lokibot Botnet Controller\"}], \"dateAdded\": \"2021-05-10T03:40:31Z\", \"falsePositiveCount\": 0, \"id\": 11210163, \"ip\": \"148.66.138.116\", \"lastModified\": \"2021-05-13T13:09:13Z\", \"observationCount\": {\"count\": 0}, \"owner\": {\"id\": 3, \"name\": \"TCI\", \"type\": \"Organization\"}, \"owners\": [{\"id\": 3, \"name\": \"TCI\", \"type\": \"Organization\"}, {\"id\": 136, \"name\": \"PH MISP\", \"type\": \"Source\"}], \"privateFlag\": false, \"securityLabel\": [{\"dateAdded\": \"2016-08-31T00:00:00Z\", \"description\": \"This security label is used for information that carries minimal or no foreseeable risk of misuse, in accordance with applicable rules and procedures for public release.\", \"name\": \"TLP:WHITE\"}], \"source\": \"Object ID: indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912\\nCollection ID: 1a2a689d-9010-4033-8330-320728df40cd\\nCollection Name: system.cybercrime_tracker.net\\nCollection Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/\\nObject Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/objects/indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912/\", \"tag\": [{\"name\": \"MTK Test Tag\", \"webLink\": \"https://int-tc-01.tci.ninja/auth/tags/tag.xhtml?tag=MTK+Test+Tag&owner=TCI\"}], \"threatAssessConfidence\": 37.5, \"threatAssessRating\": 2.5, \"threatAssessScore\": 295, \"webLink\": \"https://int-tc-01.tci.ninja/auth/indicators/details/address.xhtml?address=148.66.138.116&owner=TCI\"}]",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:expression.result.array!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "[\"Address\", \"148.66.138.116\", \"address\", {\"active\": true, \"activeLocked\": false, \"attribute\": [{\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": true, \"id\": 60989730, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"Source\", \"value\": \"Object ID: indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912\\nCollection ID: 1a2a689d-9010-4033-8330-320728df40cd\\nCollection Name: system.cybercrime_tracker.net\\nCollection Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/\\nObject Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/objects/indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912/\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989729, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"External Date Created\", \"value\": \"2021-05-07T11:53:54Z\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989728, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"STIX Indicator Type\", \"value\": \"malicious-activity\"}, {\"dateAdded\": \"2021-05-11T22:14:36Z\", \"displayed\": false, \"id\": 60989727, \"lastModified\": \"2021-05-11T22:14:36Z\", \"type\": \"STIX Title\", \"value\": \"lokibot Botnet Controller\"}], \"dateAdded\": \"2021-05-10T03:40:31Z\", \"falsePositiveCount\": 0, \"id\": 11210163, \"ip\": \"148.66.138.116\", \"lastModified\": \"2021-05-13T13:09:13Z\", \"observationCount\": {\"count\": 0}, \"owner\": {\"id\": 3, \"name\": \"TCI\", \"type\": \"Organization\"}, \"owners\": [{\"id\": 3, \"name\": \"TCI\", \"type\": \"Organization\"}, {\"id\": 136, \"name\": \"PH MISP\", \"type\": \"Source\"}], \"privateFlag\": false, \"securityLabel\": [{\"dateAdded\": \"2016-08-31T00:00:00Z\", \"description\": \"This security label is used for information that carries minimal or no foreseeable risk of misuse, in accordance with applicable rules and procedures for public release.\", \"name\": \"TLP:WHITE\"}], \"source\": \"Object ID: indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912\\nCollection ID: 1a2a689d-9010-4033-8330-320728df40cd\\nCollection Name: system.cybercrime_tracker.net\\nCollection Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/\\nObject Path: https://test.pickupstix.io/taxii2/api2/collections/1a2a689d-9010-4033-8330-320728df40cd/objects/indicator--2fa9248d-1931-4ef0-b4ac-64de12f02912/\", \"tag\": [{\"name\": \"MTK Test Tag\", \"webLink\": \"https://int-tc-01.tci.ninja/auth/tags/tag.xhtml?tag=MTK+Test+Tag&owner=TCI\"}], \"threatAssessConfidence\": 37.5, \"threatAssessRating\": 2.5, \"threatAssessScore\": 295, \"webLink\": \"https://int-tc-01.tci.ninja/auth/indicators/details/address.xhtml?address=148.66.138.116&owner=TCI\"}]",
+        "[\"Address\", \"192.168.1.1\", null, null]"
+      ],
+      "ignore_order": false,
+      "op": "jeq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}

@@ -181,7 +181,7 @@ class RexxParser:
 
         while tokens:
             token = tokens.popleft()
-            if token == '.' or isinstance(token, variable):
+            if token == '.' and not isinstance(token, literal) or isinstance(token, variable):
                 pattern.append(token)
                 continue
 
@@ -197,8 +197,9 @@ class RexxParser:
                 # print(f'?+ start={self.start}, match_start={self.match_start}, '
                 # f'match_end={self.match_end}, '
                 # f'match={self.source[self.match_start-1:self.match_end-1]}')
-                self.start = self.match_end
-                self.match_start = min(self.length + 1, self.match_end + token)
+                # self.start = self.match_end
+                self.start = self.match_start
+                self.match_start = min(self.length + 1, self.match_start + token)
                 self.match_end = self.match_start
                 # print(f'+ start={self.start}, match_start={self.match_start}, '
                 # f'match_end={self.match_end}')

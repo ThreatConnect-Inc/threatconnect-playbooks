@@ -1,3 +1,6 @@
 lark-parser
 jmespath
+defusedxml
+chardet
+ioc_fanger
 tcex>=2.0.0,<2.1.0
