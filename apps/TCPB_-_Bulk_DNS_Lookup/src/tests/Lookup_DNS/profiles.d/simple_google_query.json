@@ -1,0 +1,71 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:dns_servers!String": "8.8.8.8, 8.8.4.4",
+      "#App:1234:questions!StringArray": [
+        "mtu.edu",
+        "threatconnect.com",
+        "foo.blarg.blerg"
+      ],
+      "#App:1234:rate_limit!String": 150
+    }
+  },
+  "inputs": {
+    "optional": {
+      "record_types": "MX|AAAA|A",
+      "transform_ptr": true
+    },
+    "required": {
+      "dns_servers": "#App:1234:dns_servers!String",
+      "questions": "#App:1234:questions!StringArray",
+      "rate_limit": "#App:1234:rate_limit!String",
+      "tc_action": "Lookup DNS"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success.\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:dns.action!String": {
+      "expected_output": "Lookup DNS",
+      "op": "eq"
+    },
+    "#App:9876:dns.invalid!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "foo.blarg.blerg"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    },
+    "#App:9876:dns.result.json!String": {
+      "exclude_paths": [],
+      "expected_output": "{\"foo.blarg.blerg\": {\"A\": [], \"AAAA\": [], \"MX\": []}, \"threatconnect.com\": {\"A\": [\"192.124.249.3\"], \"AAAA\": [], \"MX\": [\"20 ALT1.ASPMX.L.GOOGLE.com\", \"30 ALT2.ASPMX.L.GOOGLE.com\", \"10 ASPMX.L.GOOGLE.com\", \"40 ASPMX2.GOOGLEMAIL.com\", \"50 ASPMX3.GOOGLEMAIL.com\"]}, \"mtu.edu\": {\"AAAA\": [], \"A\": [\"141.219.70.117\"], \"MX\": [\"10 aspmx2.googlemail.com\", \"1 aspmx.l.google.com\", \"10 aspmx3.googlemail.com\", \"5 alt1.aspmx.l.google.com\", \"5 alt2.aspmx.l.google.com\"]}}",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:dns.valid!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "mtu.edu",
+        "threatconnect.com"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}

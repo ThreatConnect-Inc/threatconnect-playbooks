@@ -1,0 +1,126 @@
+{
+  "allowOnDemand": true,
+  "appId": "688f1e82-d9d2-5161-ad19-f43c5f6dd8ac",
+  "displayName": "Bulk DNS Lookup",
+  "features": [
+    "aotExecutionEnabled",
+    "appBuilderCompliant",
+    "fileParams",
+    "secureParams",
+    "layoutEnabledApp"
+  ],
+  "labels": [],
+  "languageVersion": "3.6",
+  "listDelimiter": "|",
+  "note": "This app allows bulk lookup of DNS records, with a rate limit to prevent nameservers from blocking lookups (ie, for bad behavior).",
+  "params": [
+    {
+      "label": "Action",
+      "name": "tc_action",
+      "note": "The action to take",
+      "required": true,
+      "sequence": 1,
+      "type": "Choice",
+      "validValues": [
+        "Lookup DNS"
+      ]
+    },
+    {
+      "label": "DNS Server(s)",
+      "name": "dns_servers",
+      "note": "DNS servers to interrogate",
+      "playbookDataType": [
+        "String",
+        "StringArray"
+      ],
+      "required": true,
+      "sequence": 2,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Question(s)",
+      "name": "questions",
+      "note": "The questions to ask the DNS server, generally this is a hostname, but for a PTR record it is the origin address.",
+      "playbookDataType": [
+        "String",
+        "StringArray",
+        "TCEntity",
+        "TCEntityArray"
+      ],
+      "required": true,
+      "sequence": 3,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "default": "A|AAAA|MX",
+      "label": "Record Types",
+      "name": "record_types",
+      "note": "The type of resource records to retrieve.",
+      "sequence": 4,
+      "type": "MultiChoice",
+      "validValues": [
+        "A",
+        "AAAA",
+        "CNAME",
+        "MX",
+        "PTR",
+        "SOA",
+        "TXT"
+      ]
+    },
+    {
+      "default": true,
+      "label": "Transform question for PTR lookups",
+      "name": "transform_ptr",
+      "note": "When true, a question for a PTR lookup will be rewritten to the appropriate form, e.g. 1.2.3.4 will be transformed to 4.3.2.1.in-addr.arpa.",
+      "sequence": 5,
+      "type": "Boolean"
+    },
+    {
+      "default": 150,
+      "label": "Rate Limit",
+      "name": "rate_limit",
+      "note": "Limit requests to this number/sec.  Each separate record type is a separate request.",
+      "playbookDataType": [
+        "String"
+      ],
+      "required": true,
+      "sequence": 6,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    }
+  ],
+  "playbook": {
+    "outputVariables": [
+      {
+        "name": "dns.result.json",
+        "type": "String"
+      },
+      {
+        "name": "dns.valid",
+        "type": "StringArray"
+      },
+      {
+        "name": "dns.invalid",
+        "type": "StringArray"
+      },
+      {
+        "name": "dns.action",
+        "type": "String"
+      }
+    ],
+    "type": "Utility"
+  },
+  "programLanguage": "PYTHON",
+  "programMain": "run",
+  "programVersion": "1.0.0",
+  "runtimeLevel": "Playbook"
+}

@@ -1,0 +1,30 @@
+[tool.black]
+line-length = 100
+skip-string-normalization = true
+
+[tool.pylint.master]
+init-hook = "import sys;sys.path.insert(0, 'lib_latest')"
+
+[tool.pylint.messages_control]
+# C0103 - invalid-name
+# C0116 - missing-function-docstring
+# C0302 - too-many-lines
+# C0330 - bad-continuation
+# C0401 - wrong-spelling-in-comment
+# C0411 - wrong-import-order
+# E0401 - import-error (checked after tclib)
+# R0801 - duplicate-code
+# R0902 - too-many-instance-attributes
+# R0903 - too-few-public-methods
+# R0904 - too-many-public-methods
+# R0912 - too-many-branches
+# R0913 - too-many-arguments
+# R0914 - too-many-locals
+# R0915 - too-many-statements
+# W0511 - fixme
+# W0703 - broad-except
+# W1203 - logging-fstring-interpolation
+disable = "C0103,C0116,C0302,C0330,C0401,C0411,E0401,R0801,R0902,R0903,R0904,R0912,R0913,R0914,R0915,W0511,W0703,W1203"
+
+[tool.pytest.ini_options]
+junit_family = "xunit2"

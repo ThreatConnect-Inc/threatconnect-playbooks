@@ -1,0 +1,64 @@
+{
+  "inputs": [
+    {
+      "parameters": [
+        {
+          "name": "tc_action"
+        }
+      ],
+      "sequence": 1,
+      "title": "Action"
+    },
+    {
+      "parameters": [
+        {
+          "name": "dns_servers"
+        }
+      ],
+      "sequence": 2,
+      "title": "Connect"
+    },
+    {
+      "parameters": [
+        {
+          "name": "questions"
+        },
+        {
+          "name": "record_types"
+        },
+        {
+          "name": "transform_ptr"
+        }
+      ],
+      "sequence": 3,
+      "title": "Configure"
+    },
+    {
+      "parameters": [
+        {
+          "name": "rate_limit"
+        }
+      ],
+      "sequence": 4,
+      "title": "Advanced"
+    }
+  ],
+  "outputs": [
+    {
+      "display": "tc_action in ('Lookup DNS')",
+      "name": "dns.result.json"
+    },
+    {
+      "display": "tc_action in ('Lookup DNS')",
+      "name": "dns.valid"
+    },
+    {
+      "display": "tc_action in ('Lookup DNS')",
+      "name": "dns.invalid"
+    },
+    {
+      "display": "tc_action not in ('')",
+      "name": "dns.action"
+    }
+  ]
+}

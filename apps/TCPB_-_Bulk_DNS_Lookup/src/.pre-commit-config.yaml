@@ -1,0 +1,73 @@
+exclude: ^lib
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: check-ast
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: debug-statements
+      - id: double-quote-string-fixer
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: no-commit-to-branch
+        args:
+          - --branch
+          - master
+          - --branch
+          - qa
+      - id: pretty-format-json
+        args:
+          - --autofix
+        exclude: ^tests/.+/profiles.d/.*
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.0
+    hooks:
+      - id: bandit
+        args: [--exclude, tests]
+  - repo: https://github.com/psf/black
+    rev: 21.5b2
+    hooks:
+      - id: black
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.8.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.19.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py3-plus
+          - --py36-plus
+  - repo: https://github.com/yunojuno/pre-commit-xenon
+    rev: v0.1
+    hooks:
+      - id: xenon
+        args:
+          [
+            "--max-average=B",
+            "--exclude=local*",
+            "--ignore=lib_*,local*,target,tests",
+          ]
+  - repo: local
+    hooks:
+      - id: pylint
+        entry: pylint
+        exclude: ^lib
+        language: system
+        name: pylint
+        types: [python]

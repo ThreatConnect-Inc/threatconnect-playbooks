@@ -1,0 +1,59 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:questions!StringArray": [
+        "mtu.edu",
+        "threatconnect.com",
+        "foo.blarg.blerg"
+      ],
+      "#App:1234:rate_limit!String": 150
+    }
+  },
+  "inputs": {
+    "optional": {
+      "record_types": "MX|AAAA|A",
+      "transform_ptr": true
+    },
+    "required": {
+      "dns_servers": "#App:1234:null!String",
+      "questions": "#App:1234:questions!StringArray",
+      "rate_limit": "#App:1234:rate_limit!String",
+      "tc_action": "Lookup DNS"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Invalid value for DNS Servers. Value is required.\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:dns.action!String": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:dns.invalid!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:dns.result.json!String": {
+      "expected_output": null,
+      "op": "eq"
+    },
+    "#App:9876:dns.valid!StringArray": {
+      "expected_output": null,
+      "op": "eq"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    1
+  ]
+}
