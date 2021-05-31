@@ -1,0 +1,104 @@
+app:
+  allowOnDemand: true
+  appId: 688f1e82-d9d2-5161-ad19-f43c5f6dd8ac
+  appName: TCPB_-_Bulk_DNS_Lookup
+  displayName: Bulk DNS Lookup
+  features:
+  - aotExecutionEnabled
+  - appBuilderCompliant
+  - fileParams
+  - secureParams
+  - layoutEnabledApp
+  languageVersion: '3.6'
+  listDelimiter: '|'
+  note: This app allows bulk lookup of DNS records, with a rate limit
+    to prevent nameservers from blocking lookups (ie, for bad behavior).
+
+  playbookType: Utility
+  programLanguage: PYTHON
+  programMain: run
+  programVersion: 1.0.0
+  releaseNotes:
+    1.0.0 (2021-05-29):
+    - Initial Release
+  retry:
+    allowed: false
+    defaultDelayMinutes: 1
+    defaultMaxRetries: 1
+    disabled: true
+  runtimeLevel: Playbook
+inputGroups:
+- group: Action
+  inputs:
+  - display: null
+    label: Action
+    name: tc_action
+    note: The action to take
+    required: true
+    type: Choice
+    validValues:
+    - Lookup DNS
+
+- group: Connect
+  inputs:
+  - label: DNS Server(s)
+    name: dns_servers
+    note: DNS servers to interrogate
+    playbookDataType:
+    - String
+    - StringArray
+    required: true
+
+- group: Configure
+  inputs:
+  - label: Question(s)
+    name: questions
+    note: The questions to ask the DNS server, generally this
+      is a hostname, but for a PTR record it is the origin
+      address.
+    playbookDataType:
+    - String
+    - StringArray
+    - TCEntity
+    - TCEntityArray
+    required: true
+
+  - label: Record Types
+    default: A|AAAA|MX
+    note: The type of resource records to retrieve.
+    type: MultiChoice
+    validValues:
+    - A
+    - AAAA
+    - CNAME
+    - MX
+    - PTR
+    - SOA
+    - TXT
+
+  - label: Transform question for PTR lookups
+    name: transform_ptr
+    type: Boolean
+    note: When true, a question for a PTR lookup will be
+      rewritten to the appropriate form, e.g. 1.2.3.4 will
+      be transformed to 4.3.2.1.in-addr.arpa.
+    default: True
+
+- group: Advanced
+  inputs:
+  - label: Rate Limit
+    default: 150
+    required: True
+    note: Limit requests to this number/sec.  Each separate record type
+      is a separate request.
+
+outputGroups:
+  tc_action in ('Lookup DNS'):
+    String:
+    - dns.result.json
+    StringArray:
+    - dns.valid
+    - dns.invalid
+  tc_action not in (''):
+    String:
+    - dns.action

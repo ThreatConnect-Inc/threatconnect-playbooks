@@ -1,0 +1,86 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "stage": {
+    "kvstore": {
+      "#App:1234:dns_servers!StringArray": [
+        "8.8.8.8",
+        "8.8.4.4"
+      ],
+      "#App:1234:questions!TCEntityArray": [
+        {
+          "id": "47.91.79.60",
+          "type": "Address",
+          "value": "47.91.79.60"
+        },
+        {
+          "id": "202:120:7:30:18:70:5643:730",
+          "type": "Address",
+          "value": "202:120:7:30:18:70:5643:730"
+        },
+        {
+          "id": "mtu.edu",
+          "type": "Address",
+          "value": "141.219.70.117"
+        }
+      ],
+      "#App:1234:rate_limit!String": 150
+    }
+  },
+  "inputs": {
+    "optional": {
+      "record_types": "PTR",
+      "transform_ptr": true
+    },
+    "required": {
+      "dns_servers": "#App:1234:dns_servers!StringArray",
+      "questions": "#App:1234:questions!TCEntityArray",
+      "rate_limit": "#App:1234:rate_limit!String",
+      "tc_action": "Lookup DNS"
+    }
+  },
+  "exit_message": {
+    "expected_output": "Success.\n",
+    "op": "eq"
+  },
+  "outputs": {
+    "#App:9876:dns.action!String": {
+      "expected_output": "Lookup DNS",
+      "op": "eq"
+    },
+    "#App:9876:dns.invalid!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "202:120:7:30:18:70:5643:730",
+        "47.91.79.60"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    },
+    "#App:9876:dns.result.json!String": {
+      "exclude_paths": [],
+      "expected_output": "{\"141.219.70.117\": {\"PTR\": [\"mtu.edu\"]}, \"202:120:7:30:18:70:5643:730\": {\"PTR\": []}, \"47.91.79.60\": {\"PTR\": []}}",
+      "ignore_order": false,
+      "op": "jeq"
+    },
+    "#App:9876:dns.valid!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "141.219.70.117"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    }
+  },
+  "options": {
+    "session": {
+      "blur": [],
+      "enabled": false
+    }
+  },
+  "exit_codes": [
+    0
+  ]
+}
