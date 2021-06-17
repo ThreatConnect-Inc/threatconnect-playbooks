@@ -1,0 +1,909 @@
+{
+  "name" : "IPQualityScore IP Address Reputation Playbook Template",
+  "type" : "Standard",
+  "panX" : 172.0,
+  "panY" : 57.0,
+  "logLevel" : "DEBUG",
+  "description" : "This Playbook Template provides the Reputation (Critical, High Risk, Moderate Risk, Suspicious, Clean) and Threat Rating (Critical Threat, High Threat, Moderate Threat, Suspicious) for the provided IP Address based on recent reputation and risk analysis across the IPQS threat network. The Playbook also enriches the IP address with reputation details such as Fraud Score, Abuse Velocity, Connection Type, ISP, Recent Abuse, and Proxy/VPN & TOR status as custom attributes and other important data points such as location and organization in the description attribute.",
+  "version" : "1.101",
+  "comment" : "Auto-Saved on Fri Jun 04 07:21:23 UTC 2021",
+  "jobList" : [ {
+    "id" : 26004,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Check Attributes for Null Entry",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:26007:attribute_values_array!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "not equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "null"
+    } ],
+    "locationLeft" : 0.0,
+    "locationTop" : 283.562
+  }, {
+    "id" : 26002,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Merge Back Into Iterator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 500.0,
+    "locationTop" : 310.0
+  }, {
+    "id" : 26001,
+    "appCatalogItem" : {
+      "programName" : "TCPB - AddAttributeAdvance v1.0",
+      "displayName" : "Add ThreatConnect Attribute Advance",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Add Attributes to Indicator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "#App:26007:attribute_types_array!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "apply_to_all"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_values"
+      },
+      "value" : "#App:26007:attribute_values_array!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_sources"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update_type"
+      },
+      "value" : "Replace All Occurrences"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "source_entities"
+      },
+      "value" : "#Trigger:2625:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "displayed"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 355.562
+  }, {
+    "id" : 26000,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TagCreate v1.0",
+      "displayName" : "Create ThreatConnect Tag",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Apply IPQS Reputation",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "entity"
+      },
+      "value" : "#Trigger:2625:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tag"
+      },
+      "value" : "#App:26012:IPQS_Reputation!String"
+    } ],
+    "locationLeft" : 1782.0,
+    "locationTop" : 50.875
+  }, {
+    "id" : 25999,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Check for Successful Response",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:26014:success!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 702.0,
+    "locationTop" : 75.0625
+  }, {
+    "id" : 25998,
+    "appCatalogItem" : {
+      "programName" : "Add Attribute",
+      "displayName" : "Create ThreatConnect Attribute",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Add Imp Data points to Description",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "indicator_name"
+      },
+      "value" : "#Trigger:2625:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_type"
+      },
+      "value" : "Description"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "update"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "attribute_content"
+      },
+      "value" : "Organization: #App:26012:IPQS_Organization!String\nASN: #App:26012:IPQS_ASN!String\nHost: #App:26012:IPQS_host!String\nCountry Code: #App:26012:IPQD_country_code!String\nCity: #App:26012:IPQS_city!String\nRegion: #App:26012:IPQS_region!String\nIs Crawler: #App:26012:IPQS_is_crawler!String\nLatitude: #App:26012:IPQS_latitude!String\nLongitude: #App:26012:IPQS_longitude!String\nTime Zone: #App:26012:IPQS_timezone!String\nActive_vpn:#App:26012:IPQS_active_vpn!String\nActive_tor:#App:26012:IPQS_active_tor!String\nBot status:#App:26012:IPQS_bot_status!String\nMobile:#App:26012:IPQS_mobile!String\nFraud score:#App:26012:IPQS_fraud_score!String\nOperating system:#App:26012:IPQS_operating_system!String\nBrowser:#App:26012:IPQS_browser!String\nDevice model:#App:26012:IPQS_device_model!String\nDevice Brand:#App:26012:IPQS_device_brand!String\nTransaction Details:#App:26012:IPQS_transaction_details!String"
+    } ],
+    "locationLeft" : 1080.0,
+    "locationTop" : 120.375
+  }, {
+    "id" : 25993,
+    "appCatalogItem" : {
+      "programName" : "TCPB - UpdateRating v1.0",
+      "displayName" : "Update ThreatConnect Threat Rating",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Update ThreatConnect Threat Rating",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "field_type"
+      },
+      "value" : "RATING"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "source_entities"
+      },
+      "value" : "#Trigger:2625:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "rating"
+      },
+      "value" : "#App:26012:TC_Threat_Rating!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 2250.0,
+    "locationTop" : 275.5
+  }, {
+    "id" : 25990,
+    "appCatalogItem" : {
+      "programName" : "If / Else",
+      "displayName" : "If / Else",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "CheckThreatRatingNotNone",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_2"
+      },
+      "value" : "null"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "as_numeric"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operand_1"
+      },
+      "value" : "#App:26012:TC_Threat_Rating!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "operator"
+      },
+      "value" : "equals"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "match_case"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 2016.0,
+    "locationTop" : 168.75
+  }, {
+    "id" : 26020,
+    "appCatalogItem" : {
+      "programName" : "TCPB - TagRemove v1.0",
+      "displayName" : "Remove ThreatConnect Tag",
+      "programVersion" : "1.0.11"
+    },
+    "name" : "Remove ThreatConnect IPQS Tag",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delete"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "tag"
+      },
+      "value" : "#App:26019:split.TagsToRemove!StringArray"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "entity"
+      },
+      "value" : "#Trigger:2625:trg.action.entity!TCEntity"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 1548.0,
+    "locationTop" : 50.875
+  }, {
+    "id" : 26242,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Attribute Failure",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedAttribute\",\"value\":\"Failed to create IP Address Custom Attribute: #App:26007:attribute_types_array!String\"}]"
+    } ],
+    "locationLeft" : 230.0,
+    "locationTop" : 240.0
+  }, {
+    "id" : 26014,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v3.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "3.0.0"
+    },
+    "name" : "SuccessResponse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:26009:ipqs.ipreputation.results.data!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"success\",\"value\":\"success\"},{\"key\":\"message\",\"value\":\"message\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 468.0,
+    "locationTop" : 77.5625,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"success\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26013,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SplitString v1.0",
+      "displayName" : "Split String",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Attribute Types Array",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter_is_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"split.attributes.types.list\",\"value\":\"IPQualityScore Recent Abuse,IPQualityScore Abuse Velocity,IPQualityScore ISP,IPQualityScore Connection Type,IPQualityScore Proxy,IPQualityScore VPN,IPQualityScore TOR\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    } ],
+    "locationLeft" : 1314.0,
+    "locationTop" : 328.875,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"split.attributes.types.list\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 26012,
+    "appCatalogItem" : {
+      "programName" : "TCPB - JMESPath v3.0",
+      "displayName" : "JMESPath",
+      "programVersion" : "3.0.0"
+    },
+    "name" : "FetchURLResponse",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_expressions"
+      },
+      "value" : "[{\"key\":\"IPQS_recent_abuse\",\"value\":\"recent_abuse\"},{\"key\":\"IPQS_abuse_velocity\",\"value\":\"abuse_velocity\"},{\"key\":\"IPQS_ISP\",\"value\":\"ISP\"},{\"key\":\"IPQS_connection_type\",\"value\":\"connection_type\"},{\"key\":\"IPQS_proxy\",\"value\":\"proxy\"},{\"key\":\"IPQS_vpn\",\"value\":\"vpn\"},{\"key\":\"IPQS_tor\",\"value\":\"tor\"},{\"key\":\"IPQS_ASN\",\"value\":\"ASN\"},{\"key\":\"IPQS_host\",\"value\":\"host\"},{\"key\":\"IPQD_country_code\",\"value\":\"country_code\"},{\"key\":\"IPQS_city\",\"value\":\"city\"},{\"key\":\"IPQS_region\",\"value\":\"region\"},{\"key\":\"IPQS_is_crawler\",\"value\":\"is_crawler\"},{\"key\":\"IPQS_latitude\",\"value\":\"latitude\"},{\"key\":\"IPQS_longitude\",\"value\":\"longitude\"},{\"key\":\"IPQS_timezone\",\"value\":\"timezone\"},{\"key\":\"IPQS_active_vpn\",\"value\":\"active_vpn\"},{\"key\":\"IPQS_active_tor\",\"value\":\"active_tor\"},{\"key\":\"IPQS_bot_status\",\"value\":\"bot_status\"},{\"key\":\"IPQS_mobile\",\"value\":\"mobile\"},{\"key\":\"IPQS_fraud_score\",\"value\":\"fraud_score\"},{\"key\":\"IPQS_operating_system\",\"value\":\"operating_system\"},{\"key\":\"IPQS_browser\",\"value\":\"browser\"},{\"key\":\"IPQS_device_model\",\"value\":\"device_model\"},{\"key\":\"IPQS_device_brand\",\"value\":\"device_brand\"},{\"key\":\"IPQS_transaction_details\",\"value\":\"transaction_details\"},{\"key\":\"IPQS_Reputation\",\"value\":\"IPQS_Reputation\"},{\"key\":\"TC_Threat_Rating\",\"value\":\"TC_Threat_Rating\"},{\"key\":\"IPQS_Organization\",\"value\":\"organization\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "json_data"
+      },
+      "value" : "#App:26009:ipqs.ipreputation.results.data!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "string_array_expressions"
+      },
+      "value" : "[]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strip_quotes"
+      },
+      "value" : "true"
+    } ],
+    "locationLeft" : 800.0,
+    "locationTop" : 220.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_region\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_ISP\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_city\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_browser\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_proxy\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_connection_type\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_tor\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_operating_system\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_latitude\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_active_tor\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_active_vpn\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_Reputation\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"TC_Threat_Rating\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_vpn\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_fraud_score\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_ASN\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_longitude\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_device_brand\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_timezone\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_bot_status\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQD_country_code\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_transaction_details\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_mobile\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_Organization\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_host\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_device_model\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_is_crawler\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_recent_abuse\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"IPQS_abuse_velocity\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26011,
+    "appCatalogItem" : {
+      "programName" : "Merge",
+      "displayName" : "Merge",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Respnse Merger",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "output_array"
+      },
+      "value" : "[{\"key\":\"m.result\",\"value\":\"#App:26017:v.ResponseFailed!String\"},{\"key\":\"m.result\",\"value\":\"#App:26018:v.FailedDescriptionCustomAttribute!String\"},{\"key\":\"m.result\",\"value\":\"#App:26021:v.FailedCustomTag!String\"},{\"key\":\"m.result\",\"value\":\"#App:26022:v.success!String\"},{\"key\":\"m.result\",\"value\":\"#App:26023:v.FailedThreatRatingAttribute!String\"},{\"key\":\"m.result\",\"value\":\"#App:26024:v.SuccessRating!String\"}]"
+    } ],
+    "locationLeft" : 2718.0,
+    "locationTop" : 345.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"m.result\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26009,
+    "appCatalogItem" : {
+      "programName" : "TCAB - c176bcdb-d3e5-4bcd-bb92-4acf28d6839b Dev v0",
+      "displayName" : "IPQualityScore Enrichment",
+      "programVersion" : "0.1.0"
+    },
+    "name" : "IPQualityScore Enrichment 1",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "user_agent"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "mobile"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ipqualityscore_api_key"
+      },
+      "value" : "${ORGANIZATION:KEYCHAIN:IPQualityScore API Key}"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "timeout_in_seconds_160"
+      },
+      "value" : ""
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fast_for_email_address"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "email_address"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "allow_public_access_points"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "abuse_strictness"
+      },
+      "value" : "Please Select An Option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strictness_for_email_address"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strictness_for_ip_address"
+      },
+      "value" : "0"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fast_for_url"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "ip_address"
+      },
+      "value" : "#Trigger:2625:trg.action.item!String"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "lighter_penalties"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_no_results"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "user_language"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fail_on_error"
+      },
+      "value" : "true"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "enrichment_type"
+      },
+      "value" : "IP Address"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "suggest_domain"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "fast_for_ip_address"
+      },
+      "value" : "Please select an option"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "url"
+      }
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "strictness_for_url"
+      },
+      "value" : "0"
+    } ],
+    "locationLeft" : 234.0,
+    "locationTop" : 77.5625,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"ipqs.ipreputation.results.data\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"ipqualityscore_api_key\",\"enrichment_type\",\"ip_address\"]",
+    "layoutDisplayedInputParams" : "[\"ipqualityscore_api_key\",\"enrichment_type\",\"ip_address\",\"strictness_for_ip_address\",\"user_agent\",\"user_language\",\"fast_for_ip_address\",\"mobile\",\"allow_public_access_points\",\"lighter_penalties\",\"fail_on_no_results\",\"fail_on_error\"]"
+  }, {
+    "id" : 26007,
+    "appCatalogItem" : {
+      "programName" : "Iterator",
+      "displayName" : "Iterator",
+      "programVersion" : "1.0.0"
+    },
+    "name" : "Attribute Iterator",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_inputs"
+      },
+      "value" : "[{\"key\":\"attribute_values_array\",\"value\":\"#App:26005:split.attributes.list!StringArray\"},{\"key\":\"attribute_types_array\",\"value\":\"#App:26013:split.attributes.types.list!StringArray\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_outputs"
+      },
+      "value" : "[]"
+    } ],
+    "locationLeft" : 1548.0,
+    "locationTop" : 328.875,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"attribute_values_array\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"attribute_types_array\",\"type\":\"String\"}]",
+    "layoutRequiredInputParams" : "[\"array_inputs\"]",
+    "layoutDisplayedInputParams" : "[\"array_inputs\",\"array_outputs\"]"
+  }, {
+    "id" : 26005,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SplitString v1.0",
+      "displayName" : "Split String",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Attribute Values Array",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"split.attributes.list\",\"value\":\"#App:26012:IPQS_recent_abuse!String  ,#App:26012:IPQS_abuse_velocity!String  ,#App:26012:IPQS_ISP!String  ,#App:26012:IPQS_connection_type!String  ,#App:26012:IPQS_proxy!String  ,#App:26012:IPQS_vpn!String  ,#App:26012:IPQS_tor!String\"}]"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter_is_regex"
+      },
+      "value" : "false"
+    } ],
+    "locationLeft" : 1080.0,
+    "locationTop" : 328.875,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"split.attributes.list\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 26024,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Success Rating",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.SuccessRating\",\"value\":\"Playbook Successful\"}]"
+    } ],
+    "locationLeft" : 2484.0,
+    "locationTop" : 206.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.SuccessRating\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26023,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Failed Rating",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedThreatRatingAttribute\",\"value\":\"Failed to update Threat Rating\"}]"
+    } ],
+    "locationLeft" : 2484.0,
+    "locationTop" : 345.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.FailedThreatRatingAttribute\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26022,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Success",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.success\",\"value\":\"Playbook Successful\"}]"
+    } ],
+    "locationLeft" : 2250.0,
+    "locationTop" : 67.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.success\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26021,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Failed Custom Tag",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedCustomTag\",\"value\":\"Failed to add Custom Tag\"}]"
+    } ],
+    "locationLeft" : 2016.0,
+    "locationTop" : -72.0,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.FailedCustomTag\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26019,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SplitString v1.0",
+      "displayName" : "Split String",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Split Tags to remove",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter_is_regex"
+      },
+      "value" : "false"
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "delimiter"
+      },
+      "value" : ","
+    }, {
+      "appCatalogItemParameter" : {
+        "paramName" : "array_mapping"
+      },
+      "value" : "[{\"key\":\"split.TagsToRemove\",\"value\":\"Critical,High Risk,Moderate Risk,Suspicious,Low Risk,Clean\"}]"
+    } ],
+    "locationLeft" : 1314.0,
+    "locationTop" : 50.875,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"split.TagsToRemove\",\"type\":\"StringArray\"}]"
+  }, {
+    "id" : 26018,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Failed  Description Attribute",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.FailedDescriptionCustomAttribute\",\"value\":\"Failed to create Description Custom Attribute\"}]"
+    } ],
+    "locationLeft" : 1314.0,
+    "locationTop" : 189.875,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.FailedDescriptionCustomAttribute\",\"type\":\"String\"}]"
+  }, {
+    "id" : 26017,
+    "appCatalogItem" : {
+      "programName" : "TCPB - SetVariable v1.0",
+      "displayName" : "Set Variable",
+      "programVersion" : "1.0.14"
+    },
+    "name" : "Set Response Failed",
+    "jobParameterList" : [ {
+      "appCatalogItemParameter" : {
+        "paramName" : "variable_mapping"
+      },
+      "value" : "[{\"key\":\"v.ResponseFailed\",\"value\":\"#App:26014:success!String\"}]"
+    } ],
+    "locationLeft" : 846.0,
+    "locationTop" : -69.5,
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"v.ResponseFailed\",\"type\":\"String\"}]"
+  } ],
+  "playbookConnectionList" : [ {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26242,
+    "targetJobId" : 26002
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26004,
+    "targetJobId" : 26242
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26024,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26023,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25993,
+    "targetJobId" : 26024
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25993,
+    "targetJobId" : 26023
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26022,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25990,
+    "targetJobId" : 26022
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25990,
+    "targetJobId" : 25993
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26021,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26000,
+    "targetJobId" : 26021
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26020,
+    "targetJobId" : 26000
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26019,
+    "targetJobId" : 26020
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25998,
+    "targetJobId" : 26019
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26018,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25998,
+    "targetJobId" : 26018
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26017,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Fail",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25999,
+    "targetJobId" : 26017
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26012,
+    "targetJobId" : 25998
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 26011,
+    "targetTriggerId" : 2625
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 25999,
+    "targetJobId" : 26012
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26014,
+    "targetJobId" : 25999
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26009,
+    "targetJobId" : 26014
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26000,
+    "targetJobId" : 25990
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "targetJobId" : 26009,
+    "sourceTriggerId" : 2625
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26012,
+    "targetJobId" : 26005
+  }, {
+    "type" : "StartLoop",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26007,
+    "targetJobId" : 26004
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26013,
+    "targetJobId" : 26007
+  }, {
+    "type" : "EndLoop",
+    "isCircularOnTarget" : true,
+    "sourceJobId" : 26002,
+    "targetJobId" : 26007
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26007,
+    "targetJobId" : 26011
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26004,
+    "targetJobId" : 26001
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26001,
+    "targetJobId" : 26002
+  }, {
+    "type" : "Pass",
+    "isCircularOnTarget" : false,
+    "sourceJobId" : 26005,
+    "targetJobId" : 26013
+  } ],
+  "playbookTriggerList" : [ {
+    "id" : 2625,
+    "name" : "IPQualityScore IP Address Reputation",
+    "type" : "UserAction",
+    "eventType" : "External",
+    "locationLeft" : 0.0,
+    "locationTop" : 77.5625,
+    "httpResponseHeader" : "[]",
+    "httpResponseBody" : "#App:26011:m.result!String",
+    "anyOrg" : true,
+    "userActionTypes" : "Address",
+    "renderBodyAsTip" : true,
+    "playbookTriggerFilterList" : [ ],
+    "outputVariables" : "[{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.item\",\"type\":\"String\"},{\"sourceInputList\":[],\"loopVariables\":false,\"name\":\"trg.action.entity\",\"type\":\"TCEntity\"}]",
+    "cacheMinutes" : 120,
+    "cacheParams" : "{\"includeMethod\":false,\"includeBody\":false,\"queryParams\":[],\"headerNames\":[]}"
+  } ],
+  "playbookLabels" : [ ],
+  "exportablePipes" : [ ]
+}
