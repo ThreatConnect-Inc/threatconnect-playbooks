@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """Attribute Dictionary"""
 
+# standard library
 from collections import OrderedDict
 
 __notfound__ = object()
+
+# pylint: disable=inconsistent-return-statements
 
 
 class literal(str):
@@ -25,7 +28,7 @@ class AttrDict(OrderedDict):
 
         value = self.get(attr, deflt)
         if value is __notfound__:
-            raise AttributeError(attr)
+            return Phantom(attr, self)
         return value
 
     def __setattr__(self, attr, value):
@@ -85,19 +88,6 @@ class AttrDict(OrderedDict):
 
             return result
 
-        return value
-
-
-class PhantomDict(AttrDict):
-    """Dictionary which allows attribute access, and returns phantom objects
-    when an undefined attribute is accessed"""
-
-    def __getattr__(self, attr, deflt=__notfound__):
-        """Get attribute -- converts attribute to key"""
-
-        value = self.get(attr, deflt)
-        if value is __notfound__:
-            return Phantom(attr, self)
         return value
 
 
@@ -161,7 +151,6 @@ class Phantom:
         self._parent[self._name] = ob
         d = self.__dict__
         d['_realized'] = True
-        return value
 
     def __setitem__(self, attr, value):
         """If realized, call setattr on the realized object"""
@@ -174,7 +163,6 @@ class Phantom:
         self._parent[self._name] = ob
         d = self.__dict__
         d['_realized'] = True
-        return value
 
     def __getitem__(self, item, default=__notfound__):
         """Proxy getitem"""
@@ -209,7 +197,6 @@ class Phantom:
 
         if self._check_realized:
             return f'<Phantom (lingering) {self._name} of {self._parent}>'
-
         return f'<Phantom {self._name} of {self._parent}>'
 
     def __str__(self):

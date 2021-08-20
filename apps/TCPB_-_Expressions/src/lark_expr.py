@@ -42,16 +42,17 @@ class open_list(list):
 
 @v_args(inline=True)
 class Evaluate(Transformer):
-    """ Walk the parse tree and evaluate the result """
+    """Walk the parse tree and evaluate the result"""
 
     num_float = float
     num_int = int
 
     def __init__(self, namespace=None, redis_helper=None):
-        """ init """
+        """init"""
 
         self.namespace = namespace or {}
         self.redis_helper = redis_helper
+        self.trace = None
 
     @coerce
     @staticmethod
@@ -86,7 +87,7 @@ class Evaluate(Transformer):
 
     @coerce
     @staticmethod
-    def add(a: Union[int, float, literal], b: Union[int, float, literal]):
+    def add(a: Union[int, float, literal, list], b: Union[int, float, literal, list]):
         """add"""
 
         return a + b
@@ -124,7 +125,7 @@ class Evaluate(Transformer):
         return kwarg(name, value)
 
     def list_(self, *args):
-        """ list """
+        """list"""
         # print(f'>>> list {args!r}')
 
         result = open_list()
@@ -169,11 +170,13 @@ class Evaluate(Transformer):
         return tuple(a)
 
     def function(self, name, args):
-        """ call function """
+        """call function"""
 
         if not isinstance(args, open_list):
             args = (args,)
-        # print(f'>>> call {name!r} {args!r}')
+
+        if self.trace:
+            self.trace(f'>>> call {name!r} {args!r}')
 
         kwargs = {}
 
@@ -196,7 +199,9 @@ class Evaluate(Transformer):
 
         # TODO: check signatures
         result = f(*arglist, **kwargs)
-        # print(f'>>> = {result!r}')
+
+        if self.trace:
+            self.trace(f'>>> = {result!r}')
         return result
 
     def concat_string(self, a, b):
@@ -205,14 +210,14 @@ class Evaluate(Transformer):
         return literal(str(a) + str(b))
 
     def tcvariable(self, name):
-        """ Look up variable in REDIS """
+        """Look up variable in REDIS"""
 
         if self.redis_helper:
             return self.redis_helper(name)
         return None
 
     def getattr(self, base, name):
-        """ getattr """
+        """getattr"""
         if isinstance(base, tcvar):
             try:
                 base = json.loads(tcvar)
@@ -223,13 +228,13 @@ class Evaluate(Transformer):
         return getattr(base, name)
 
     def get_slice(self, base, start=None, end=None):
-        """ get_slice """
+        """get_slice"""
 
         # print(f'>>> get slice {base!r}[{start!r}:{end!r}]')
         return base[start:end]
 
     def none(self):
-        """ None """
+        """None"""
         return None
 
     def literal_(self, a):
@@ -291,7 +296,7 @@ class Evaluate(Transformer):
         return a not in b
 
     def var(self, name):
-        """ look up variable in the namespace """
+        """look up variable in the namespace"""
 
         # print(f'>>> lookup {name!r}')
         result = self.namespace.get(name, __notfound__)
@@ -308,12 +313,14 @@ class Expression(ExpressionMethods):
 
     def __init__(self, tcex=None):
         self.variables = {}
+        self.stack = []
         self.evaluator = Evaluate(self, self.redis_fetch)
         self.parser = Lark.open(
             'grammar.lark', parser='lalr', start='start', transformer=self.evaluator
         )
         self.tcex = tcex
         self.cache = {}
+        self.trace = None
 
     true = True
     false = False
@@ -348,7 +355,7 @@ class Expression(ExpressionMethods):
         return ob
 
     def deencapsulate(self, ob):
-        """ deencapsulate tcvars """
+        """deencapsulate tcvars"""
 
         if ob is None:
             return ob
@@ -381,34 +388,67 @@ class Expression(ExpressionMethods):
     def redis_fetch(self, variable):
         """Fetch a TC variable from Redis"""
 
+        if self.trace:
+            self.trace(f'<R< {variable}')
+
         if variable in self.cache:
-            return self.cache[variable]
+            result = self.cache[variable]
+            if self.trace:
+                tracecd = 'C'
+                if isinstance(result, tcvar):
+                    tracecd = 'T'
+                self.trace(f'={tracecd}= {result!r}')
+
+            while isinstance(result, tcvar):
+                result = self.deencapsulate(result)
+                if self.trace:
+                    tracecd = 'D'
+                    if isinstance(result, tcvar):
+                        tracecd = 'T'
+                    self.trace(f'={tracecd}= {result!r}')
+            return result
 
         if self.tcex:
-            result = self.tcex.playbook.read(variable)
+            result = self.tcex.playbook.read(variable, embedded=False)
         else:
             result = None
 
-        # first, see if we can parse what we got
+        # Encapsulating the result will mark any strings or internal strings
+        # to the object as tcvar
 
-        if isinstance(result, str):
-            try:
-                result = self.eval(result)
-                self.cache[variable] = result
-                return result
-            except Exception:
-                pass  # nope!
-
-        # Now, walk through result and encapsulate any strings as tcvar
+        if self.trace:
+            self.trace(f'=E= {result}')
         result = self.encapsulate(result)
 
+        # Now, as long as the top level thing is encapsulated, deencapsulate it
+
+        while isinstance(result, tcvar):
+            if self.trace:
+                tracecd = 'R'
+                if isinstance(result, tcvar):
+                    tracecd = 'T'
+                self.trace(f'={tracecd}= {result!r}')
+
+            result = self.deencapsulate(result)
+
+            if self.trace:
+                tracecd = 'D'
+                if isinstance(result, tcvar):
+                    tracecd = 'T'
+                self.trace(f'={tracecd}= {result!r}')
+
         self.cache[variable] = result
+
         return result
 
     def get(self, variable, default=None):
         """Get a variable"""
 
         # first, if the variable is in self.variables, thats it!
+
+        for context in self.stack:
+            if variable in context:
+                return context[variable]
 
         if variable in self.variables:
             return self.variables[variable]
@@ -435,21 +475,44 @@ class Expression(ExpressionMethods):
 
         self.variables[variable] = value
 
-    def eval(self, expression):
+    def eval(self, expression, context=None):
         """Evaluate an expression"""
+
+        if context:
+            self.stack.insert(0, context)
+
+        if self.trace:
+            self.trace(f'<?< {expression}')
+
         try:
             result = self.parser.parse(expression)
         except lark.exceptions.UnexpectedToken as e:
+            if self.trace:
+                self.trace(f'-X- Unexpected token {e.token} at line {e.line}, column {e.column}')
             raise SyntaxError(
                 f'Unexpected token {e.token} at line {e.line}, column {e.column}.'
             ) from e
+        except Exception as e:
+            if self.trace:
+                self.trace(f'-X- {e}')
+            raise
+        finally:
+            if context:
+                self.stack.pop(0)
 
+        if self.trace:
+            tracecd = 'R'
+            if isinstance(result, tcvar):
+                tracecd = 'T'
+            elif isinstance(result, literal):
+                tracecd = 'L'
+            self.trace(f'>{tracecd}> {result!r}')
         result = self.deencapsulate(result)
 
         return result
 
 
-def interactive(record=False):
+def interactive(record=False, trace=False):
     """interactive expression evaluator"""
 
     if readline is not None:
@@ -460,6 +523,10 @@ def interactive(record=False):
     if record:
         fh = open('local-expr-record.txt', 'a')
 
+    if trace:
+        engine.trace = lambda x: print(x)
+        engine.evaluator.trace = engine.trace
+
     def setfcn(name, value):
         """Set a variable"""
         engine.set(name, value)
@@ -467,8 +534,25 @@ def interactive(record=False):
 
     engine.set('set', setfcn)  # add a set function so you can set(name, value)
 
+    def cachefcn(name=None, value=None):
+        """Cache a variable"""
+        if name is None:
+            return engine.cache
+
+        if isinstance(value, literal):
+            if value[0] == value[-1] and value[0] in ('"', "'"):
+                value = value[1:-1]
+            value = tcvar(value)
+
+        engine.cache[name] = value
+        return None
+
+    engine.set('cache', cachefcn)  # add a set function so you can set(name, value)
+
     while True:
         try:
+            if trace:
+                print()
             expr = input('>>> ')
         except EOFError:
             print()
@@ -492,6 +576,7 @@ def interactive(record=False):
             if record:
                 fh.write(f'    ({expr!r}, lark.exceptions.LarkError),\n')
         except Exception as e:
+            # print(traceback.format_exc())
             print(traceback.format_exc(limit=0).rstrip().split('\n')[-1])
             if record:
                 args = tuple([str(x) for x in e.args])  # pylint: disable=consider-using-generator
@@ -500,4 +585,5 @@ def interactive(record=False):
 
 if __name__ == '__main__':
     record_flag = bool('--record' in sys.argv)
-    interactive(record_flag)
+    trace_flag = bool('--trace' in sys.argv)
+    interactive(record=record_flag, trace=trace_flag)

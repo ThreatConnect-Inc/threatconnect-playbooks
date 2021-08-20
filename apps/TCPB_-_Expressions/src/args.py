@@ -25,4 +25,5 @@ class Args:
         parser.add_argument('--tce_outputs')
         parser.add_argument('--tcee_array_outputs')
         parser.add_argument('--tcee_outputs')
+        parser.add_argument('--trace', action='store_true')
         parser.add_argument('--variables')
