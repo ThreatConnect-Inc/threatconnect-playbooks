@@ -70,7 +70,7 @@ app:
   playbookType: Utility
   programLanguage: PYTHON
   programMain: run
-  programVersion: 1.0.8
+  programVersion: 1.0.9
   releaseNotes:
     1.0.0 (2020-06-15):
     - Initial Release
@@ -114,6 +114,11 @@ app:
     - add fetch_indicators, indicator_types
     - add default value to format in case of missing values
     - add set to write into a dictionary
+    1.0.9 (2021-08-20):
+    - add dict function
+    - add report function
+    - add Trace subexpression advanced option
+    - fix encapsulation/deencapsulation of embedded TC variables
   retry:
     allowed: false
     defaultDelayMinutes: 1
@@ -452,6 +457,11 @@ inputGroups:
     note: If an action contains multiple steps, and one step fails, continue execution
       without halting.
     type: Boolean
+  - default: false
+    label: Trace subexpression execution
+    name: trace
+    note: Trace execution of subexpresssions at DEBUG level in the application's log.
+    type: Boolean
   - default: true
     disabled: true
     label: Verify SSL Cert
@@ -467,5 +477,8 @@ outputGroups:
   tc_action not in (''):
     String:
     - expression.action
+    - ~expression.response.json.raw
+    - ~expression.response.error_message
+    - ~expression.response.status_code
     StringArray:
     - expression.errors

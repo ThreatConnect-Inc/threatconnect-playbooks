@@ -109,6 +109,7 @@ class SkipIf(object):
         return self.value
 
 
+# pylint: disable=line-too-long
 FUNCTION_TESTS = [
     ('join(", ", "one", "two", "three")', 'one, two, three'),
     ('split("one,two,three", ",")', ['one', 'two', 'three']),
@@ -1005,6 +1006,29 @@ FUNCTION_TESTS = [
         [{'a': 1, 'b': 1}, {'a': 2, 'b': 2}, {'a': 0, 'b': 3}],
     ),
     ("alter({}, 'a', 1)", 1),
+    (
+        "report( ( ('a', 'b', 'c'), (1, 'bollux', 3), ('foo', 'bla', 'rumplestiltskin') ), header=True, title='Report', width=20)",
+        '\n\n       Report       \n       ------       \n\nA   B      C        \n--- ------ ---------\n1   bollux 3        \nfoo bla    rum-     \n           plestilt-\n           skin     ',
+    ),
+    (
+        "report( ( ('a', 'b', 'c'), (1, 'bollux', 3), ('foo', 'bla', 'rumplestiltskin') ), header=True, title='Report', width=80)",
+        '\n\n                                     Report                                     \n                                     ------                                     \n\nA   B      C               \n--- ------ --------------- \n1   bollux 3              \nfoo bla    rumplestiltskin',
+    ),
+    (
+        "report( ( ('a', 'b', 'c'), (1, 'bollux', 3), ('foo', 'bla', 'rumplestiltskin') ), header=True, title='Report', width=80, prolog='Report Prolog', epilog='Report Epilog')",
+        '\n\n                                     Report                                     \n                                     ------                                     \n\n\nReport Prolog                                                                   \n\nA   B      C               \n--- ------ --------------- \n1   bollux 3              \nfoo bla    rumplestiltskin\n\nReport Epilog                                                                   \n',
+    ),
+    ('dict(one=1, two=2)', {'one': 1, 'two': 2}),
+    (
+        "kvlist( { 'name': 'Foo', 'value': 'Foo Value'}, {'name': 'Bla', 'value': 'Bla Value'})",
+        TypeError(
+            'dictlist must be a list of dictionaries',
+        ),
+    ),
+    (
+        "kvlist(({ 'key': 'Foo', 'value': 'Foo Value'}, {'key': 'Bla', 'value': 'Bla Value'}))",
+        {'Foo': 'Foo Value', 'Bla': 'Bla Value'},
+    ),
 ]
 
 

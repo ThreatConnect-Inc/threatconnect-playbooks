@@ -75,6 +75,9 @@
         },
         {
           "name": "return_none_on_failure"
+        },
+        {
+          "name": "trace"
         }
       ],
       "sequence": 3,

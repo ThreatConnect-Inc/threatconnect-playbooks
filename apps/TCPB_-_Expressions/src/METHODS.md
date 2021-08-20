@@ -46,7 +46,7 @@
 
   * `alter(dictionary, key, value)`
 
-    Set a specfic key in a dictionary.  Returns the value.
+    Set a specific key in a dictionary.  Returns the value.
 
   * `asin(x)`
 
@@ -157,6 +157,10 @@
 
     Convert X to degrees
 
+  * `dict(**kwargs)`
+
+    Return a dictionary of arguments
+
   * `erf(x)`
 
     Error Function of X
@@ -217,7 +221,7 @@
 
     Return floating point value of object
 
-  * `format(s, *args, default=<object object at 0x10c7fe7a0>, **kwargs)`
+  * `format(s, *args, default=<object object at 0x10dcea7d0>, **kwargs)`
 
     Format string S according to Python string formatting rules.  Compound
     structure elements may be accessed with dot or bracket notation and without quotes
@@ -294,6 +298,12 @@
   * `keys(ob)`
 
     Keys of dictionary
+
+  * `kvlist(dictlist, key='key', value='value')`
+
+    Return a list of dictionaries as a single dictionary with the list
+    item's key value as the key, and the list item's value value as the value.
+    Duplicate keys will promote the value to a list of values.
 
   * `len(container)`
 
@@ -412,6 +422,54 @@
   * `replace(s, source, target)`
 
     Replace chars on S
+
+  * `report(data, columns=None, title=None, header=True, width=None, prolog=None, epilog=None, sort=None, filter=None)`
+
+    Generates a text report of data in columnar format.  Data is either a list of
+    dictionaries, or a list of lists of columnar data.  If a list of lists,
+    then the first row is the header row of the data.
+
+    Columns is a list of row specifiers or a single row specifier, which is a list of
+    column definitions.  If there are multiple row specifiers, each record takes up
+    multiple output rows.
+
+    A row specifier is either an ordered dictionary of name: column specifier or
+    a list of (name, column specifier) tuples.
+
+    A column specifier is width[:height][/option[=value]][/option[=value]]...
+    If rows are lists of lists (e.g. CSV data) and no column specifiers are used, the
+    widths will be automatically calculated.
+
+    Options:
+
+    - align=left|right|center
+
+    - value=format    - format for values e.g. {lineno}.
+    to add a . after lineno
+
+    - error=value     - value to use if the value= format causes an error
+
+    - notrim          - Don't trim leading/trailing space
+
+    - hang=n          - Hanging paragraph by N spaces
+
+    - indent=n        - Indent paragraph by N spaces
+
+    - split=n         - split at n% through the column (default 80)
+    if necessary
+
+    - label=string    - heading label
+
+    - doublenl        - Double newlines (ie, add line after paragraph)
+
+    - nohyphenate     - Don't hyphenate value
+
+    If sort is specified, it is a column or list of columns to sort by, with the column
+    name optionally prefixed with a '-' to do a descending sort.
+
+    If filter is specified, it is an expression that must be true for that record to appear
+    in the result, e.g. filter="salary>70000".
+
 
   * `research(pattern, string, flags='')`
 

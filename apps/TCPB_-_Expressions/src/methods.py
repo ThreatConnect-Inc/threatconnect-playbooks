@@ -33,7 +33,6 @@ import locale as locale_
 import math
 from pprint import pformat
 import re
-from string import Formatter
 import urllib.parse
 import uuid
 import typing
@@ -52,7 +51,8 @@ from literal import literal
 from spamspy.spamsum import spamsum
 from spamspy.edit_dist import edit_dist
 
-from attrdict import AttrDict
+from smartdict import SmartDict, smart_format
+from reporting import Reporting
 from rexxparse import RexxParser
 from xml_util import xml_to_dict, dict_to_xml
 
@@ -166,57 +166,6 @@ def coerce(f):
 
 
 __notfound__ = object()
-
-
-class SmartDict:
-    """Smart dictionary object"""
-
-    def __init__(self, namespace, d=None, default=__notfound__):
-        """init"""
-        self.namespace = namespace
-        if not d:
-            d = {}
-        self.values = d
-        self.default = default
-
-    def __getitem__(self, name, default=__notfound__):
-        """ get item from values *or* namespace """
-
-        if default is __notfound__:
-            default = self.default
-
-        if name in self.values:
-            value = self.values[name]
-        else:
-            value = self.namespace.get(name, __notfound__)
-
-        if value is __notfound__:
-            value = getattr(self.namespace, name, __notfound__)
-
-        if value is __notfound__:
-            value = default
-
-        if value is __notfound__:
-            raise KeyError(name)
-
-        return self.encapsulate(value)
-
-    get = __getitem__
-    __getattr__ = __getitem__
-
-    def encapsulate(self, value):
-        """Encapsulate dicts into AttrDicts"""
-
-        if not isinstance(value, (list, tuple, dict)):
-            return value
-
-        if isinstance(value, (list, tuple)):
-            result = [self.encapsulate(x) for x in value]
-            if isinstance(value, tuple):
-                result = tuple(result)
-            return result
-
-        return AttrDict(value)
 
 
 class ExpressionMethods:
@@ -527,6 +476,16 @@ class ExpressionMethods:
 
         return math.degrees(x)
 
+    @staticmethod
+    def f_dict(**kwargs):
+        """Return a dictionary of arguments"""
+        d = OrderedDict()
+        # kwarg keys can be tokens from the lexer
+        for key, value in kwargs.items():
+            d[str(key)] = value
+
+        return d
+
     @coerce
     @staticmethod
     def f_erf(x: Union[int, float]):
@@ -544,7 +503,7 @@ class ExpressionMethods:
     @coerce
     @staticmethod
     def f_exp(x: Union[int, float]):
-        """Math Exp of X """
+        """Math Exp of X"""
 
         return math.exp(x)
 
@@ -796,10 +755,7 @@ class ExpressionMethods:
         or `blob[0].events[0].source.device.ipAddress`.  If default is set,
         that value will be used for any missing value."""
 
-        kws = SmartDict(self, kwargs, default=default)
-        fmt = Formatter()
-
-        return fmt.vformat(s, args, kws)
+        return smart_format(s, *args, _default=default, _context=self, **kwargs)
 
     @staticmethod
     def f_fuzzydist(hash1, hash2):
@@ -981,6 +937,41 @@ class ExpressionMethods:
         """Keys of dictionary"""
 
         return list(ob.keys())
+
+    @staticmethod
+    def f_kvlist(dictlist: List[dict], key='key', value='value'):
+        """Return a list of dictionaries as a single dictionary with the list
+        item's key value as the key, and the list item's value value as the value.
+        Duplicate keys will promote the value to a list of values."""
+
+        result = {}
+        duplicates = set()
+
+        if not dictlist:
+            return result
+
+        if not isinstance(dictlist, (list, tuple)):
+            raise TypeError('dictlist must be a list or tuple of dictionaries')
+
+        for item in dictlist:
+            if not isinstance(item, dict):
+                raise TypeError('dictlist must only contain dictionaries')
+
+            key_value = item.get(key, None)
+            value_value = item.get(value, None)
+
+            if key_value not in result:
+                result[key_value] = value_value
+            else:
+                if key_value not in duplicates:
+                    existing_value = [result[key_value]]
+                    duplicates.add(key_value)
+                else:
+                    existing_value = result[key_value]
+                existing_value.append(value_value)
+                result[key_value] = existing_value
+
+        return result
 
     @staticmethod
     def f_len(container):
@@ -1314,6 +1305,77 @@ class ExpressionMethods:
         """Replace chars on S"""
 
         return s.replace(source, target)
+
+    def f_report(
+        self,
+        data: list,
+        columns: list = None,
+        title=None,
+        header=True,
+        width=None,
+        prolog=None,
+        epilog=None,
+        sort=None,
+        filter=None,  # pylint: disable=redefined-builtin
+    ):
+        """Generates a text report of data in columnar format.  Data is either a list of
+        dictionaries, or a list of lists of columnar data.  If a list of lists,
+        then the first row is the header row of the data.
+
+        Columns is a list of row specifiers or a single row specifier, which is a list of
+        column definitions.  If there are multiple row specifiers, each record takes up
+        multiple output rows.
+
+        A row specifier is either an ordered dictionary of name: column specifier or
+        a list of (name, column specifier) tuples.
+
+        A column specifier is width[:height][/option[=value]][/option[=value]]...
+        If rows are lists of lists (e.g. CSV data) and no column specifiers are used, the
+        widths will be automatically calculated.
+
+        Options:
+
+            - align=left|right|center
+
+            - value=format    - format for values e.g. {lineno}.
+                                to add a . after lineno
+
+            - error=value     - value to use if the value= format causes an error
+
+            - notrim          - Don't trim leading/trailing space
+
+            - hang=n          - Hanging paragraph by N spaces
+
+            - indent=n        - Indent paragraph by N spaces
+
+            - split=n         - split at n% through the column (default 80)
+                                if necessary
+
+            - label=string    - heading label
+
+            - doublenl        - Double newlines (ie, add line after paragraph)
+
+            - nohyphenate     - Don't hyphenate value
+
+        If sort is specified, it is a column or list of columns to sort by, with the column
+        name optionally prefixed with a '-' to do a descending sort.
+
+        If filter is specified, it is an expression that must be true for that record to appear
+        in the result, e.g. filter="salary>70000".
+        """
+
+        reporting = Reporting(self)
+        return reporting.create_report(
+            data,
+            columns=columns,
+            title=title,
+            header=header,
+            width=width,
+            prolog=prolog,
+            epilog=epilog,
+            sort=sort,
+            filter=filter,
+        )
 
     @staticmethod
     def f_research(pattern, string, flags=''):
