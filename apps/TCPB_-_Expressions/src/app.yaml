@@ -70,7 +70,7 @@ app:
   playbookType: Utility
   programLanguage: PYTHON
   programMain: run
-  programVersion: 1.0.9
+  programVersion: 1.0.10
   releaseNotes:
     1.0.0 (2020-06-15):
     - Initial Release
@@ -119,6 +119,13 @@ app:
     - add report function
     - add Trace subexpression advanced option
     - fix encapsulation/deencapsulation of embedded TC variables
+    1.0.10 (2021-09-23):
+    - add URL method
+    - add StringArray outputs on the *Many forms
+    - add partitionedmerge function
+    - add round function
+    - fix encapsulation/deencapsulation of top level "naked" TC variables which are
+      structures like TCEntities (allow passthrough of entity)
   retry:
     allowed: false
     defaultDelayMinutes: 1
@@ -291,6 +298,21 @@ inputGroups:
     - TCEnhancedEntityArray
 - group: Advanced
   inputs:
+  - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
+    label: StringArray Outputs
+    type: KeyValueList
+    note: Outputs to be delivered as StringArray
+    exposePlaybookKeyAs: StringArray
+    playbookDataType:
+    - String
+    - StringArray
+    - Binary
+    - BinaryArray
+    - KeyValue
+    - KeyValueArray
+    - TCEntity
+    - TCEntityArray
+    - TCEnhancedEntity
   - display: tc_action in ('Evaluate Many', 'Evaluate Many With Loop')
     label: Binary Outputs
     type: KeyValueList

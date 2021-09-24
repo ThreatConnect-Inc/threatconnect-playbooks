@@ -332,6 +332,7 @@ class App(PlaybookApp):
             self.expression = self.tcex.playbook.read(expr, embedded=True)
         except Exception:
             self.expression = self.tcex.playbook.read(expr, embedded=False)
+
         expr = self.tcex.playbook.read(expr, embedded=False)
         self.tcex.log.info(f'Evaluating expression {expr!r}')
 
@@ -371,6 +372,7 @@ class App(PlaybookApp):
 
         self.setup_vars('variables')
         self.setup_outputs('outputs')
+        self.setup_outputs('stringarray_outputs', required=False, output_type='StringArray')
         self.setup_outputs('binary_outputs', required=False, output_type='Binary')
         self.setup_outputs('binary_array_outputs', required=False, output_type='BinaryArray')
         self.setup_outputs('kv_outputs', required=False, output_type='KeyValue')
@@ -405,6 +407,7 @@ class App(PlaybookApp):
             self.engine.set(key, value)
 
         self.setup_outputs('additional_outputs', required=False)
+        self.setup_outputs('stringarray_outputs', required=False, output_type='StringArray')
         self.setup_outputs('binary_outputs', required=False, output_type='Binary')
         self.setup_outputs('binary_array_outputs', required=False, output_type='BinaryArray')
         self.setup_outputs('kv_outputs', required=False, output_type='KeyValue')
@@ -431,8 +434,13 @@ class App(PlaybookApp):
         if output_type in ('String', 'Binary') and isinstance(value, (dict, list, tuple)):
             value = json.dumps(value, sort_keys=True)
 
+        if output_type == 'String' and not isinstance(value, str):
+            self.tcex.log.debug(f'Coercing output {name} to string from {value!r}')
+            value = str(value)
+
         if output_type == 'Binary' and isinstance(value, str):
             value = bytes(value, 'utf-8')
+
         if output_type == 'BinaryArray':
             newval = []
             for item in value:
@@ -462,7 +470,9 @@ class App(PlaybookApp):
 
         self.tcex.playbook.create_output('expression.action', self.tcex.args.tc_action, 'String')
         if self.expression:
-            self.tcex.playbook.create_output('expression.expression', self.expression, 'String')
+            self.tcex.playbook.create_output(
+                'expression.expression', str(self.expression), 'String'
+            )
         if self.output:
             self.write_one('expression.result.0', self.output[0], 'String')
             self.write_one('expression.result.array', self.output, 'StringArray')

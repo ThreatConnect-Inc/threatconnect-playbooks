@@ -47,6 +47,10 @@
       "parameters": [
         {
           "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
+          "name": "stringarray_outputs"
+        },
+        {
+          "display": "tc_action in ('Evaluate Many', 'Evaluate Many With Loop')",
           "name": "binary_outputs"
         },
         {
