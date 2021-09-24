@@ -2,6 +2,14 @@
 
 # Release Notes
 
+### 1.0.10 (2021-09-23)
+
+* add URL method
+* add StringArray outputs on the *Many forms
+* add partitionedmerge function
+* add round function
+* fix encapsulation/deencapsulation of top level "naked" TC variables which are structures like TCEntities (allow passthrough of entity)
+
 ### 1.0.9 (2021-08-20)
 
 * add dict function
@@ -161,6 +169,10 @@ Perform multiple evaluations, one set to define variables, another to define out
 
 ### *Advanced*
 
+  _**StringArray Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as StringArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity
+
   _**Binary Outputs**_ *(KeyValueList, Optional)*
   Outputs to be delivered as Binary
   > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
@@ -276,6 +288,10 @@ nested outputs.  Tuple outputs will create nested outputs.
   > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity, TCEnhancedEntityArray
 
 ### *Advanced*
+
+  _**StringArray Outputs**_ *(KeyValueList, Optional)*
+  Outputs to be delivered as StringArray
+  > **Allows:** String, StringArray, Binary, BinaryArray, KeyValue, KeyValueArray, TCEntity, TCEntityArray, TCEnhancedEntity
 
   _**Binary Outputs**_ *(KeyValueList, Optional)*
   Outputs to be delivered as Binary
@@ -539,7 +555,7 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Return floating point value of object
 
-  * `format(s, *args, default=<object object at 0x10dcea7d0>, **kwargs)`
+  * `format(s, *args, default=<object object at 0x1051b09b0>, **kwargs)`
 
     Format string S according to Python string formatting rules.  Compound
     structure elements may be accessed with dot or bracket notation and without quotes
@@ -695,6 +711,22 @@ nested outputs.  Tuple outputs will create nested outputs.
 
     Pad iterable to length
 
+  * `partitionedmerge(array1, array2)`
+
+    Merges two arrays of strings to a single array with ordering
+    preserved between partitions in the arrays.  Common lines are partitions
+    subject to the ordering of the partitions being the same in each array.
+
+    For example partitionedmerge(['A', 'a1', 'a2', 'B', 'b1', 'b2', 'D'],
+    ['A', 'a3', 'a4', 'B', 'b3', 'b4', 'C', 'c1', 'c2', 'D'])
+
+    is
+
+    ['A', 'a1', 'a2', 'a3', 'a4', 'B', 'b1', 'b2', 'b3', 'b4', 'C', 'c1', 'c2', 'D']
+
+    The values 'A', 'B', and 'D' act as partition lines for the merge.
+
+
   * `pformat(ob, indent=1, width=80, compact=False)`
 
     Pretty formatter for displaying hierarchial data
@@ -800,6 +832,10 @@ nested outputs.  Tuple outputs will create nested outputs.
     keyword arguments are made available for indirect pattern substitution, in
     addition to the standard variables.
 
+  * `round(number, digits=0)`
+
+    Round number to digits decimal places
+
   * `rstrip(s, chars=None)`
 
     Strip chars from right of string
@@ -893,6 +929,36 @@ nested outputs.  Tuple outputs will create nested outputs.
   * `upper(s)`
 
     Uppercase string
+
+  * `url(method, url=None, **kwargs)`
+
+    A direct dispatch of requests.request with an external session.  See
+    https://docs.python-requests.org/en/latest/api for full API details.
+    Returns a Response object, but callable methods on the response are
+    not callable; retrieve the status via the .status_code attribute, or the content
+    via the .content or .text attribute.
+
+    If the URL is not specified, the first argument is assumed to be the URL
+    and the method will default to 'GET'.
+
+    If not specified, a timeout parameter of 30 seconds will be applied.
+    The stream argument will *always* be set to True.
+    The proxies argument will default to the system specified proxies.
+
+    URL requests are throttled to one request every 3 seconds.
+
+    If there is a json result, the json method on the result will
+    be replaced with a json attribute that is the result of the json
+    method, otherwise the json attribute will be set to None.
+
+    Expressions-specific kwargs:
+    rate=request rate per period  (default: 20)
+    period=number of seconds in a period (default: 60)
+    burst=number of requests to burst before throttling (default: 0)
+
+    Only one rate throttle is maintained; switching throttles with multiple
+    url function expressions will not yield intended results.
+
 
   * `urlparse(urlstring, scheme='', allow_fragments=True)`
 

@@ -21,6 +21,8 @@ Attributes defined on the ExpressionMethod class are available
 as constants to the expression handler, *without* the f_ prefix.
 """
 
+# pylint: disable=no-member
+
 import base64
 from collections import OrderedDict, deque
 import csv
@@ -41,6 +43,7 @@ from typing import Union, List
 import chardet
 import ioc_fanger
 import jmespath
+import requests
 
 from tcex.utils.date_utils import DatetimeUtils
 
@@ -51,9 +54,11 @@ from literal import literal
 from spamspy.spamsum import spamsum
 from spamspy.edit_dist import edit_dist
 
-from smartdict import SmartDict, smart_format
+from mergearray import mergearray
 from reporting import Reporting
 from rexxparse import RexxParser
+from smartdict import SmartDict, smart_format
+from throttle import Throttle
 from xml_util import xml_to_dict, dict_to_xml
 
 tzutil = DatetimeUtils()
@@ -61,6 +66,7 @@ tzutil = DatetimeUtils()
 NoneType = type(None)
 
 aliases = ('spammatch', 'spamsum', 'spamdist', 'json')
+THROTTLE_SEC = 3
 
 
 def strbytes(value, annotation):
@@ -1156,6 +1162,24 @@ class ExpressionMethods:
         return result
 
     @staticmethod
+    def f_partitionedmerge(array1, array2):
+        """Merges two arrays of strings to a single array with ordering
+        preserved between partitions in the arrays.  Common lines are partitions
+        subject to the ordering of the partitions being the same in each array.
+
+        For example partitionedmerge(['A', 'a1', 'a2', 'B', 'b1', 'b2', 'D'],
+        ['A', 'a3', 'a4', 'B', 'b3', 'b4', 'C', 'c1', 'c2', 'D'])
+
+        is
+
+        ['A', 'a1', 'a2', 'a3', 'a4', 'B', 'b1', 'b2', 'b3', 'b4', 'C', 'c1', 'c2', 'D']
+
+        The values 'A', 'B', and 'D' act as partition lines for the merge.
+        """
+
+        return mergearray(array1, array2)
+
+    @staticmethod
     def f_pivot(list_of_lists, pad=None):
         """Pivots a list of lists, such that item[x][y] becomes item[y][x].
         If the inner lists are not of even length, they will be padded with
@@ -1425,6 +1449,13 @@ class ExpressionMethods:
 
     @coerce
     @staticmethod
+    def f_round(number: Union[int, float], digits: int = 0):
+        """Round number to digits decimal places"""
+
+        return round(number, digits)
+
+    @coerce
+    @staticmethod
     def f_rstrip(s: str, chars=None):
         """Strip chars from right of string"""
 
@@ -1653,6 +1684,83 @@ class ExpressionMethods:
                 queue.extendleft(insertions)
             else:
                 result.append(item)
+
+        return result
+
+    def f_url(self, method, url=None, **kwargs):
+        """A direct dispatch of requests.request with an external session.  See
+        https://docs.python-requests.org/en/latest/api for full API details.
+        Returns a Response object, but callable methods on the response are
+        not callable; retrieve the status via the .status_code attribute, or the content
+        via the .content or .text attribute.
+
+        If the URL is not specified, the first argument is assumed to be the URL
+        and the method will default to 'GET'.
+
+        If not specified, a timeout parameter of 30 seconds will be applied.
+        The stream argument will *always* be set to True.
+        The proxies argument will default to the system specified proxies.
+
+        URL requests are throttled to one request every 3 seconds.
+
+        If there is a json result, the json method on the result will
+        be replaced with a json attribute that is the result of the json
+        method, otherwise the json attribute will be set to None.
+
+        Expressions-specific kwargs:
+            rate=request rate per period  (default: 20)
+            period=number of seconds in a period (default: 60)
+            burst=number of requests to burst before throttling (default: 0)
+
+        Only one rate throttle is maintained; switching throttles with multiple
+        url function expressions will not yield intended results.
+        """
+
+        if url is None:
+            url = method
+            method = 'GET'
+
+        if self.tcex:
+            session = self.tcex.session_external
+        else:
+            session = getattr(self, 'session', None)
+
+        if session is None:
+            session = requests.Session()
+            setattr(self, 'session', session)
+
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = 30
+
+        kwargs['stream'] = False
+
+        rate = kwargs.pop('rate', 20)
+        period = kwargs.pop('period', 60)
+        burst = kwargs.pop('burst', 0)
+        throttle = getattr(self, 'throttle', None)
+
+        if throttle is None:
+            throttle = Throttle(rate, period, burst)
+            setattr(self, 'throttle', throttle)
+
+        if throttle.rate != rate or throttle.period != period or throttle.burst != burst:
+            throttle()  # run the old throttle to run it out
+            throttle = Throttle(rate, period, burst)
+            setattr(self, 'throttle', throttle)
+
+        throttle()
+
+        if self.tcex:
+            self.tcex.log.debug(f'URL: {method} {url} {kwargs}')
+        result = session.request(method, url, **kwargs)
+        if self.tcex:
+            self.tcex.log.debug(f'URL result: {result}')
+
+        try:
+            json_data = result.json()
+            setattr(result, 'json', json_data)
+        except Exception:
+            setattr(result, 'json', None)
 
         return result
 

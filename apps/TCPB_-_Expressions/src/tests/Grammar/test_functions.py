@@ -1029,6 +1029,14 @@ FUNCTION_TESTS = [
         "kvlist(({ 'key': 'Foo', 'value': 'Foo Value'}, {'key': 'Bla', 'value': 'Bla Value'}))",
         {'Foo': 'Foo Value', 'Bla': 'Bla Value'},
     ),
+    ("url('https://www.google.com').ok", True),
+    (
+        "partitionedmerge(['A', 'a1', 'a2', 'B', 'b1', 'b2', 'D'],['A', 'a3', 'a4', 'B', 'b3', 'b4', 'C', 'c1', 'c2', 'D'])",
+        ['A', 'a1', 'a2', 'a3', 'a4', 'B', 'b1', 'b2', 'b3', 'b4', 'C', 'c1', 'c2', 'D'],
+    ),
+    ('round(pi)', 3.0),
+    ('round(pi,4)', 3.1416),
+    ("round('3.135')", 3.0),
 ]
 
 

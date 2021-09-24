@@ -11,8 +11,9 @@ except Exception:
 
 import ast
 import json
-import traceback
+import re
 import sys
+import traceback
 import operator
 from typing import Union
 
@@ -21,6 +22,9 @@ import lark.exceptions
 
 from methods import coerce, ExpressionMethods
 from literal import literal, tcvar
+
+
+TCVARIABLE_RE = re.compile(r'#[A-Za-z]+:\d+:[A-Za-z0-9_.]+!\w+')
 
 
 class kwarg(object):
@@ -349,7 +353,7 @@ class Expression(ExpressionMethods):
         if isinstance(ob, dict):
             result = {}
             for key, value in ob.items():
-                result[key] = self.encapsulate(value)
+                result[self.encapsulate(key)] = self.encapsulate(value)
             return result
 
         return ob
@@ -380,7 +384,7 @@ class Expression(ExpressionMethods):
         if isinstance(ob, dict):
             result = {}
             for key, value in ob.items():
-                result[key] = self.deencapsulate(value)
+                result[self.deencapsulate(key)] = self.deencapsulate(value)
             return result
 
         return ob
@@ -480,6 +484,13 @@ class Expression(ExpressionMethods):
 
         if context:
             self.stack.insert(0, context)
+
+        if not isinstance(expression, str):
+            result = self.deencapsulate(self.encapsulate(expression))  # hmm passed non-string
+
+            if self.trace:
+                self.trace(f'>R>{result}')
+                return result
 
         if self.trace:
             self.trace(f'<?< {expression}')

@@ -20,6 +20,7 @@ class Args:
         parser.add_argument('--loop_variables')
         parser.add_argument('--outputs')
         parser.add_argument('--return_none_on_failure', action='store_true')
+        parser.add_argument('--stringarray_outputs')
         parser.add_argument('--tc_action')
         parser.add_argument('--tce_array_outputs')
         parser.add_argument('--tce_outputs')
