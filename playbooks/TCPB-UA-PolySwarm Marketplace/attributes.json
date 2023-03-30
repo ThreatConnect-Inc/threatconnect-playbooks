@@ -5,7 +5,15 @@
     "description": "Score between 0-1 that indicates malintent of artifact takes historical engine performance into account",
     "errorMessage": "PolyScore not available",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 100,
     "name": "PolySwarm Polyscore",
@@ -17,7 +25,15 @@
     "description": "Malware family names from engines.",
     "errorMessage": "No Malware names given by engines during scan",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Malware Names",
@@ -29,7 +45,15 @@
     "description": "PolySwarm TLSH Hash",
     "errorMessage": "No Hash give at time of scan",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm TLSH",
@@ -41,7 +65,15 @@
     "description": "PolySwarm Authentihash of artifact",
     "errorMessage": "No Hash give at time of scan",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Authentihash",
@@ -53,7 +85,15 @@
     "description": "PolySwarm SSDeep of artifact",
     "errorMessage": "No Hash give at time of scan",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm SSDeep Hash",
@@ -65,7 +105,15 @@
     "description": "Detection Ratio",
     "errorMessage": "No detections at this time",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Detection Ratio",
@@ -77,7 +125,15 @@
     "description": "IPv4 address for indicator",
     "errorMessage": "No IPv4-like address found",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Metadata IPv4",
@@ -89,7 +145,15 @@
     "description": "IPv6 address for indicator",
     "errorMessage": "No IPv6-like address found",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Metadata IPv6",
@@ -101,7 +165,15 @@
     "description": "PolySwarm Metadata URL",
     "errorMessage": "No URL info found",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Metadata URL",
@@ -113,7 +185,15 @@
     "description": "Domain like strings",
     "errorMessage": "No domain like strings found",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Domains",
@@ -125,7 +205,15 @@
     "description": "file type",
     "errorMessage": "No file type found",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm File Type",
@@ -137,7 +225,15 @@
     "description": "Date last scanned by the PolySwarm Marketplace",
     "errorMessage": "Missing",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Last_Seen",
@@ -149,7 +245,15 @@
     "description": "Date first scanned by the PolySwarm Marketplace",
     "errorMessage": "Missing",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm First_Seen",
@@ -161,7 +265,15 @@
     "description": "Classified file types",
     "errorMessage": "Missing",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm MIMEType",
@@ -173,7 +285,15 @@
     "description": "Extended classified file types",
     "errorMessage": "Missing",
     "indicators": [
-      "File"
+      "File",
+      "Host",
+      "Url",
+      "Address"
+    ],
+    "groups": [
+      "Malware",
+      "Threat",
+      "Document"
     ],
     "maxLength": 512,
     "name": "PolySwarm Extended_MIMEType",
