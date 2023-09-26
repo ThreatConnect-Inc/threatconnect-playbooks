@@ -11,3 +11,6 @@ Changelog:
 ## 1.2.0
 * update dependencies tcex and polyswarm-api
 * fix various minor bugs
+
+## 1.2.4
+* update the hash search output variable `results.malicious_detections_str` to use the single malware family name from PolyUnite
