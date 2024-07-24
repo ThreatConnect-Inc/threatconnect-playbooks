@@ -1,0 +1,50 @@
+{
+  "types": [
+    {
+      "allowMarkdown": false,
+      "description": "VMRay Submission ID",
+      "errorMessage": "An unknown error occurred.",
+      "groups": [
+        "Malware",
+        "Report",
+        "Threat"
+      ],
+      "indicators": [
+        "Address",
+        "Host",
+        "Url",
+        "Email Subject",
+        "EmailAddress",
+        "File",
+        "Registry Key"
+      ],
+      "maxLength": 100,
+      "name": "VMRay Submission ID",
+      "system": false,
+      "version": 1
+    },
+    {
+      "allowMarkdown": false,
+      "description": "VMRay Sample ID",
+      "errorMessage": "An unknown error occurred.",
+      "groups": [
+        "Malware",
+        "Report",
+        "Threat"
+      ],
+      "indicators": [
+        "Address",
+        "Host",
+        "Url",
+        "Email Subject",
+        "EmailAddress",
+        "File",
+        "Registry Key"
+      ],
+      "maxLength": 100,
+      "name": "VMRay Sample ID",
+      "system": false,
+      "version": 1
+    }
+  ]
+}
