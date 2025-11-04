@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>{TITLE}</title>
+<title>ThreatConnect Report</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
@@ -69,7 +69,7 @@ padding: 15px;
 border-radius: 12px;
 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 transition: all 0.2s ease;
-padding-bottom: 40px; /* Make space for the tag */
+padding-bottom: 40px;
 }
 
 
@@ -118,7 +118,7 @@ text-decoration: underline;
 .threat-actor:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); transform: translateY(-0px); } 
 
 .report-card {
-  position: relative; /* Needed for positioning the tag */
+  position: relative;
 }
 .inline-logo {
   height: 1em;
@@ -180,7 +180,7 @@ font-size: 1.5em;
 <div class="date">{DATE}</div>
 </div>
 <div class="disclaimer">
-This report contains recent cyber security updates and threat intelligence. Click on each report title to read more details.
+{DISCLAIMER}
 </div>
 {AI Summary}
 <div class="report-section">
