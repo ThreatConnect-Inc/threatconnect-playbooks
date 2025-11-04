@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ThreatConnect Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+margin: 0;
+padding: 0;
+font-family: 'Inter', sans-serif;
+background-color: #f5f7fa;
+color: #333;
+}
+
+
+.container {
+max-width: 900px;
+margin: 40px auto;
+padding: 0 20px;
+}
+
+
+.header {
+text-align: center;
+margin-bottom: 40px;
+}
+
+
+.header img {
+max-width: 300px;
+margin-bottom: 10px;
+}
+
+
+.header h1 {
+font-size: 2em;
+color: #1a202c;
+}
+
+
+.date {
+font-size: 1.1em;
+color: #4a5568;
+}
+
+
+.disclaimer {
+background-color: #edf2f7;
+padding: 16px;
+border-radius: 8px;
+margin-bottom: 30px;
+font-size: 0.95em;
+color: #2d3748;
+}
+
+
+.report-section {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 20px;
+}
+
+
+.report-card {
+background: white;
+padding: 15px;
+border-radius: 12px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+transition: all 0.2s ease;
+padding-bottom: 40px;
+}
+
+
+.report-card:hover {
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+transform: translateY(-2px);
+}
+
+
+.report-title {
+font-weight: 600;
+margin-bottom: 10px;
+font-size: 1.05em;
+}
+
+
+.report-link a {
+text-decoration: none;
+color: #3182ce;
+}
+
+
+.report-link a:hover {
+text-decoration: underline;
+}
+
+.threat-actor {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  display: inline-block;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+  font-size: 0.75em;
+  padding: 4px 10px;
+  margin-top:5px;
+  border-radius: 999px;
+  font-weight: 400;
+  align-self: flex-start;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.threat-actor:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); transform: translateY(-0px); } 
+
+.report-card {
+  position: relative;
+}
+.inline-logo {
+  height: 1em;
+  vertical-align: top;
+  margin-left: 4px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+  padding: 4px 10px;
+  margin-top:5px;
+  border-radius: 999px;
+  background: gray;
+}
+
+.report-link a:hover .inline-logo {
+  opacity: 1;
+}
+
+.copy-button {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+  background-color: #edf2f7;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.copy-button:hover {
+  background-color: #e2e8f0;
+}
+.copy-button.hidden {
+
+  display: none;
+
+}
+@media (max-width: 600px) {
+.header h1 {
+font-size: 1.5em;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="wrapper"><div class="banner"> <img src="{IMAGE}" alt="ThreatConnect Banner">
+</div>
+<p>
+  <a href="{REPORTURL}" 
+     style="display: inline-block; padding: 10px 15px; background-color: #3182ce; color: white; text-decoration: none; border-radius: 4px;">
+    Not loading properly? Click here to view the full page
+  </a>
+</p>
+<h1>{HEADER}</h1>
+<div class="date">{DATE}</div>
+</div>
+<div class="disclaimer">
+{DISCLAIMER}
+</div>
+{AI Summary}
+<div class="report-section">
+{CARDS}
+</div>
+<script>
+  function copyText(button) {
+    const card = button.closest('.report-card');
+    const text = card.querySelector('.copy-text').textContent.trim();
+    if (text === "'N/A'") return;
+
+    navigator.clipboard.writeText(text).then(() => {
+      button.textContent = '✅';
+      setTimeout(() => button.textContent = '📋', 1500);
+    });
+  }
+
+  // On page load, hide buttons with "N/A" copy text
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.report-card').forEach(card => {
+      const text = card.querySelector('.copy-text')?.textContent.trim();
+      if (text === "'N/A'") {
+        const button = card.querySelector('.copy-button');
+        if (button) button.classList.add('hidden');
+      }
+    });
+  });
+</script>
+</div>
+</div>
+</body>
+</html>
