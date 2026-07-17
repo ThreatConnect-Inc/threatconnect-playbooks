@@ -4,10 +4,10 @@
 
 ## What it does
 
-Curates a customer's most relevant Intelligence Requirement matches from the past 24 hours into a scheduled email brief. Each finding includes a:
-* clickable source link
-* plain-language reason as to why it maps to your IRs
-* direct link back into ThreatConnect for further review
+* Curates latest, closest-matching Intel Requirement results into a priority list of result to review
+* Plain-language reason as to why it maps to your IRs
+* Direct link back into ThreatConnect for further review
+* Highlighting of actors, cves, victims and countries involved
 
 ## Prerequisites
 
